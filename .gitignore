@@ -1,0 +1,4 @@
+node_modules/
+.sass-cache/
+public/js/compiled/
+public/css/compiled/
