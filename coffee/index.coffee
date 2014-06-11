@@ -1,11 +1,18 @@
 getFrame = (callback) ->
-    requestID = mozRequestAnimationFrame(callback)
-    return requestID
+    if typeof webkitRequestAnimationFrame is 'function'
+        return webkitRequestAnimationFrame(callback)
+    if typeof mozRequestAnimationFrame is 'function'
+        return mozRequestAnimationFrame(callback)
+    if typeof msRequestAnimationFrame is 'function'
+        return msRequestAnimationFrame(callback)
+    if typeof requestAnimationFrame is 'function'
+        return requestAnimationFrame(callback)
 
-canvas = document.getElementById('canvas')
+playerCanvas = document.getElementById('player-canvas')
+zombieCanvas = document.getElementById('zombie-canvas')
 
 getCanvasCoords = (mouseX, mouseY) ->
-	box = canvas.getBoundingClientRect();
+	box = playerCanvas.getBoundingClientRect();
 	canvasCoords =
 		'x': mouseX - box.left
 		'y': mouseY - box.top
@@ -35,6 +42,80 @@ class Timer
     reset: ->
         @elapsed = 0
 
+class Zombie
+    constructor: (canvas, spritesheet, speed) ->
+        sprite = new Image()
+        sprite.src = '../img/' + spritesheet + '.png'
+        @canvas = canvas
+        @ctx = canvas.getContext('2d')
+        @animationTimer = new Timer()
+        @lastFrame = null
+        @speed = speed
+        @currentLocation = 0
+        @currentFrame = 0
+        sprite.onload = () =>
+            @sprite = sprite
+            
+        @walkingFrames = [
+            {
+                start:
+                    x: 0
+                    y: 0
+                width: 59
+                height: 144
+            },
+            {
+                start:
+                    x: 59
+                    y: 0
+                width: 55
+                height: 144
+            },
+            {
+                start:
+                    x: 114
+                    y: 0
+                width: 60
+                height: 144
+            },
+            {
+                start:
+                    x: 174
+                    y: 0
+                width: 64
+                height: 144
+            },
+            {
+                start:
+                    x: 238
+                    y: 0
+                width: 53
+                height: 144
+            }
+        ]
+    
+    walk: () ->
+        time = new Date().getTime()
+        if !@animationTimer.isRunning()
+            @animationTimer.start()
+            @lastFrame = time
+        getFrame () =>
+            if time - @lastFrame >= 100
+                position = @walkingFrames[@currentFrame]
+                @ctx.clearRect 0, 0, @canvas.width, @canvas.height
+                @ctx.drawImage(
+                    @sprite, position.start.x, position.start.y, position.width, position.height,
+                    @currentLocation, @canvas.height - position.height, position.width, position.height
+                )
+                @currentLocation += @speed * ((time - @lastFrame)/1000)
+                if @currentFrame < @walkingFrames.length - 1
+                    @currentFrame++
+                else
+                    @currentFrame = 0
+                @lastFrame = time
+            if (@currentLocation < @canvas.width)
+                this.walk()
+
 class Player
     constructor: (canvas) ->
         sprite = new Image()
@@ -63,7 +144,7 @@ class Player
             },
             {
                 minWaitTime: 100
-                actions: 'fire', 'minusMagazine'
+                actions: ['fire']
                 start:
                     x: 411
                     y: 0
@@ -143,6 +224,7 @@ class Player
             },
             {
                 minWaitTime: 125
+                actions: ['loadShell']
                 start:
                     x: 372
                     y: 0
@@ -166,8 +248,14 @@ class Player
         ]
         @currentFrame = 0
         @magazine =
-            holding: 8
-            capacity: 8
+            shells: 6
+            capacity: 6
+    fire: () ->
+        @magazine.shells--
+        $('#ammo img:not(.used)').first().addClass('used').get(0).src = '/img/noshellicon.png'
+    loadShell: () ->
+        @magazine.shells++
+        $('#ammo img.used').last().removeClass('used').get(0).src = '/img/shellicon.png'
     shoot: (direction) ->
         if direction is 'right' and @currentDirection is 'left'
             @ctx.save()
@@ -200,30 +288,41 @@ class Player
                         @sprite, position.start.x, position.start.y, position.width, position.height,
                         @canvas.width/2 - adjustedOffsetX, @canvas.height - position.offset.y, position.width, position.height
                     )
+                    this[action]() for action in position.actions if position.actions?
                     @lastFrame = time
                     @currentFrame++
                 this.cycleThroughFrames(frameList, callback)
         else
             @currentFrame = 0
             callback()
+            
+zombie = new Zombie zombieCanvas, 'firstzombie', 25
         
-player = new Player canvas
+player = new Player playerCanvas
 
 reactToInput = (x, y) ->
     if player.isShooting or player.isReloading
         return
     contactCoords = getCanvasCoords(x, y)
-    if contactCoords.x < canvas.width/2 - 70
-        player.shoot 'left'
-    else if contactCoords.x > canvas.width/2 + 70
-        player.shoot 'right'
+    if contactCoords.x < playerCanvas.width/2 - 70 or contactCoords.x > playerCanvas.width/2 + 70
+        if player.magazine.shells <= 0
+            console.log 'empty'
+            return
+        if contactCoords.x < playerCanvas.width/2 - 70
+            player.shoot 'left'
+        else
+            player.shoot 'right'
+    else if player.magazine.shells is player.magazine.capacity
+        console.log 'already full'
+        return
     else
         player.reload()
         
-$(canvas).on('mousedown', (e) ->
+$(playerCanvas).on('mousedown', (e) ->
     reactToInput e.clientX, e.clientY
+    zombie.walk()
 )
-$(canvas).on('touchstart', (e) ->
+$(playerCanvas).on('touchstart', (e) ->
     evt = e.originalEvent
     reactToInput evt.touches[0].clientX, evt.touches[0].clientY
 )

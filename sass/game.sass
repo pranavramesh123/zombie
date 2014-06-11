@@ -1,6 +1,41 @@
-canvas
-    position: absolute
-    left: 200px
-    top: 50px
-    border: 1px solid #000
-    background-color: #DADADA
+*
+    margin: 0
+    padding: 0
+    border: none
+    font-size: 100%
+    font-weight: normal
+    box-sizing: border-box
+
+ul
+    list-style-type: none
+a
+    text-decoration: none
+a, button
+    cursor: pointer
+    
+#canvas-container
+    position: relative
+    width: 800px
+    margin: 0 auto
+    #hud
+        position: absolute
+        top: 0
+        width: 100%
+        background-color: rgba(70, 70, 70, 0.85)
+        color: #FFF
+        padding: 6px
+        height: 10vh
+        font-size: .8rem
+        overflow: hidden
+        #ammo
+            width: 265px
+            margin: 0 auto
+            img
+                float: left
+                margin-right: 5px
+                &:last-child
+                    margin: 0
+    canvas
+        position: absolute
+    #zombie-canvas
+        background-color: #EAEAEA
