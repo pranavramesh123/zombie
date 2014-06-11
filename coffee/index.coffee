@@ -55,18 +55,19 @@ class Zombie
         @currentFrame = 0
         sprite.onload = () =>
             @sprite = sprite
-            
+            this.walk()
+        @beenShot = false
         @walkingFrames = [
             {
                 start:
                     x: 0
                     y: 0
-                width: 59
+                width: 60
                 height: 144
             },
             {
                 start:
-                    x: 59
+                    x: 60
                     y: 0
                 width: 55
                 height: 144
@@ -82,14 +83,23 @@ class Zombie
                 start:
                     x: 174
                     y: 0
-                width: 64
+                width: 66
                 height: 144
             },
             {
                 start:
-                    x: 238
+                    x: 240
                     y: 0
-                width: 53
+                width: 54
+                height: 144
+            }
+        ]
+        @dyingFrames = [
+            {
+                start:
+                    x: 294
+                    y: 0
+                width: 90
                 height: 144
             }
         ]
@@ -98,23 +108,33 @@ class Zombie
         time = new Date().getTime()
         if !@animationTimer.isRunning()
             @animationTimer.start()
-            @lastFrame = time
+            @lastFrame = null
         getFrame () =>
-            if time - @lastFrame >= 100
+            if time - @lastFrame >= 100 or @lastFrame is null
                 position = @walkingFrames[@currentFrame]
+                if @lastFrame isnt null
+                    @currentLocation += @speed * ((time - @lastFrame)/1000)
                 @ctx.clearRect 0, 0, @canvas.width, @canvas.height
                 @ctx.drawImage(
                     @sprite, position.start.x, position.start.y, position.width, position.height,
                     @currentLocation, @canvas.height - position.height, position.width, position.height
                 )
-                @currentLocation += @speed * ((time - @lastFrame)/1000)
                 if @currentFrame < @walkingFrames.length - 1
                     @currentFrame++
                 else
                     @currentFrame = 0
                 @lastFrame = time
-            if (@currentLocation < @canvas.width)
+            if @currentLocation < @canvas.width and @beenShot is false
                 this.walk()
+    getShot: () ->
+        @beenShot = true
+        console.log 'bull\'s eye'
+        position = @dyingFrames[0]
+        @ctx.clearRect 0, 0, @canvas.width, @canvas.height
+        @ctx.drawImage(
+            @sprite, position.start.x, position.start.y, position.width, position.height,
+            @currentLocation - 20, @canvas.height - position.height, position.width, position.height
+        )
 
 class Player
     constructor: (canvas) ->
@@ -253,6 +273,10 @@ class Player
     fire: () ->
         @magazine.shells--
         $('#ammo img:not(.used)').first().addClass('used').get(0).src = '/img/noshellicon.png'
+        if @currentDirection is 'right' and zombie.currentLocation > playerCanvas.width/2
+            zombie.getShot()
+        else if @currentDirection is 'left' and zombie.currentLocation < playerCanvas.width/2
+            zombie.getShot()
     loadShell: () ->
         @magazine.shells++
         $('#ammo img.used').last().removeClass('used').get(0).src = '/img/shellicon.png'
@@ -296,7 +320,7 @@ class Player
             @currentFrame = 0
             callback()
             
-zombie = new Zombie zombieCanvas, 'firstzombie', 25
+zombie = new Zombie zombieCanvas, 'firstzombie', 38
         
 player = new Player playerCanvas
 
@@ -320,7 +344,6 @@ reactToInput = (x, y) ->
         
 $(playerCanvas).on('mousedown', (e) ->
     reactToInput e.clientX, e.clientY
-    zombie.walk()
 )
 $(playerCanvas).on('touchstart', (e) ->
     evt = e.originalEvent
