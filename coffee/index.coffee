@@ -1,7 +1,15 @@
-playerCanvas = document.getElementById('player-canvas')
-zombieCanvas = document.getElementById('zombie-canvas')
-            
-game.zombies = [new game.Zombie zombieCanvas, 'firstzombie', 38]
+
+playerCanvas = document.getElementById 'player-canvas'
+leftZombieCanvas = document.getElementById 'zombie-canvas-left'
+rightZombieCanvas = document.getElementById 'zombie-canvas-right'
+
+rightZombieCanvasContext = rightZombieCanvas.getContext '2d'
+rightZombieCanvasContext.translate rightZombieCanvas.width, 0
+rightZombieCanvasContext.scale -1, 1
+       
+game.zombies =
+    left: [new game.Zombie leftZombieCanvas, 'firstzombie', 38]
+    right: [new game.Zombie rightZombieCanvas, 'firstzombie', 38]
         
 player = new game.Player playerCanvas
 

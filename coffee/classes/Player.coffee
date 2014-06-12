@@ -7,7 +7,7 @@ class game.Player extends game.Sprite
         @currentLocation = @canvas.width/2
         sprite.onload = () =>
             @sprite = sprite
-            @ctx.drawImage sprite, 129, 0, 75, 126, canvas.width/2 - 40, canvas.height - 126, 75, 126
+            @ctx.drawImage sprite, 129, 0, 75, 126, canvas.width/2 - 51, canvas.height - 126, 75, 126
         @isShooting = false
         @isReloading = false
         @nextAnimation = null
@@ -20,7 +20,7 @@ class game.Player extends game.Sprite
                 width: 87
                 height: 126
                 offset:
-                    x: 58
+                    x: 69
                     y: 126
             },
             {
@@ -32,7 +32,7 @@ class game.Player extends game.Sprite
                 width: 114
                 height: 126
                 offset:
-                    x: 82
+                    x: 93
                     y: 126
             },
             {
@@ -43,7 +43,7 @@ class game.Player extends game.Sprite
                 width: 87
                 height: 126
                 offset:
-                    x: 58
+                    x: 69
                     y: 126
             },
             {
@@ -54,7 +54,7 @@ class game.Player extends game.Sprite
                 width: 75
                 height: 126
                 offset:
-                    x: 40
+                    x: 51
                     y: 126
             },
             {
@@ -65,7 +65,7 @@ class game.Player extends game.Sprite
                 width: 75
                 height: 126
                 offset:
-                    x: 40
+                    x: 51
                     y: 126
             },
             {
@@ -76,7 +76,7 @@ class game.Player extends game.Sprite
                 width: 75
                 height: 126
                 offset:
-                    x: 40
+                    x: 51
                     y: 126
             }
         ]
@@ -89,7 +89,7 @@ class game.Player extends game.Sprite
                 width: 48
                 height: 126
                 offset:
-                    x: 16
+                    x: 27
                     y: 126
             },
             {
@@ -100,7 +100,7 @@ class game.Player extends game.Sprite
                 width: 45
                 height: 126
                 offset:
-                    x: 13
+                    x: 24
                     y: 126
             },
             {
@@ -112,7 +112,7 @@ class game.Player extends game.Sprite
                 width: 39
                 height: 126
                 offset:
-                    x: 7
+                    x: 18
                     y: 126
             },
             {
@@ -123,7 +123,7 @@ class game.Player extends game.Sprite
                 width: 75
                 height: 126
                 offset:
-                    x: 40
+                    x: 51
                     y: 126
             }
         ]
@@ -134,7 +134,7 @@ class game.Player extends game.Sprite
     fire: () ->
         @magazine.shells--
         $('#ammo img:not(.used)').first().addClass('used').get(0).src = '/img/noshellicon.png'
-        zombie.checkIfBeenShot(@currentDirection) for zombie in game.zombies
+        zombie.getShot() for zombie in game.zombies[@currentDirection]
     loadShell: () ->
         @magazine.shells++
         $('#ammo img.used').last().removeClass('used').get(0).src = '/img/shellicon.png'

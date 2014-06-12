@@ -50,13 +50,9 @@ class game.Sprite
                     position = frameList[@currentFrame]
                     position.offset = {x: 0, y: position.height} unless position.offset?
                     @ctx.clearRect 0, 0, @canvas.width, @canvas.height
-                    if @currentDirection is 'right'
-                        adjustedOffset = position.offset.x + 22
-                    else
-                        adjustedOffset = position.offset.x
                     @ctx.drawImage(
                         @sprite, position.start.x, position.start.y, position.width, position.height,
-                        @currentLocation - adjustedOffset, @canvas.height - position.offset.y, position.width, position.height
+                        @currentLocation - position.offset.x, @canvas.height - position.offset.y, position.width, position.height
                     )
                     this[action]() for action in position.actions if position.actions?
                     @lastFrame = time
