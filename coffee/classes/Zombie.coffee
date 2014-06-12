@@ -102,4 +102,4 @@ class game.Zombie extends game.Sprite
         @currentLocation -= 20
         @nextAnimation = () =>
             console.log 'bull\'s eye'
-            this.cycleThroughFiniteFrames @dyingFrames, (() => console.log 'dead'), {speed: -310}
+            this.cycleThroughFiniteFrames @dyingFrames, (() => console.log 'dead'), {speed: -350}
