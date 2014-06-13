@@ -1,8 +1,11 @@
 class game.Sprite
 
-    constructor: (canvas) ->
+    constructor: (canvas, side) ->
         @canvas = canvas
         @ctx = @canvas.getContext('2d')
+        if side is 'right'
+            @ctx.translate @canvas.width, 0
+            @ctx.scale -1, 1
         @animationTimer = new game.Timer()
         @lastFrame = null
         @currentFrame = 0
@@ -46,10 +49,10 @@ class game.Sprite
         if @currentFrame < frameList.length
             game.Utilities.getFrame () =>
                 if frameList[@currentFrame].minWaitTime <= time - @lastFrame
-                    this.updateLocation time, motion.speed if @lastFrame? and motion?
                     position = frameList[@currentFrame]
                     position.offset = {x: 0, y: position.height} unless position.offset?
                     @ctx.clearRect 0, 0, @canvas.width, @canvas.height
+                    this.updateLocation time, motion.speed if @lastFrame? and motion?
                     @ctx.drawImage(
                         @sprite, position.start.x, position.start.y, position.width, position.height,
                         @currentLocation - position.offset.x, @canvas.height - position.offset.y, position.width, position.height

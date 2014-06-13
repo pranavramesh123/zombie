@@ -1,6 +1,6 @@
 class game.Player extends game.Sprite
-    constructor: (canvas) ->
-        super canvas
+    constructor: (canvas, startingSide) ->
+        super canvas, startingSide
         sprite = new Image()
         sprite.src = '../img/firstsheet.png'
         @currentDirection = 'left'
@@ -134,7 +134,7 @@ class game.Player extends game.Sprite
     fire: () ->
         @magazine.shells--
         $('#ammo img:not(.used)').first().addClass('used').get(0).src = '/img/noshellicon.png'
-        zombie.getShot() for zombie in game.zombies[@currentDirection]
+        game.Zombie.seeWhoGetsShot(@currentDirection)
     loadShell: () ->
         @magazine.shells++
         $('#ammo img.used').last().removeClass('used').get(0).src = '/img/shellicon.png'

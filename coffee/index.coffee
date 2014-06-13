@@ -1,27 +1,19 @@
-
-playerCanvas = document.getElementById 'player-canvas'
-leftZombieCanvas = document.getElementById 'zombie-canvas-left'
-rightZombieCanvas = document.getElementById 'zombie-canvas-right'
-
-rightZombieCanvasContext = rightZombieCanvas.getContext '2d'
-rightZombieCanvasContext.translate rightZombieCanvas.width, 0
-rightZombieCanvasContext.scale -1, 1
        
 game.zombies =
-    left: [new game.Zombie leftZombieCanvas, 'firstzombie', 38]
-    right: [new game.Zombie rightZombieCanvas, 'firstzombie', 38]
+    left: []
+    right: []
         
-player = new game.Player playerCanvas
+player = new game.Player game.playerCanvas, 'left'
 
 reactToInput = (x, y) ->
     if player.isShooting or player.isReloading
         return
-    contactCoords = game.Utilities.getCanvasCoords(playerCanvas, x, y)
-    if contactCoords.x < playerCanvas.width/2 - 70 or contactCoords.x > playerCanvas.width/2 + 70
+    contactCoords = game.Utilities.getCanvasCoords(game.playerCanvas, x, y)
+    if contactCoords.x < game.playerCanvas.width/2 - 70 or contactCoords.x > game.playerCanvas.width/2 + 70
         if player.magazine.shells <= 0
             console.log 'empty'
             return
-        if contactCoords.x < playerCanvas.width/2 - 70
+        if contactCoords.x < game.playerCanvas.width/2 - 70
             player.shoot 'left'
         else
             player.shoot 'right'
@@ -31,10 +23,19 @@ reactToInput = (x, y) ->
     else
         player.reload()
         
-$(playerCanvas).on('mousedown', (e) ->
+$(game.playerCanvas).on('mousedown', (e) ->
     reactToInput e.clientX, e.clientY
 )
-$(playerCanvas).on('touchstart', (e) ->
+$(game.playerCanvas).on('touchstart', (e) ->
     evt = e.originalEvent
     reactToInput evt.touches[0].clientX, evt.touches[0].clientY
 )
+
+document.getElementById('start').onclick = () ->
+    $('#message').addClass('hidden')
+    setInterval () ->
+        randomNum = Math.random()
+        comeFrom = if randomNum >= .5 then 'left' else 'right'
+        speed = randomNum * 100 + 25
+        game.zombies[comeFrom].push new game.Zombie comeFrom, 'firstzombie', speed, -75
+    , 2000

@@ -1,3 +1,7 @@
+@font-face
+    font-family: 'lunchds'
+    src: url('../fonts/lunchds.ttf')
+
 *
     margin: 0
     padding: 0
@@ -12,11 +16,16 @@ a
     text-decoration: none
 a, button
     cursor: pointer
+.hidden
+    display: none !important
     
 #canvas-container
+    font-family: 'lunchds', monospace
     position: relative
     width: 800px
+    height: 450px
     margin: 0 auto
+    background-color: #EAEAEA
     #hud
         position: absolute
         top: 0
@@ -24,7 +33,7 @@ a, button
         background-color: rgba(70, 70, 70, 0.85)
         color: #FFF
         padding: 6px
-        height: 10vh
+        height: 50px
         font-size: .8rem
         overflow: hidden
         #ammo
@@ -35,11 +44,31 @@ a, button
                 margin-right: 5px
                 &:last-child
                     margin: 0
+    #message
+        position: absolute
+        width: 100%
+        background-color: transparent
+        top: 75px
+        text-align: center
+        h3
+            font-size: 2rem
+        color: black
+        button
+            font-family: 'lunchds', monospace
+            display: block
+            margin: 15px auto
+            padding: 10px
+            background-color: darkred
+            color: #FFF
+            font-size: 1.4rem
+            box-shadow: 5px 5px rgb(70, 70, 70)
+            cursor: pointer
+            
     canvas
         position: absolute
+        background-color: transparent
     .zombie-canvas
-        background-color: #EAEAEA
-    #zombie-canvas-left
-        left: 0
-    #zombie-canvas-right
-        right: 0
+        &.left
+            left: 0
+        &.right
+            right: 0

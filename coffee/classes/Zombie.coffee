@@ -1,10 +1,16 @@
 class game.Zombie extends game.Sprite
-    constructor: (canvas, spritesheet, speed) ->
-        super canvas
+    constructor: (startingSide, spritesheet, speed, startingLocation = 0) ->
+        canvas = document.createElement 'canvas'
+        canvas.className = 'zombie-canvas ' + startingSide
+        canvas.width = 400
+        canvas.height = 450
+        game.canvasContainer.insertBefore canvas, game.playerCanvas
+        super canvas, startingSide
         sprite = new Image()
         sprite.src = '../img/' + spritesheet + '.png'
         @speed = speed
-        @currentLocation = 0
+        @currentLocation = startingLocation
+        @side = startingSide
         sprite.onload = () =>
             @sprite = sprite
             this.cycleThroughInfiniteFrames(@walkingFrames, {speed: @speed})
@@ -91,15 +97,34 @@ class game.Zombie extends game.Sprite
                 height: 144
             }
         ]
-            
+    @seeWhoGetsShot: (shotDirection) ->
+        return false unless game.zombies[shotDirection].length > 0
+        farthestZombie = {currentLocation: 0}
+        for zombie, index in game.zombies[shotDirection]
+            if zombie.currentLocation + zombie.walkingFrames[zombie.currentFrame].width > farthestZombie.currentLocation
+                farthestZombie = zombie
+                doomedZombieIndex = index
+        farthestZombie.getShot(doomedZombieIndex) if farthestZombie.speed?
+        
     checkIfBeenShot: (shotDirection) ->
         if shotDirection is 'right' and @currentLocation > @canvas.width/2
             this.getShot()
         else if shotDirection is 'left' and @currentLocation < @canvas.width/2
             this.getShot()
         
-    getShot: () ->
+    getShot: (doomedZombieIndex) ->
         @currentLocation -= 20
         @nextAnimation = () =>
-            console.log 'bull\'s eye'
-            this.cycleThroughFiniteFrames @dyingFrames, (() => console.log 'dead'), {speed: -350}
+            this.cycleThroughFiniteFrames(
+                @dyingFrames,
+                (() =>
+                    game.zombies[@side].splice(doomedZombieIndex, 1)
+                    position = @dyingFrames[@dyingFrames.length - 1]
+                    game.zombieDeathBed[@side].drawImage(
+                        @sprite, position.start.x, position.start.y, position.width, position.height,
+                        @currentLocation - position.offset.x, @canvas.height - position.offset.y, position.width, position.height
+                    )
+                    game.canvasContainer.removeChild(@canvas)
+                ),
+                {speed: -350}
+            )
