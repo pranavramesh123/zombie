@@ -9,17 +9,28 @@ window.game =
         right: document.getElementById('zombie-deathbed-right').getContext '2d'
     nextZombie: null
     isGoing: false
-    maxNumberOfZombies: 8
+    maxNumberOfZombies: 9
+    score: 0
+    intensityIndex: 0
+    scoreDisplay: $('#score')
+    updateScore: (addition) ->
+        @score += addition
+        @scoreDisplay.html @score
+    ammoContainer: $('#ammo-container')
+    images:
+        noShell: '/img/noshellicon.png'
+        shell: '/img/shellicon.png'
     generateZombies: () ->
+        @intensityIndex += 1
         randomNum = Math.random()
         return if @isGoing is false
         @nextZombie = setTimeout () =>
             comeFrom = if randomNum >= .5 then 'left' else 'right'
-            speed = randomNum * 100 + 25
+            speed = randomNum * 100 + 45 + @intensityIndex
             if game.zombies['left'].length + game.zombies['right'].length < @maxNumberOfZombies
                 game.zombies[comeFrom].push new game.Zombie comeFrom, 'firstzombie', speed, -75
             @generateZombies()
-        , 2000 - randomNum * 700
+        , 2000 - randomNum * 900 + @intensityIndex
     stop: () ->
         @isGoing = false
         clearTimeout(@nextZombie)

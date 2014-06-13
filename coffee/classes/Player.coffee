@@ -133,11 +133,11 @@ class game.Player extends game.Sprite
             capacity: 6
     fire: () ->
         @magazine.shells--
-        $('#ammo img:not(.used)').first().addClass('used').get(0).src = '/img/noshellicon.png'
+        game.ammoContainer.find('img:not(.used)').first().addClass('used').get(0).src = game.images.noShell
         game.Zombie.seeWhoGetsShot(@currentDirection)
     loadShell: () ->
         @magazine.shells++
-        $('#ammo img.used').last().removeClass('used').get(0).src = '/img/shellicon.png'
+        game.ammoContainer.find('img.used').last().removeClass('used').get(0).src = game.images.shell
     shoot: (direction) ->
         if direction is 'right' and @currentDirection is 'left'
             @ctx.save()

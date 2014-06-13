@@ -12,10 +12,13 @@
             <canvas id="zombie-deathbed-left" class="zombie-canvas left" width="400" height="450"></canvas>
             <canvas id="zombie-deathbed-right" class="zombie-canvas right" width="400" height="450"></canvas>
             <canvas id="player-canvas" width="800" class="zombie-canvas left" height="450"></canvas>
-            <canvas id="top-canvas-left" width="400" class="zombie-canvas left" height="450"></canvas>
-            <canvas id="top-canvas-right" width="400" class="zombie-canvas right" height="450"></canvas>
+            <canvas id="top-canvas-left" width="400" class="zombie-canvas left top" height="450"></canvas>
+            <canvas id="top-canvas-right" width="400" class="zombie-canvas right top" height="450"></canvas>
             <div id="hud">
-                <div id="ammo">
+                <div id="other-container">
+                    
+                </div>
+                <div id="ammo-container">
                     <img src="/img/shellicon.png">
                     <img src="/img/shellicon.png">
                     <img src="/img/shellicon.png">
@@ -23,9 +26,14 @@
                     <img src="/img/shellicon.png">
                     <img src="/img/shellicon.png">
                 </div>
+                <div id="score-container">
+                    <p>Score: <span id="score">0</span></p>
+                </div>
             </div>
             <div id="info">
-                <p id="message">Welcome to this game. When you're ready to start, hit start.</p>
+                <p id="message">
+                    Welcome to this game. When you're ready to start, hit start.
+                </p>
                 <button id="start">
                     Start
                 </button>

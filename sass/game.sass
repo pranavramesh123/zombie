@@ -2,6 +2,20 @@
     font-family: 'lunchds'
     src: url('../fonts/lunchds.ttf')
 
+@mixin prefix($property, $value)
+    -moz-#{$property}: $value
+    -webkit-#{$property}: $value
+    -ms-#{$property}: $value
+    #{$property}: $value
+
+@mixin flexbox($direction: row, $justify: space-between, $align: center)
+    display: -webkit-flex
+    display: flex
+    @include prefix(flex-direction, $direction)
+    @include prefix(flex-wrap, wrap)
+    @include prefix(justify-content, $justify)
+    @include prefix(align-items, $align)
+
 *
     margin: 0
     padding: 0
@@ -30,29 +44,46 @@ a, button
         position: absolute
         bottom: 0
         width: 100%
-        background-color: rgba(70, 70, 70, 0.85)
+        background-color: #292929
         color: #FFF
         padding: 6px
-        height: 50px
+        height: 15%
         font-size: .8rem
         overflow: hidden
-        #ammo
-            width: 265px
+        @include flexbox
+        #other-container, #ammo-container, #score-container
+            color: #EAEAEA
+        #ammo-container, #ammo-container img
+            @include prefix(user-select, none)
+        #ammo-container
+            @include flexbox
+            width: 40%
+            height: 100%
             margin: 0 auto
-            img
-                float: left
-                margin-right: 5px
-                &:last-child
-                    margin: 0
+            cursor: pointer
+        #other-container, #score-container
+            @include flexbox(row, space-around)
+            width: 30%
+            font-size: 1.3rem
+            text-align: center
+        #score
+            display: inline-block
+            min-width: 4rem
+            text-align: right
+            
     #info
         position: absolute
         width: 100%
         background-color: transparent
-        top: 75px
+        top: 25px
         text-align: center
+        color: black
         h3
             font-size: 2rem
-        color: black
+        #message
+            font-size: 1.2rem
+            width: 70%
+            margin: 0 auto
         button
             font-family: 'lunchds', monospace
             display: block

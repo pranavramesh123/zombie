@@ -148,12 +148,14 @@ class game.Zombie extends game.Sprite
     @lungingPoint: 340
     @seeWhoGetsShot: (shotDirection) ->
         return false unless game.zombies[shotDirection].length > 0
-        farthestZombie = {currentLocation: 0}
+        farthestLocation = 0
         for zombie, index in game.zombies[shotDirection]
-            if zombie.currentLocation + zombie.walkingFrames[zombie.currentFrame].width > farthestZombie.currentLocation
-                farthestZombie = zombie
+            thisZombieLocation = zombie.currentLocation + zombie.walkingFrames[zombie.currentFrame].width
+            if thisZombieLocation > farthestLocation
+                farthestLocation = thisZombieLocation
                 doomedZombieIndex = index
-        farthestZombie.getShot(doomedZombieIndex) if farthestZombie.speed?
+        console.log 'Index ' + doomedZombieIndex + ' is getting shot...'
+        game.zombies[shotDirection][doomedZombieIndex].getShot(doomedZombieIndex) if doomedZombieIndex?
         
     checkIfBeenShot: (shotDirection) ->
         if shotDirection is 'right' and @currentLocation > @canvas.width/2
@@ -162,6 +164,7 @@ class game.Zombie extends game.Sprite
             this.getShot()
         
     getShot: (doomedZombieIndex) ->
+        game.updateScore 5
         @currentLocation -= 20
         @nextAnimation = () =>
             this.cycleThroughFiniteFrames(
@@ -183,6 +186,6 @@ class game.Zombie extends game.Sprite
                 @bitingFrames,
                 (() =>
                     game.stop()
-                    $('#message').removeClass('hidden').find('p').html('You have been bitten.');
+                    game.displayMessage 'You have been bitten.'
                 )
             )
