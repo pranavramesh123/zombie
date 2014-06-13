@@ -13,7 +13,12 @@ class game.Zombie extends game.Sprite
         @side = startingSide
         sprite.onload = () =>
             @sprite = sprite
-            this.cycleThroughInfiniteFrames(@walkingFrames, {speed: @speed})
+            this.cycleThroughInfiniteFrames(
+                @walkingFrames,
+                (() => this.bite() if @currentLocation + @walkingFrames[@currentFrame].width >= @canvas.width),
+                {speed: @speed}
+                
+            )
         @walkingFrames = [
             {
                 start:
@@ -54,9 +59,6 @@ class game.Zombie extends game.Sprite
         @dyingFrames = [
             {
                 minWaitTime: 0
-                offset:
-                    x: 0
-                    y: 144
                 start:
                     x: 294
                     y: 0
@@ -65,9 +67,6 @@ class game.Zombie extends game.Sprite
             },
             {
                 minWaitTime: 75
-                offset:
-                    x: 0
-                    y: 144
                 start:
                     x: 384
                     y: 0
@@ -76,9 +75,6 @@ class game.Zombie extends game.Sprite
             },
             {
                 minWaitTime: 75
-                offset:
-                    x: 0
-                    y: 144
                 start:
                     x: 471
                     y: 0
@@ -87,14 +83,64 @@ class game.Zombie extends game.Sprite
             },
             {
                 minWaitTime: 75
-                offset:
-                    x: 0
-                    y: 144
                 start:
                     x: 606
                     y: 0
                 width: 162
                 height: 144
+            }
+        ]
+        @bitingFrames = [
+            {
+                minWaitTime: 0
+                start:
+                    x: 768
+                    y: 0
+                width: 87
+                height: 144
+                frontFrame:
+                    start:
+                        x: 984
+                        y: 117
+                    width: 51
+                    height: 27
+                    offset:
+                        x: -15
+                        y: 153
+            },
+            {
+                minWaitTime: 100
+                start:
+                    x: 855
+                    y: 0
+                width: 66
+                height: 144
+                frontFrame:
+                    start:
+                        x: 984
+                        y: 117
+                    width: 51
+                    height: 27
+                    offset:
+                        x: -15
+                        y: 153
+            },
+            {
+                minWaitTime: 100
+                start:
+                    x: 921
+                    y: 0
+                width: 63
+                height: 144
+                frontFrame:
+                    start:
+                        x: 984
+                        y: 117
+                    width: 51
+                    height: 27
+                    offset:
+                        x: -15
+                        y: 153
             }
         ]
     @seeWhoGetsShot: (shotDirection) ->
@@ -127,4 +173,13 @@ class game.Zombie extends game.Sprite
                     game.canvasContainer.removeChild(@canvas)
                 ),
                 {speed: -350}
+            )
+    bite: () ->
+        @nextAnimation = () =>
+            this.cycleThroughFiniteFrames(
+                @bitingFrames,
+                (() =>
+                    game.stop()
+                    $('#message').removeClass('hidden').find('p').html('You have been bitten.');
+                )
             )

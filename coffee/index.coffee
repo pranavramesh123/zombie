@@ -22,20 +22,14 @@ reactToInput = (x, y) ->
         return
     else
         player.reload()
-        
-$(game.playerCanvas).on('mousedown', (e) ->
-    reactToInput e.clientX, e.clientY
-)
-$(game.playerCanvas).on('touchstart', (e) ->
-    evt = e.originalEvent
-    reactToInput evt.touches[0].clientX, evt.touches[0].clientY
-)
 
 document.getElementById('start').onclick = () ->
     $('#message').addClass('hidden')
-    setInterval () ->
-        randomNum = Math.random()
-        comeFrom = if randomNum >= .5 then 'left' else 'right'
-        speed = randomNum * 100 + 25
-        game.zombies[comeFrom].push new game.Zombie comeFrom, 'firstzombie', speed, -75
-    , 2000
+    $('#canvas-container').on('mousedown', (e) ->
+        reactToInput e.clientX, e.clientY
+    )
+    $('#canvas-container').on('touchstart', (e) ->
+        evt = e.originalEvent
+        reactToInput evt.touches[0].clientX, evt.touches[0].clientY
+    )
+    game.start()

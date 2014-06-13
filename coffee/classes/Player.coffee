@@ -7,7 +7,7 @@ class game.Player extends game.Sprite
         @currentLocation = @canvas.width/2
         sprite.onload = () =>
             @sprite = sprite
-            @ctx.drawImage sprite, 129, 0, 75, 126, canvas.width/2 - 51, canvas.height - 126, 75, 126
+            @ctx.drawImage sprite, 129, 0, 75, 126, canvas.width/2 - 51, canvas.height - 201, 75, 126
         @isShooting = false
         @isReloading = false
         @nextAnimation = null
@@ -21,7 +21,7 @@ class game.Player extends game.Sprite
                 height: 126
                 offset:
                     x: 69
-                    y: 126
+                    y: 201
             },
             {
                 minWaitTime: 100
@@ -33,7 +33,7 @@ class game.Player extends game.Sprite
                 height: 126
                 offset:
                     x: 93
-                    y: 126
+                    y: 201
             },
             {
                 minWaitTime: 100
@@ -44,7 +44,7 @@ class game.Player extends game.Sprite
                 height: 126
                 offset:
                     x: 69
-                    y: 126
+                    y: 201
             },
             {
                 minWaitTime: 200
@@ -55,7 +55,7 @@ class game.Player extends game.Sprite
                 height: 126
                 offset:
                     x: 51
-                    y: 126
+                    y: 201
             },
             {
                 minWaitTime: 75
@@ -66,7 +66,7 @@ class game.Player extends game.Sprite
                 height: 126
                 offset:
                     x: 51
-                    y: 126
+                    y: 201
             },
             {
                 minWaitTime: 125
@@ -77,7 +77,7 @@ class game.Player extends game.Sprite
                 height: 126
                 offset:
                     x: 51
-                    y: 126
+                    y: 201
             }
         ]
         @reloadingFrames = [
@@ -90,7 +90,7 @@ class game.Player extends game.Sprite
                 height: 126
                 offset:
                     x: 27
-                    y: 126
+                    y: 201
             },
             {
                 minWaitTime: 125
@@ -101,7 +101,7 @@ class game.Player extends game.Sprite
                 height: 126
                 offset:
                     x: 24
-                    y: 126
+                    y: 201
             },
             {
                 minWaitTime: 125
@@ -113,7 +113,7 @@ class game.Player extends game.Sprite
                 height: 126
                 offset:
                     x: 18
-                    y: 126
+                    y: 201
             },
             {
                 minWaitTime: 125
@@ -124,7 +124,7 @@ class game.Player extends game.Sprite
                 height: 126
                 offset:
                     x: 51
-                    y: 126
+                    y: 201
             }
         ]
         @currentFrame = 0
