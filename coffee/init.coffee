@@ -9,13 +9,15 @@ window.game =
         right: document.getElementById('zombie-deathbed-right').getContext '2d'
     nextZombie: null
     isGoing: false
+    maxNumberOfZombies: 8
     generateZombies: () ->
         randomNum = Math.random()
         return if @isGoing is false
         @nextZombie = setTimeout () =>
             comeFrom = if randomNum >= .5 then 'left' else 'right'
             speed = randomNum * 100 + 25
-            game.zombies[comeFrom].push new game.Zombie comeFrom, 'firstzombie', speed, -75
+            if game.zombies['left'].length + game.zombies['right'].length < @maxNumberOfZombies
+                game.zombies[comeFrom].push new game.Zombie comeFrom, 'firstzombie', speed, -75
             @generateZombies()
         , 2000 - randomNum * 700
     stop: () ->
@@ -24,6 +26,10 @@ window.game =
     start: () ->
         @isGoing = true
         @generateZombies()
+    displayMessage: (message, disappear = null) ->
+        messageElement = document.getElementById('message')
+        messageElement.innerHTML = message
+        if disappear? then setTimeout (() -> messageElement.innerHTML = ''), disappear
         
 game.zombieDeathBed.right.translate game.playerCanvas.width/2, 0
 game.zombieDeathBed.right.scale -1, 1

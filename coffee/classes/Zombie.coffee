@@ -15,8 +15,10 @@ class game.Zombie extends game.Sprite
             @sprite = sprite
             this.cycleThroughInfiniteFrames(
                 @walkingFrames,
-                (() => this.bite() if @currentLocation + @walkingFrames[@currentFrame].width >= @canvas.width),
-                {speed: @speed}
+                (() =>
+                    this.bite() if @currentLocation >= game.Zombie.lungingPoint
+                ),
+                {speed: @speed, stop: game.Zombie.lungingPoint}
                 
             )
         @walkingFrames = [
@@ -100,16 +102,16 @@ class game.Zombie extends game.Sprite
                 height: 144
                 frontFrame:
                     start:
-                        x: 984
+                        x: 990
                         y: 117
-                    width: 51
+                    width: 45
                     height: 27
                     offset:
                         x: -15
                         y: 153
             },
             {
-                minWaitTime: 100
+                minWaitTime: 75
                 start:
                     x: 855
                     y: 0
@@ -117,16 +119,16 @@ class game.Zombie extends game.Sprite
                 height: 144
                 frontFrame:
                     start:
-                        x: 984
+                        x: 990
                         y: 117
-                    width: 51
+                    width: 45
                     height: 27
                     offset:
                         x: -15
                         y: 153
             },
             {
-                minWaitTime: 100
+                minWaitTime: 75
                 start:
                     x: 921
                     y: 0
@@ -134,15 +136,16 @@ class game.Zombie extends game.Sprite
                 height: 144
                 frontFrame:
                     start:
-                        x: 984
+                        x: 990
                         y: 117
-                    width: 51
+                    width: 45
                     height: 27
                     offset:
                         x: -15
                         y: 153
             }
         ]
+    @lungingPoint: 340
     @seeWhoGetsShot: (shotDirection) ->
         return false unless game.zombies[shotDirection].length > 0
         farthestZombie = {currentLocation: 0}

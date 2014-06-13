@@ -11,8 +11,10 @@ class game.Sprite
         @currentFrame = 0
         @nextAnimation = null
         
-    updateLocation: (time, speed) ->
-        @currentLocation += speed * ((time - @lastFrame)/1000)
+    updateLocation: (time, motion) ->
+        calculatedDistance = motion.speed * ((time - @lastFrame)/1000)
+        actualDistance = if motion.stop? and @currentLocation + calculatedDistance > motion.stop then motion.stop - @currentLocation else calculatedDistance
+        @currentLocation += actualDistance
         
     cycleThroughInfiniteFrames: (frameList, callback, motion) ->
         time = new Date().getTime()
@@ -21,7 +23,7 @@ class game.Sprite
             @lastFrame = null
         game.Utilities.getFrame () =>
             if time - @lastFrame >= 100 or @lastFrame is null
-                this.updateLocation time, motion.speed if @lastFrame? and motion?
+                this.updateLocation time, motion if @lastFrame? and motion?
                 position = frameList[@currentFrame]
                 position.offset = {x: 0, y: position.height + 75} unless position.offset?
                 @ctx.clearRect 0, 0, @canvas.width, @canvas.height
@@ -59,7 +61,7 @@ class game.Sprite
                     position = frameList[@currentFrame]
                     position.offset = {x: 0, y: position.height + 75} unless position.offset?
                     @ctx.clearRect 0, 0, @canvas.width, @canvas.height
-                    this.updateLocation time, motion.speed if @lastFrame? and motion?
+                    this.updateLocation time, motion if @lastFrame? and motion?
                     @ctx.drawImage(
                         @sprite, position.start.x, position.start.y, position.width, position.height,
                         @currentLocation - position.offset.x, @canvas.height - position.offset.y, position.width, position.height

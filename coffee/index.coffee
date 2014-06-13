@@ -11,20 +11,21 @@ reactToInput = (x, y) ->
     contactCoords = game.Utilities.getCanvasCoords(game.playerCanvas, x, y)
     if contactCoords.x < game.playerCanvas.width/2 - 70 or contactCoords.x > game.playerCanvas.width/2 + 70
         if player.magazine.shells <= 0
-            console.log 'empty'
+            game.displayMessage 'Reload', 3000
             return
         if contactCoords.x < game.playerCanvas.width/2 - 70
             player.shoot 'left'
         else
             player.shoot 'right'
     else if player.magazine.shells is player.magazine.capacity
-        console.log 'already full'
+        game.displayMessage 'Already full', 3000
         return
     else
         player.reload()
 
 document.getElementById('start').onclick = () ->
-    $('#message').addClass('hidden')
+    $('#message').empty()
+    $('#start').addClass('hidden')
     $('#canvas-container').on('mousedown', (e) ->
         reactToInput e.clientX, e.clientY
     )
