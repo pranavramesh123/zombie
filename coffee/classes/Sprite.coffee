@@ -22,7 +22,8 @@ class game.Sprite
             @animationTimer.start()
             @lastFrame = null
         game.Utilities.getFrame () =>
-            if time - @lastFrame >= 100 or @lastFrame is null
+            minimumFrameTime = if motion? then Math.abs(game.frameSpeedIndex - motion.speed + game.frameSpeedIndex) else 100
+            if time - @lastFrame >= minimumFrameTime or @lastFrame is null
                 this.updateLocation time, motion if @lastFrame? and motion?
                 position = frameList[@currentFrame]
                 position.offset = {x: 0, y: position.height + 75} unless position.offset?

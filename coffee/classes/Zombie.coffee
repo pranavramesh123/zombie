@@ -153,86 +153,109 @@ class game.Zombie extends game.Sprite
             {
                 minWaitTime: 0
                 start:
-                    x: 294
+                    x: 528
                     y: 0
                 width: 90
                 height: 144
+                offset:
+                    x: 50
+                    y: 144+75
             },
             {
-                minWaitTime: 75
+                minWaitTime: 60
                 start:
-                    x: 384
+                    x: 618
                     y: 0
                 width: 84
                 height: 144
+                offset:
+                    x: 100
+                    y: 144+75
             },
             {
-                minWaitTime: 75
+                minWaitTime: 60
                 start:
-                    x: 471
+                    x: 702
                     y: 0
                 width: 135
                 height: 144
+                offset:
+                    x: 150
+                    y: 144+75
             },
             {
-                minWaitTime: 75
+                minWaitTime: 60
                 start:
-                    x: 606
+                    x: 837
                     y: 0
                 width: 162
                 height: 144
+                offset:
+                    x: 200
+                    y: 144+75
+            },
+            {
+                minWaitTime: 60
+                start:
+                    x: 999
+                    y: 0
+                width: 162
+                height: 144
+                offset:
+                    x: 200
+                    y: 144+75
             }
         ]
         @bitingFrames = [
             {
                 minWaitTime: 0
                 start:
-                    x: 768
+                    x: 1164
                     y: 0
-                width: 87
+                width: 84
                 height: 144
                 frontFrame:
                     start:
-                        x: 990
+                        x: 1383
                         y: 117
                     width: 45
                     height: 27
                     offset:
-                        x: -15
+                        x: -10
                         y: 153
             },
             {
                 minWaitTime: 75
                 start:
-                    x: 855
-                    y: 0
-                width: 66
-                height: 144
-                frontFrame:
-                    start:
-                        x: 990
-                        y: 117
-                    width: 45
-                    height: 27
-                    offset:
-                        x: -15
-                        y: 153
-            },
-            {
-                minWaitTime: 75
-                start:
-                    x: 921
+                    x: 1251
                     y: 0
                 width: 63
                 height: 144
                 frontFrame:
                     start:
-                        x: 990
+                        x: 1383
                         y: 117
                     width: 45
                     height: 27
                     offset:
-                        x: -15
+                        x: -10
+                        y: 153
+            },
+            {
+                minWaitTime: 75
+                start:
+                    x: 1317
+                    y: 0
+                width: 60
+                height: 144
+                frontFrame:
+                    start:
+                        x: 1383
+                        y: 117
+                    width: 45
+                    height: 27
+                    offset:
+                        x: -10
                         y: 153
             }
         ]
@@ -245,7 +268,6 @@ class game.Zombie extends game.Sprite
             if thisZombieLocation > farthestLocation
                 farthestLocation = thisZombieLocation
                 doomedZombieIndex = index
-        console.log 'Index ' + doomedZombieIndex + ' is getting shot...'
         game.zombies[shotDirection][doomedZombieIndex].getShot(doomedZombieIndex) if doomedZombieIndex?
         
     checkIfBeenShot: (shotDirection) ->
@@ -269,7 +291,6 @@ class game.Zombie extends game.Sprite
                     )
                     game.canvasContainer.removeChild(@canvas)
                 ),
-                {speed: -350}
             )
     bite: () ->
         @nextAnimation = () =>
