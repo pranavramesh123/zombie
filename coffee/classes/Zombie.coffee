@@ -7,7 +7,7 @@ class game.Zombie extends game.Sprite
         game.canvasContainer.insertBefore canvas, game.playerCanvas
         super canvas, startingSide
         sprite = new Image()
-        sprite.src = '../img/' + spritesheet + '.png'
+        sprite.src = '../img/spritesheets/zombies/' + spritesheet + '.png'
         @speed = speed
         @currentLocation = startingLocation
         @side = startingSide

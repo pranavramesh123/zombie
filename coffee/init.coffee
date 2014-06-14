@@ -20,17 +20,21 @@ window.game =
     images:
         noShell: '/img/noshellicon.png'
         shell: '/img/shellicon.png'
+    zombieSprites: [
+        'suit-blue'
+        'suit-grey'
+    ]
     generateZombies: () ->
         @intensityIndex += 1
-        randomNum = Math.random()
         return if @isGoing is false
         @nextZombie = setTimeout () =>
-            comeFrom = if randomNum >= .5 then 'left' else 'right'
-            speed = randomNum * 100 + 45 + @intensityIndex
+            comeFrom = if Math.random() >= .5 then 'left' else 'right'
+            speed = Math.random() * 100 + 25 + @intensityIndex
             if game.zombies['left'].length + game.zombies['right'].length < @maxNumberOfZombies
-                game.zombies[comeFrom].push new game.Zombie comeFrom, 'firstzombie', speed, -75
+                spriteIndex = Math.floor Math.random() * @zombieSprites.length
+                game.zombies[comeFrom].push new game.Zombie comeFrom, @zombieSprites[spriteIndex], speed, -75
             @generateZombies()
-        , 2000 - randomNum * 900 + @intensityIndex
+        , 2000 - Math.random() * 900 + @intensityIndex
     stop: () ->
         @isGoing = false
         clearTimeout(@nextZombie)
