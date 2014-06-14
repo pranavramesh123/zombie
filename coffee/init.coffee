@@ -21,8 +21,9 @@ window.game =
         noShell: '/img/noshellicon.png'
         shell: '/img/shellicon.png'
     zombieSprites: [
-        'suit-blue'
-        'suit-grey'
+        #'suit-blue'
+        #'suit-grey'
+        'newwalk'
     ]
     generateZombies: () ->
         @intensityIndex += 1

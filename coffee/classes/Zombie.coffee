@@ -26,37 +26,128 @@ class game.Zombie extends game.Sprite
                 start:
                     x: 0
                     y: 0
+                width: 57
+                height: 144
+                offset:
+                    x: -9
+                    y: 144+75
+            },
+            {
+                start:
+                    x: 57
+                    y: 0
+                width: 78
+                height: 144
+                offset:
+                    x: -7
+                    y: 144+75
+            },
+            {
+                start:
+                    x: 135
+                    y: 0
+                width: 72
+                height: 144
+                offset:
+                    x: -2
+                    y: 144+75
+            },
+            {
+                start:
+                    x: 207
+                    y: 0
                 width: 60
                 height: 144
+                offset:
+                    x: 0
+                    y: 144+75
             },
             {
                 start:
-                    x: 60
+                    x: 267
                     y: 0
-                width: 55
+                width: 42
                 height: 144
+                offset:
+                    x: -10
+                    y: 144+75
             },
             {
                 start:
-                    x: 114
+                    x: 309
                     y: 0
                 width: 60
                 height: 144
+                offset:
+                    x: -8
+                    y: 144+75
             },
             {
                 start:
-                    x: 174
+                    x: 369
                     y: 0
-                width: 66
+                width: 63
                 height: 144
+                offset:
+                    x: -9
+                    y: 144+75
             },
             {
                 start:
-                    x: 240
+                    x: 432
                     y: 0
-                width: 54
+                width: 48
                 height: 144
+                offset:
+                    x: -9
+                    y: 144+75
+            },
+            {
+                start:
+                    x: 480
+                    y: 0
+                width: 48
+                height: 144
+                offset:
+                    x: -11
+                    y: 144+75
             }
+            #
+            #{
+            #    start:
+            #        x: 0
+            #        y: 0
+            #    width: 60
+            #    height: 144
+            #},
+            #{
+            #    start:
+            #        x: 60
+            #        y: 0
+            #    width: 55
+            #    height: 144
+            #},
+            #{
+            #    start:
+            #        x: 114
+            #        y: 0
+            #    width: 60
+            #    height: 144
+            #},
+            #{
+            #    start:
+            #        x: 174
+            #        y: 0
+            #    width: 66
+            #    height: 144
+            #},
+            #{
+            #    start:
+            #        x: 240
+            #        y: 0
+            #    width: 54
+            #    height: 144
+            #}
         ]
         @dyingFrames = [
             {
