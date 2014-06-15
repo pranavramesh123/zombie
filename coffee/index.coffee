@@ -26,8 +26,7 @@ brick.onload = () ->
     bgctx.fillRect 0, 364, background.width, 36
 
 document.getElementById('start').onclick = () ->
-    $('#message').empty()
-    $('#start').addClass 'hidden'
+    $('#intro').addClass 'hidden'
     $('canvas.top').on 'mousedown', (e) -> reactToInput $(this), e.clientX, e.clientY
     $('canvas.top').on('touchstart', (e) ->
         evt = e.originalEvent

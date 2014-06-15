@@ -1,6 +1,6 @@
 @font-face
-    font-family: 'lunchds'
-    src: url('../fonts/lunchds.ttf')
+    font-family: 'dpcomic'
+    src: url('../fonts/dpcomic.ttf')
 
 @mixin prefix($property, $value)
     -moz-#{$property}: $value
@@ -15,18 +15,22 @@
     @include prefix(flex-wrap, wrap)
     @include prefix(justify-content, $justify)
     @include prefix(align-items, $align)
-    
-@keyframes bonus-flash
+
+@-webkit-keyframes pulsate
     0%
-        font-size: 175px
+        @include prefix(transform, translate3d(0, 0, 0))
+    50%
+        @include prefix(transform, translate3d(0, 0, 12rem))
     100%
-        font-size: 40px
-        
-.bonus-flash
-    animation: bonus-flash
-    animation-duration: .5s
-    animation-iteration-count: 1
-    animation-timing-function: linear
+        @include prefix(transform, translate3d(0, 0, 0))
+
+@keyframes pulsate
+    0%
+        @include prefix(transform, translate3d(0, 0, 0))
+    50%
+        @include prefix(transform, translate3d(0, 0, 12rem))
+    100%
+        @include prefix(transform, translate3d(0, 0, 0))
     
 
 *
@@ -47,7 +51,7 @@ a, button
     display: none !important
     
 #canvas-container
-    font-family: 'lunchds', monospace
+    font-family: 'dpcomic', monospace
     position: relative
     width: 800px
     height: 450px
@@ -77,11 +81,12 @@ a, button
         #other-container, #score-container
             @include flexbox(row, space-around)
             width: 30%
-            font-size: 1.3rem
+            font-size: 1.6rem
             text-align: center
         #score
             display: inline-block
             min-width: 4rem
+            font-size: 2rem
             text-align: right
             
     #info
@@ -90,33 +95,34 @@ a, button
         background-color: transparent
         top: 25px
         text-align: center
-        color: black
-        h3
-            font-size: 2rem
-        #message
-            font-size: 1.2rem
-            width: 70%
-            margin: 0 auto
-        #bonus
-            font-size: 40px
-            white-space: nowrap
-            overflow: hidden
-            margin: 0 auto
-        button
-            font-family: 'lunchds', monospace
-            display: block
-            margin: 15px auto
-            padding: 10px
-            color: #871a1a
-            font-size: 2.5rem
-            text-shadow: .1rem .1rem #343434
-            background-color: inherit
-            cursor: pointer
+        font-size: 3.5rem
+        text-shadow: .1rem .1rem #343434
+        color: #871a1a
+        #intro
+            p
+                width: 70%
+                margin: 0 auto
+                font-size: 2rem
+                color: #000
+                text-shadow: none
+            #start-container
+                -webkit-perspective: 50rem
+                perspective: 50rem
+                #start
+                    font-family: 'dpcomic', monospace
+                    display: block
+                    width: 25%
+                    margin: 15px auto
+                    font-size: 4rem
+                    background-color: inherit
+                    cursor: pointer
+                    -webkit-animation: pulsate 1s infinite linear
+                    -moz-animation: pulsate 1s infinite linear
+                    animation: pulsate 1s infinite linear
             
     canvas
         position: absolute
         background-color: transparent
-    .zombie-canvas
         &.left
             left: 0
         &.right

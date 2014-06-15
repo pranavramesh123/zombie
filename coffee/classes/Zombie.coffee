@@ -1,7 +1,7 @@
 class game.Zombie extends game.Sprite
     constructor: (startingSide, spritesheet, speed, startingLocation = 0) ->
         canvas = document.createElement 'canvas'
-        canvas.className = 'zombie-canvas ' + startingSide
+        canvas.className = 'zombie-canvas half-canvas ' + startingSide
         canvas.width = 400
         canvas.height = 450
         game.canvasContainer.insertBefore canvas, game.playerCanvas
@@ -215,6 +215,15 @@ class game.Zombie extends game.Sprite
         
     getShot: (doomedZombieIndex) ->
         game.updateScore 5
+        if game.player.magazine.shells < 1
+            game.bonusStats.killsOnOneShell++ 
+            if game.bonusStats.killsOnOneShell > 1
+                game.updateScore 5
+                game.displayMessage game.bonusStats.killsOnOneShell + ' kills on one shell! +10'
+        if @currentLocation >= game.Zombie.lungingPoint - 50
+            game.updateScore 5
+            game.displayMessage 'Close call! +10', 2000
+        game.updateScoreDisplay()
         if @currentLocation >= game.Zombie.lungingPoint
             game.topCanvas.left.clearRect 0, 0, game.playerCanvas.width/2, game.playerCanvas.height
             game.topCanvas.right.clearRect 0, 0, game.playerCanvas.width/2, game.playerCanvas.height

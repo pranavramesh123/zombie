@@ -13,18 +13,15 @@ window.game =
     score: 0
     intensityIndex: 0
     scoreDisplay: $('#score')
-    bonusDisplay: $('#bonus')
+    jqElements:
+        bonusContainer: $('#bonus-container')
+        bonusMessage: $('#bonus-message')
+        bonus: $('#bonus')
     bonusStats:
-        timeOnOneShell: 0
-    bonusDisplayTimeout: null
-    bonusAlert: (message) ->
-        if !@bonusDisplay.hasClass('hidden')
-            @bonusDisplay.addClass('hidden').removeClass('bonus-flash')
-            clearTimeout(@bonusDisplayTimeout) if @bonusDisplayTimeout isnt null
-        @bonusDisplay.html(message).removeClass('hidden').addClass('bonus-flash')
-        @bonusDisplayTimeout = setTimeout (() => @bonusDisplay.addClass('hidden').removeClass('bonus-flash')), 2000
+        killsOnOneShell: 0
     updateScore: (addition) ->
         @score += addition
+    updateScoreDisplay: () ->
         @scoreDisplay.html @score
     frameSpeedIndex: 80
     ammoContainer: $('#ammo-container')
@@ -36,7 +33,7 @@ window.game =
         #'suit-grey'
         'newerwalk'
     ]
-    shootingSpeed: 600 # 600
+    shootingSpeed: 550 # 600
     reloadSpeed: 350 # 375
     generateZombies: () ->
         return if @isGoing is false
@@ -54,10 +51,10 @@ window.game =
     start: () ->
         @isGoing = true
         @generateZombies()
+    messageElement: document.getElementById('game-message')
     displayMessage: (message, disappear = null) ->
-        messageElement = document.getElementById('message')
-        messageElement.innerHTML = message
-        if disappear? then setTimeout (() -> messageElement.innerHTML = ''), disappear
+        @messageElement.innerHTML = message
+        if disappear? then setTimeout (() => @messageElement.innerHTML = ''), disappear
         
 game.zombieDeathBed.right.translate game.playerCanvas.width/2, 0
 game.zombieDeathBed.right.scale -1, 1
