@@ -16,7 +16,7 @@ window.game =
     updateScore: (addition) ->
         @score += addition
         @scoreDisplay.html @score
-    frameSpeedIndex: 87
+    frameSpeedIndex: 80
     ammoContainer: $('#ammo-container')
     images:
         noShell: '/img/noshellicon.png'
@@ -26,16 +26,18 @@ window.game =
         #'suit-grey'
         'newwalk'
     ]
+    shootingSpeed: 600 # 600
+    reloadSpeed: 375 # 375
     generateZombies: () ->
         return if @isGoing is false
         @nextZombie = setTimeout () =>
             comeFrom = if Math.random() >= .5 then 'left' else 'right'
-            speed = Math.random() * 100 + 60
+            speed = Math.floor(Math.random() * 50) + 65
             if game.zombies['left'].length + game.zombies['right'].length < @maxNumberOfZombies
                 spriteIndex = Math.floor Math.random() * @zombieSprites.length
                 game.zombies[comeFrom].push new game.Zombie comeFrom, @zombieSprites[spriteIndex], speed, -75
             @generateZombies()
-        , 2000 - Math.random() * 900 + @intensityIndex
+        , 2000 - Math.random() * 1450 + @intensityIndex
     stop: () ->
         @isGoing = false
         clearTimeout(@nextZombie)

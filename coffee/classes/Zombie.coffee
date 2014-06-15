@@ -29,7 +29,7 @@ class game.Zombie extends game.Sprite
                 width: 57
                 height: 144
                 offset:
-                    x: -9
+                    x: 3
                     y: 144+75
             },
             {
@@ -39,7 +39,7 @@ class game.Zombie extends game.Sprite
                 width: 78
                 height: 144
                 offset:
-                    x: -7
+                    x: 9
                     y: 144+75
             },
             {
@@ -49,7 +49,7 @@ class game.Zombie extends game.Sprite
                 width: 72
                 height: 144
                 offset:
-                    x: -2
+                    x: 12
                     y: 144+75
             },
             {
@@ -59,7 +59,7 @@ class game.Zombie extends game.Sprite
                 width: 60
                 height: 144
                 offset:
-                    x: 0
+                    x: 15
                     y: 144+75
             },
             {
@@ -69,7 +69,7 @@ class game.Zombie extends game.Sprite
                 width: 42
                 height: 144
                 offset:
-                    x: -10
+                    x: 0
                     y: 144+75
             },
             {
@@ -79,7 +79,7 @@ class game.Zombie extends game.Sprite
                 width: 60
                 height: 144
                 offset:
-                    x: -8
+                    x: 6
                     y: 144+75
             },
             {
@@ -89,7 +89,7 @@ class game.Zombie extends game.Sprite
                 width: 63
                 height: 144
                 offset:
-                    x: -9
+                    x: 6
                     y: 144+75
             },
             {
@@ -99,7 +99,7 @@ class game.Zombie extends game.Sprite
                 width: 48
                 height: 144
                 offset:
-                    x: -9
+                    x: 6
                     y: 144+75
             },
             {
@@ -109,45 +109,9 @@ class game.Zombie extends game.Sprite
                 width: 48
                 height: 144
                 offset:
-                    x: -11
+                    x: -6
                     y: 144+75
             }
-            #
-            #{
-            #    start:
-            #        x: 0
-            #        y: 0
-            #    width: 60
-            #    height: 144
-            #},
-            #{
-            #    start:
-            #        x: 60
-            #        y: 0
-            #    width: 55
-            #    height: 144
-            #},
-            #{
-            #    start:
-            #        x: 114
-            #        y: 0
-            #    width: 60
-            #    height: 144
-            #},
-            #{
-            #    start:
-            #        x: 174
-            #        y: 0
-            #    width: 66
-            #    height: 144
-            #},
-            #{
-            #    start:
-            #        x: 240
-            #        y: 0
-            #    width: 54
-            #    height: 144
-            #}
         ]
         @dyingFrames = [
             {
@@ -216,9 +180,9 @@ class game.Zombie extends game.Sprite
                 height: 144
                 frontFrame:
                     start:
-                        x: 1383
+                        x: 1386
                         y: 117
-                    width: 45
+                    width: 42
                     height: 27
                     offset:
                         x: -10
@@ -233,9 +197,9 @@ class game.Zombie extends game.Sprite
                 height: 144
                 frontFrame:
                     start:
-                        x: 1383
+                        x: 1386
                         y: 117
-                    width: 45
+                    width: 42
                     height: 27
                     offset:
                         x: -10
@@ -250,16 +214,16 @@ class game.Zombie extends game.Sprite
                 height: 144
                 frontFrame:
                     start:
-                        x: 1383
-                        y: 117
-                    width: 45
-                    height: 27
+                        x: 1386
+                        y: 93
+                    width: 42
+                    height: 45
                     offset:
                         x: -10
-                        y: 153
+                        y: 177
             }
         ]
-    @lungingPoint: 340
+    @lungingPoint: 350
     @seeWhoGetsShot: (shotDirection) ->
         return false unless game.zombies[shotDirection].length > 0
         farthestLocation = 0
@@ -278,7 +242,9 @@ class game.Zombie extends game.Sprite
         
     getShot: (doomedZombieIndex) ->
         game.updateScore 5
-        @currentLocation -= 20
+        if @currentLocation >= game.Zombie.lungingPoint
+            game.topCanvas.left.clearRect 0, 0, game.playerCanvas.width/2, game.playerCanvas.height
+            game.topCanvas.right.clearRect 0, 0, game.playerCanvas.width/2, game.playerCanvas.height
         @nextAnimation = () =>
             this.cycleThroughFiniteFrames(
                 @dyingFrames,
@@ -297,7 +263,6 @@ class game.Zombie extends game.Sprite
             this.cycleThroughFiniteFrames(
                 @bitingFrames,
                 (() =>
-                    game.stop()
-                    game.displayMessage 'You have been bitten.'
+                    game.player.getBitten()
                 )
             )

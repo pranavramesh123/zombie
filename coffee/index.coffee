@@ -2,18 +2,28 @@ game.zombies =
     left: []
     right: []
         
-player = new game.Player game.playerCanvas, 'left'
+game.player = new game.Player game.playerCanvas, 'left'
 
 reactToInput = ($canvas, x, y) ->
-    return if player.isShooting or player.isReloading
-    if player.magazine.shells <= 0
+    return if game.player.isShooting or game.player.isReloading
+    if game.player.magazine.shells <= 0
         game.displayMessage 'Reload', 1000
         return
-    if $canvas.hasClass 'left' then player.shoot 'left' else player.shoot 'right'
+    if $canvas.hasClass 'left' then game.player.shoot 'left' else game.player.shoot 'right'
 
 tryToReload = () ->
-    return if player.isShooting or player.isReloading
-    if player.magazine.shells is player.magazine.capacity then game.displayMessage 'Already full', 1000 else player.reload()  
+    return if game.player.isShooting or game.player.isReloading
+    if game.player.magazine.shells is game.player.magazine.capacity then game.displayMessage 'Already full', 1000 else game.player.reload()
+        
+background = document.getElementById('background')
+bgctx = background.getContext '2d'
+
+brick = new Image()
+brick.src = '/img/brick.png'
+brick.onload = () ->
+    ptn = bgctx.createPattern brick, 'repeat'
+    bgctx.fillStyle = ptn
+    bgctx.fillRect 0, 364, background.width, 36
 
 document.getElementById('start').onclick = () ->
     $('#message').empty()

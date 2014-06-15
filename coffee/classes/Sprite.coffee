@@ -68,7 +68,7 @@ class game.Sprite
                         @currentLocation - position.offset.x, @canvas.height - position.offset.y, position.width, position.height
                     )
                     if position.frontFrame?
-                        game.topCanvas[@side].clearRect 0, 0, game.topCanvas.width, game.topCanvas.height
+                        game.topCanvas[@side].clearRect 0, 0, game.playerCanvas.width/2, game.playerCanvas.height
                         game.topCanvas[@side].drawImage(
                             @sprite, position.frontFrame.start.x, position.frontFrame.start.y, position.frontFrame.width, position.frontFrame.height,
                             @currentLocation - position.frontFrame.offset.x, @canvas.height - position.frontFrame.offset.y, position.frontFrame.width, position.frontFrame.height
@@ -76,7 +76,12 @@ class game.Sprite
                     this[action]() for action in position.actions if position.actions?
                     @lastFrame = time
                     @currentFrame++
-                this.cycleThroughFiniteFrames(frameList, callback, motion)
+                if @nextAnimation is null
+                    this.cycleThroughFiniteFrames(frameList, callback, motion)
+                else
+                    @currentFrame = 0
+                    @nextAnimation()
+                    @nextAnimation = null
         else
             @currentFrame = 0
             @animationTimer.stop()

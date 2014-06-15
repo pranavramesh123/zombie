@@ -2,7 +2,7 @@ class game.Player extends game.Sprite
     constructor: (canvas, startingSide) ->
         super canvas, startingSide
         sprite = new Image()
-        sprite.src = '../img/firstsheet.png'
+        sprite.src = '../img/player.png'
         @currentDirection = 'left'
         @currentLocation = @canvas.width/2
         sprite.onload = () =>
@@ -10,7 +10,6 @@ class game.Player extends game.Sprite
             @ctx.drawImage sprite, 129, 0, 75, 126, canvas.width/2 - 51, canvas.height - 201, 75, 126
         @isShooting = false
         @isReloading = false
-        @nextAnimation = null
         @shootingFrames = [
             {
                 minWaitTime: 0
@@ -24,7 +23,7 @@ class game.Player extends game.Sprite
                     y: 201
             },
             {
-                minWaitTime: 100
+                minWaitTime: game.shootingSpeed/5
                 actions: ['fire']
                 start:
                     x: 411
@@ -36,7 +35,7 @@ class game.Player extends game.Sprite
                     y: 201
             },
             {
-                minWaitTime: 100
+                minWaitTime: game.shootingSpeed/5
                 start:
                     x: 42
                     y: 0
@@ -47,7 +46,7 @@ class game.Player extends game.Sprite
                     y: 201
             },
             {
-                minWaitTime: 200
+                minWaitTime: game.shootingSpeed/5
                 start:
                     x: 129
                     y: 0
@@ -58,7 +57,7 @@ class game.Player extends game.Sprite
                     y: 201
             },
             {
-                minWaitTime: 75
+                minWaitTime: game.shootingSpeed/5
                 start:
                     x: 204
                     y: 0
@@ -69,7 +68,7 @@ class game.Player extends game.Sprite
                     y: 201
             },
             {
-                minWaitTime: 125
+                minWaitTime: game.shootingSpeed/5
                 start:
                     x: 129
                     y: 0
@@ -93,7 +92,7 @@ class game.Player extends game.Sprite
                     y: 201
             },
             {
-                minWaitTime: 125
+                minWaitTime: game.reloadSpeed/3
                 start:
                     x: 327
                     y: 0
@@ -104,7 +103,7 @@ class game.Player extends game.Sprite
                     y: 201
             },
             {
-                minWaitTime: 125
+                minWaitTime: game.reloadSpeed/3
                 actions: ['loadShell']
                 start:
                     x: 372
@@ -116,7 +115,7 @@ class game.Player extends game.Sprite
                     y: 201
             },
             {
-                minWaitTime: 125
+                minWaitTime: game.reloadSpeed/3
                 start:
                     x: 129
                     y: 0
@@ -126,6 +125,19 @@ class game.Player extends game.Sprite
                     x: 51
                     y: 201
             }
+        ]
+        @bittenFrames = [
+            {
+                minWaitTime: 0
+                start:
+                    x: 600
+                    y: 0
+                width: 84
+                height: 126
+                offset:
+                    x: 45
+                    y: 201
+            }    
         ]
         @currentFrame = 0
         @magazine =
@@ -152,3 +164,12 @@ class game.Player extends game.Sprite
     reload: () ->
         @isReloading = true
         this.cycleThroughFiniteFrames @reloadingFrames, () => @isReloading = false
+    @bittenCallback: () ->
+        game.stop()
+        game.displayMessage 'You have been bitten.'
+    getBitten: () ->
+        if @animationTimer.isRunning()
+            @nextAnimation = () =>
+                this.cycleThroughFiniteFrames @bittenFrames, game.Player.bittenCallback
+        else
+            this.cycleThroughFiniteFrames @bittenFrames, game.Player.bittenCallback
