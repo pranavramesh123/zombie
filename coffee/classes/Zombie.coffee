@@ -26,100 +26,73 @@ class game.Zombie extends game.Sprite
                 start:
                     x: 0
                     y: 0
-                width: 57
-                height: 144
-                offset:
-                    x: 3
-                    y: 144+75
-            },
-            {
-                start:
-                    x: 57
-                    y: 0
-                width: 78
-                height: 144
-                offset:
-                    x: 9
-                    y: 144+75
-            },
-            {
-                start:
-                    x: 135
-                    y: 0
                 width: 72
                 height: 144
-                offset:
-                    x: 12
-                    y: 144+75
             },
             {
                 start:
-                    x: 207
+                    x: 73
                     y: 0
-                width: 60
+                width: 86
                 height: 144
-                offset:
-                    x: 15
-                    y: 144+75
             },
             {
                 start:
-                    x: 267
+                    x: 160
                     y: 0
-                width: 42
+                width: 77
                 height: 144
-                offset:
-                    x: 0
-                    y: 144+75
             },
             {
                 start:
-                    x: 309
+                    x: 238
                     y: 0
-                width: 60
+                width: 62
                 height: 144
-                offset:
-                    x: 6
-                    y: 144+75
             },
             {
                 start:
-                    x: 369
+                    x: 301
                     y: 0
-                width: 63
+                width: 59
                 height: 144
-                offset:
-                    x: 6
-                    y: 144+75
             },
             {
                 start:
-                    x: 432
+                    x: 361
                     y: 0
-                width: 48
+                width: 71
                 height: 144
-                offset:
-                    x: 6
-                    y: 144+75
             },
             {
                 start:
-                    x: 480
+                    x: 433
                     y: 0
-                width: 48
+                width: 74
                 height: 144
-                offset:
-                    x: -6
-                    y: 144+75
+            },
+            {
+                start:
+                    x: 508
+                    y: 0
+                width: 59
+                height: 144
+            },
+            {
+                start:
+                    x: 568
+                    y: 0
+                width: 65
+                height: 144
             }
         ]
         @dyingFrames = [
             {
                 minWaitTime: 0
                 start:
-                    x: 528
+                    x: 634
                     y: 0
-                width: 90
+                width: 92
                 height: 144
                 offset:
                     x: 50
@@ -128,9 +101,9 @@ class game.Zombie extends game.Sprite
             {
                 minWaitTime: 60
                 start:
-                    x: 618
+                    x: 727
                     y: 0
-                width: 84
+                width: 86
                 height: 144
                 offset:
                     x: 100
@@ -139,9 +112,9 @@ class game.Zombie extends game.Sprite
             {
                 minWaitTime: 60
                 start:
-                    x: 702
+                    x: 814
                     y: 0
-                width: 135
+                width: 137
                 height: 144
                 offset:
                     x: 150
@@ -150,9 +123,9 @@ class game.Zombie extends game.Sprite
             {
                 minWaitTime: 60
                 start:
-                    x: 837
+                    x: 952
                     y: 0
-                width: 162
+                width: 164
                 height: 144
                 offset:
                     x: 200
@@ -161,9 +134,9 @@ class game.Zombie extends game.Sprite
             {
                 minWaitTime: 60
                 start:
-                    x: 999
+                    x: 1117
                     y: 0
-                width: 162
+                width: 164
                 height: 144
                 offset:
                     x: 200
@@ -174,13 +147,13 @@ class game.Zombie extends game.Sprite
             {
                 minWaitTime: 0
                 start:
-                    x: 1164
+                    x: 1282
                     y: 0
-                width: 84
+                width: 86
                 height: 144
                 frontFrame:
                     start:
-                        x: 1386
+                        x: 1509
                         y: 117
                     width: 42
                     height: 27
@@ -191,13 +164,13 @@ class game.Zombie extends game.Sprite
             {
                 minWaitTime: 75
                 start:
-                    x: 1251
+                    x: 1369
                     y: 0
-                width: 63
+                width: 65
                 height: 144
                 frontFrame:
                     start:
-                        x: 1386
+                        x: 1509
                         y: 117
                     width: 42
                     height: 27
@@ -208,13 +181,13 @@ class game.Zombie extends game.Sprite
             {
                 minWaitTime: 75
                 start:
-                    x: 1317
+                    x: 1435
                     y: 0
-                width: 60
+                width: 62
                 height: 144
                 frontFrame:
                     start:
-                        x: 1386
+                        x: 1509
                         y: 93
                     width: 42
                     height: 45
@@ -223,7 +196,7 @@ class game.Zombie extends game.Sprite
                         y: 177
             }
         ]
-    @lungingPoint: 350
+    @lungingPoint: 346
     @seeWhoGetsShot: (shotDirection) ->
         return false unless game.zombies[shotDirection].length > 0
         farthestLocation = 0

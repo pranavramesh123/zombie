@@ -135,7 +135,7 @@ class game.Player extends game.Sprite
                 width: 84
                 height: 126
                 offset:
-                    x: 45
+                    x: 39
                     y: 201
             }    
         ]

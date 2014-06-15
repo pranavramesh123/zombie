@@ -13,6 +13,16 @@ window.game =
     score: 0
     intensityIndex: 0
     scoreDisplay: $('#score')
+    bonusDisplay: $('#bonus')
+    bonusStats:
+        timeOnOneShell: 0
+    bonusDisplayTimeout: null
+    bonusAlert: (message) ->
+        if !@bonusDisplay.hasClass('hidden')
+            @bonusDisplay.addClass('hidden').removeClass('bonus-flash')
+            clearTimeout(@bonusDisplayTimeout) if @bonusDisplayTimeout isnt null
+        @bonusDisplay.html(message).removeClass('hidden').addClass('bonus-flash')
+        @bonusDisplayTimeout = setTimeout (() => @bonusDisplay.addClass('hidden').removeClass('bonus-flash')), 2000
     updateScore: (addition) ->
         @score += addition
         @scoreDisplay.html @score
@@ -24,15 +34,15 @@ window.game =
     zombieSprites: [
         #'suit-blue'
         #'suit-grey'
-        'newwalk'
+        'newerwalk'
     ]
     shootingSpeed: 600 # 600
-    reloadSpeed: 375 # 375
+    reloadSpeed: 350 # 375
     generateZombies: () ->
         return if @isGoing is false
         @nextZombie = setTimeout () =>
             comeFrom = if Math.random() >= .5 then 'left' else 'right'
-            speed = Math.floor(Math.random() * 50) + 65
+            speed = Math.floor(Math.random() * 50) + 70
             if game.zombies['left'].length + game.zombies['right'].length < @maxNumberOfZombies
                 spriteIndex = Math.floor Math.random() * @zombieSprites.length
                 game.zombies[comeFrom].push new game.Zombie comeFrom, @zombieSprites[spriteIndex], speed, -75
