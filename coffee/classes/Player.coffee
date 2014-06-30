@@ -10,6 +10,8 @@ class game.Player extends game.Sprite
             @ctx.drawImage sprite, 129, 0, 75, 126, canvas.width/2 - 51, canvas.height - 201, 75, 126
         @isShooting = false
         @isReloading = false
+        @bonusStats =
+            killsOnOneShell: 0
         @shootingFrames = [
             {
                 minWaitTime: 0

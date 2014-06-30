@@ -17,8 +17,6 @@ window.game =
         bonusContainer: $('#bonus-container')
         bonusMessage: $('#bonus-message')
         bonus: $('#bonus')
-    bonusStats:
-        killsOnOneShell: 0
     updateScore: (addition) ->
         @score += addition
     updateScoreDisplay: () ->
@@ -52,9 +50,16 @@ window.game =
         #@messageElement.className = if pulsating is true then 'pulsating-fast' else ''
         @messageElement.innerHTML = message
         if disappear? then setTimeout (() => @messageElement.innerHTML = ''), disappear
+    scorekeeper: new Worker '/js/compiled/workers/scorekeeper.js'
 
 game.zombieDeathBed.right.translate game.playerCanvas.width/2, 0
 game.zombieDeathBed.right.scale -1, 1
 
 game.topCanvas.right.translate game.playerCanvas.width/2, 0
 game.topCanvas.right.scale -1, 1
+
+game.scorekeeper.onmessage = (event) ->
+    game.updateScore event.data.scoreIncrement
+    game.updateScoreDisplay()
+    game.displayMessage(event.data.scoreMessage, 2000, true) if event.data.scoreMessage?
+    game.player.bonusStats = event.data.bonusStats

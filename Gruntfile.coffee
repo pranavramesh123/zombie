@@ -3,6 +3,7 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks('grunt-contrib-watch')
     grunt.loadNpmTasks('grunt-contrib-sass')
     grunt.loadNpmTasks('grunt-contrib-concat')
+    grunt.loadNpmTasks('grunt-contrib-copy')
     grunt.initConfig
         pkg: grunt.file.readJSON('package.json')
         watch:
@@ -15,6 +16,9 @@ module.exports = (grunt) ->
             sass:
                 files: './sass/*.sass'
                 tasks: ['sass']
+            copy:
+                files: './coffee/workers/**/*.coffee'
+                tasks: ['copy:workers']
         coffee:
             compile:
                 expand: true
@@ -22,6 +26,12 @@ module.exports = (grunt) ->
                 src: './coffee/**/*.coffee'
                 dest: './compiled-js/'
                 ext: '.js'
+        copy:
+            workers:
+                expand: true
+                flatten: true
+                src: './compiled-js/coffee/workers/**/*.js'
+                dest: './public/js/compiled/workers/'
         sass:
             dist:
                 options:

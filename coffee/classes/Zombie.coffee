@@ -11,20 +11,20 @@ class game.Zombie extends game.Sprite
         @speed = speed
         @currentLocation = startingLocation
         @side = startingSide
+        @lungingPoint = 346
         sprite.onload = () =>
             @sprite = sprite
             this.cycleThroughInfiniteFrames(
                 @walkingFrames,
                 (() =>
-                    this.bite() if @currentLocation >= game.Zombie.lungingPoint
+                    this.bite() if @currentLocation >= @lungingPoint
                 ),
-                {speed: @speed, stop: game.Zombie.lungingPoint}
+                {speed: @speed, stop: @lungingPoint}
                 
             )
         @walkingFrames = spritesheet.walkingFrames
         @dyingFrames = spritesheet.dyingFrames
         @bitingFrames = spritesheet.bitingFrames
-    @lungingPoint: 346
     @seeWhoGetsShot: (shotDirection) ->
         return false unless game.zombies[shotDirection].length > 0
         farthestLocation = 0
@@ -42,17 +42,11 @@ class game.Zombie extends game.Sprite
             this.getShot()
         
     getShot: (doomedZombieIndex) ->
-        game.updateScore 5
-        if game.player.magazine.shells < 1
-            game.bonusStats.killsOnOneShell++ 
-            if game.bonusStats.killsOnOneShell > 1
-                game.updateScore 5
-                game.displayMessage game.bonusStats.killsOnOneShell + ' kills on one shell! +10'
-        if @currentLocation >= game.Zombie.lungingPoint - 50
-            game.updateScore 5
-            game.displayMessage 'Close call! +10', 2000, true
-        game.updateScoreDisplay()
-        if @currentLocation >= game.Zombie.lungingPoint
+        game.scorekeeper.postMessage(
+            player: JSON.stringify game.player
+            zombie: JSON.stringify this
+        )
+        if @currentLocation >= @lungingPoint
             game.topCanvas.left.clearRect 0, 0, game.playerCanvas.width/2, game.playerCanvas.height
             game.topCanvas.right.clearRect 0, 0, game.playerCanvas.width/2, game.playerCanvas.height
         @nextAnimation = () =>
