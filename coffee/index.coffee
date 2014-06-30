@@ -18,23 +18,38 @@ tryToReload = () ->
 background = document.getElementById('background')
 bgctx = background.getContext '2d'
 
-brick = new Image()
-brick.src = '/img/brick.png'
-brick.onload = () ->
-    ptn = bgctx.createPattern brick, 'repeat'
-    bgctx.fillStyle = ptn
-    bgctx.fillRect 0, 364, background.width, 36
+#brick = new Image()
+#brick.src = '/img/brick.png'
+#brick.onload = () ->
+#    ptn = bgctx.createPattern brick, 'repeat'
+#    bgctx.fillStyle = ptn
+#    bgctx.fillRect 0, 364, background.width, 36
 
 document.getElementById('start').onclick = () ->
+    actionInProgress = false 
+    topCanvas = $('canvas.top')
     $('#intro').addClass 'hidden'
-    $('canvas.top').on 'mousedown', (e) -> reactToInput $(this), e.clientX, e.clientY
-    $('canvas.top').on('touchstart', (e) ->
+    topCanvas.on('mousedown', (e) ->
+        return if actionInProgress is true
+        actionInProgress = true
+        reactToInput $(this), e.clientX, e.clientY
+    )
+    topCanvas.on('touchstart', (e) ->
+        return if actionInProgress is true
+        actionInProgress = true
         evt = e.originalEvent
         reactToInput $(this), evt.touches[0].clientX, evt.touches[0].clientY
     )
-    game.ammoContainer.on 'mousedown', (e) -> tryToReload()
-    game.ammoContainer.on('touchstart', (e) ->
-        evt = e.originalEvent
+    topCanvas.on 'mouseup touchend', (e) -> actionInProgress = false
+    game.reloadButton.on('mousedown', (e) ->
+        return if actionInProgress is true
+        actionInProgress = true
         tryToReload()
     )
+    game.reloadButton.on('touchstart', (e) ->
+        return if actionInProgress is true
+        actionInProgress = true
+        tryToReload()
+    )
+    game.reloadButton.on 'mouseup touchend', (e) -> actionInProgress = false
     game.start()

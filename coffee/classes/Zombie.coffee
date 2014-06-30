@@ -43,8 +43,17 @@ class game.Zombie extends game.Sprite
         
     getShot: (doomedZombieIndex) ->
         game.scorekeeper.postMessage(
-            player: JSON.stringify game.player
-            zombie: JSON.stringify this
+            player: JSON.stringify({
+                bonusStats: game.player.bonusStats
+                currentDirection: game.player.currentDirection
+                magazine: game.player.magazine
+            })
+            zombie: JSON.stringify({
+                currentLocation: @currentLocation
+                lungingPoint: @lungingPoint
+                side: @side
+                speed: @speed
+            })
         )
         if @currentLocation >= @lungingPoint
             game.topCanvas.left.clearRect 0, 0, game.playerCanvas.width/2, game.playerCanvas.height

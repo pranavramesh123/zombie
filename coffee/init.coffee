@@ -23,6 +23,7 @@ window.game =
         @scoreDisplay.html @score
     frameSpeedIndex: 80
     ammoContainer: $('#ammo-container')
+    reloadButton: $('#reload')
     images:
         noShell: '/img/noshellicon.png'
         shell: '/img/shellicon.png'
@@ -47,7 +48,7 @@ window.game =
         @generateZombies()
     messageElement: document.getElementById('game-message')
     displayMessage: (message, disappear = null, pulsating = false) ->
-        #@messageElement.className = if pulsating is true then 'pulsating-fast' else ''
+        @messageElement.className = if pulsating is true then 'pulsating-fast' else ''
         @messageElement.innerHTML = message
         if disappear? then setTimeout (() => @messageElement.innerHTML = ''), disappear
     scorekeeper: new Worker '/js/compiled/workers/scorekeeper.js'

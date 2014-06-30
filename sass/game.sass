@@ -64,43 +64,57 @@ a, button
     height: 450px
     margin: 0 auto
     background-color: #EAEAEA
-    #hud
+    .hud
         position: absolute
-        bottom: 0
-        width: 100%
         background-color: #292929
-        color: #FFF
-        padding: 6px
-        height: 15%
+        color: #EAEAEA
         font-size: .8rem
-        overflow: hidden
-        @include flexbox
-        #other-container, #ammo-container, #score-container
-            color: #EAEAEA
-        #ammo-container, #ammo-container img
-            @include prefix(user-select, none)
-        #ammo-container
-            @include flexbox
+        @include flexbox(row, center)
+        &#hud-bottom
+            width: 100%
+            bottom: 0
+            height: 15%
+            &>div
+                @include flexbox(row, space-around)
+                width: 33%
+                font-size: 1.6rem
+                text-align: center
+                #score
+                    display: inline-block
+                    min-width: 4rem
+                    font-size: 2rem
+                    text-align: right
+                &#reload
+                    align-self: stretch
+                    border: .2rem solid #545454
+                    background-color: #888
+                    font-size: 3.1rem
+                    text-align: center
+                    cursor: pointer
+                    text-shadow: .1rem .1rem #343434
+                    @include prefix(user-select, none)
+                    
+        &#hud-top
+            top: 0
+            height: 10%
             width: 40%
-            height: 100%
-            margin: 0 auto
-            cursor: pointer
-        #other-container, #score-container
-            @include flexbox(row, space-around)
-            width: 30%
-            font-size: 1.6rem
-            text-align: center
-        #score
-            display: inline-block
-            min-width: 4rem
-            font-size: 2rem
-            text-align: right
-            
+            left: 30%
+            padding: 6px 15px
+            background-color: transparent
+            #ammo-container
+                @include flexbox
+                width: 100%
+                height: 100%
+                margin: 0 auto
+                @include prefix(user-select, none)
+                img
+                    @include prefix(user-select, none)
+
     #info
         position: absolute
         width: 100%
         background-color: transparent
-        top: 25px
+        top: 15%
         text-align: center
         font-size: 3.5rem
         text-shadow: .1rem .1rem #343434
@@ -118,7 +132,6 @@ a, button
                 -webkit-perspective: 50rem
                 perspective: 50rem
                 #start
-                    font-family: 'dpcomic', monospace
                     display: block
                     width: 25%
                     margin: 15px auto
