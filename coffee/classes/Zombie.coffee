@@ -3,7 +3,7 @@ class game.Zombie extends game.Sprite
         canvas = document.createElement 'canvas'
         canvas.className = 'zombie-canvas half-canvas ' + startingSide
         canvas.width = 400
-        canvas.height = 450
+        canvas.height = 415
         game.canvasContainer.insertBefore canvas, game.playerCanvas
         super canvas, startingSide
         sprite = new Image()

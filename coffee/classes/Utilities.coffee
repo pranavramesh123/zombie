@@ -8,3 +8,6 @@ class game.Utilities
         canvasCoords =
             'x': mouseX - box.left
             'y': mouseY - box.top
+            
+    @randomIntBetween: (min, max) ->
+        Math.floor(Math.random() * (max - min + 1) + min)

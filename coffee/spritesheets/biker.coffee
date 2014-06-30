@@ -75,7 +75,7 @@ game.zombieSprites.push(
             height: 144
             offset:
                 x: 50
-                y: 144+75
+                y: 144 + game.baseVerticalOffset
         },
         {
             minWaitTime: 60
@@ -86,7 +86,7 @@ game.zombieSprites.push(
             height: 144
             offset:
                 x: 100
-                y: 144+75
+                y: 144 + game.baseVerticalOffset
         },
         {
             minWaitTime: 60
@@ -97,7 +97,7 @@ game.zombieSprites.push(
             height: 144
             offset:
                 x: 150
-                y: 144+75
+                y: 144 + game.baseVerticalOffset
         },
         {
             minWaitTime: 60
@@ -108,7 +108,7 @@ game.zombieSprites.push(
             height: 144
             offset:
                 x: 200
-                y: 144+75
+                y: 144 + game.baseVerticalOffset
         },
         {
             minWaitTime: 60
@@ -119,7 +119,7 @@ game.zombieSprites.push(
             height: 144
             offset:
                 x: 200
-                y: 144+75
+                y: 144 + game.baseVerticalOffset
         }
     ]
     bitingFrames: [
@@ -138,7 +138,7 @@ game.zombieSprites.push(
                 height: 39
                 offset:
                     x: -5
-                    y: 183
+                    y: 108 + game.baseVerticalOffset
         },
         {
             minWaitTime: 75
@@ -155,7 +155,7 @@ game.zombieSprites.push(
                 height: 39
                 offset:
                     x: -10
-                    y: 181
+                    y: 106 + game.baseVerticalOffset
         },
         {
             minWaitTime: 75
@@ -172,7 +172,7 @@ game.zombieSprites.push(
                 height: 39
                 offset:
                     x: -15
-                    y: 178
+                    y: 103 + game.baseVerticalOffset
         }
     ]
 )

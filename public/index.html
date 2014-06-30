@@ -2,6 +2,8 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=800, user-scalable=no">
+        <meta name="mobile-web-app-capable" content="yes">
         <title>
             Game
         </title>
@@ -9,13 +11,16 @@
     </head>
     <body>
         <div id="canvas-container">
-            <canvas id="background" width="800" height="450"></canvas>
-            <canvas id="zombie-deathbed-left" class="half-canvas zombie-canvas left" width="400" height="450"></canvas>
-            <canvas id="zombie-deathbed-right" class="half-canvas zombie-canvas right" width="400" height="450"></canvas>
-            <canvas id="player-canvas" width="800" height="450"></canvas>
-            <canvas id="top-canvas-left" width="400" class="half-canvas left top" height="450"></canvas>
-            <canvas id="top-canvas-right" width="400" class="half-canvas right top" height="450"></canvas>
-            <div id="hud-top" class="hud">
+            <canvas id="background" width="800" height="415"></canvas>
+            <canvas id="zombie-deathbed-left" class="half-canvas zombie-canvas left" width="400" height="415"></canvas>
+            <canvas id="zombie-deathbed-right" class="half-canvas zombie-canvas right" width="400" height="415"></canvas>
+            <canvas id="player-canvas" width="800" height="415"></canvas>
+            <canvas id="top-canvas-left" width="400" class="half-canvas left top" height="415"></canvas>
+            <canvas id="top-canvas-right" width="400" class="half-canvas right top" height="415"></canvas>
+            <div id="hud">
+                <div id="other-container">
+                    <p>There is stuff here.</p>
+                </div>
                 <div id="ammo-container">
                     <img src="/img/shellicon.png">
                     <img src="/img/shellicon.png">
@@ -23,14 +28,6 @@
                     <img src="/img/shellicon.png">
                     <img src="/img/shellicon.png">
                     <img src="/img/shellicon.png">
-                </div>
-            </div>
-            <div id="hud-bottom" class="hud">
-                <div id="other-container">
-                    <p>There is stuff here.</p>
-                </div>
-                <div id="reload">
-                    Reload
                 </div>
                 <div id="score-container">
                     <p>Score: <span id="score">0</span></p>
@@ -47,7 +44,6 @@
                         </div>
                     </div>
                 </div>
-                <div id="game-message"></div>
             </div>
         </div>
         <script type="text/javascript" src="/js/jquery-2.1.0.min.js"></script>

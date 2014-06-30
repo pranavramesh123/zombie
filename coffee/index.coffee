@@ -7,8 +7,10 @@ game.player = new game.Player game.playerCanvas, 'left'
 reactToInput = ($canvas, x, y) ->
     return if game.player.isShooting or game.player.isReloading
     if game.player.magazine.shells <= 0
-        game.displayMessage 'Reload', 1000
-        return
+        return tryToReload()
+    inputCoords = game.Utilities.getCanvasCoords($canvas.get(0), x, y)
+    reloadRange = 60
+    return tryToReload() if ($canvas.hasClass('left') and inputCoords.x > 400 - (reloadRange/2)) or ($canvas.hasClass('right') and inputCoords.x < reloadRange/2)
     if $canvas.hasClass 'left' then game.player.shoot 'left' else game.player.shoot 'right'
 
 tryToReload = () ->
@@ -25,31 +27,20 @@ bgctx = background.getContext '2d'
 #    bgctx.fillStyle = ptn
 #    bgctx.fillRect 0, 364, background.width, 36
 
-document.getElementById('start').onclick = () ->
-    actionInProgress = false 
-    topCanvas = $('canvas.top')
+$('#start').click () ->
     $('#intro').addClass 'hidden'
-    topCanvas.on('mousedown', (e) ->
-        return if actionInProgress is true
-        actionInProgress = true
-        reactToInput $(this), e.clientX, e.clientY
-    )
+    topCanvas = $('canvas.top')
+    document.onkeydown = (e) ->
+        switch e.keyCode
+            when game.controlKeys.shootLeft then reactToInput $('#top-canvas-left')
+            when game.controlKeys.shootRight  then reactToInput $('#top-canvas-right')
+            when game.controlKeys.reload  then tryToReload()
     topCanvas.on('touchstart', (e) ->
-        return if actionInProgress is true
-        actionInProgress = true
         evt = e.originalEvent
         reactToInput $(this), evt.touches[0].clientX, evt.touches[0].clientY
     )
-    topCanvas.on 'mouseup touchend', (e) -> actionInProgress = false
-    game.reloadButton.on('mousedown', (e) ->
-        return if actionInProgress is true
-        actionInProgress = true
-        tryToReload()
-    )
-    game.reloadButton.on('touchstart', (e) ->
-        return if actionInProgress is true
-        actionInProgress = true
-        tryToReload()
-    )
-    game.reloadButton.on 'mouseup touchend', (e) -> actionInProgress = false
     game.start()
+
+document.onkeydown = (e) ->
+    console.log e.keyCode
+    $('#start').click() if e.keyCode is 13

@@ -26,7 +26,7 @@ class game.Sprite
             if time - @lastFrame >= minimumFrameTime or @lastFrame is null
                 this.updateLocation time, motion if @lastFrame? and motion?
                 position = frameList[@currentFrame]
-                position.offset = {x: 0, y: position.height + 75} unless position.offset?
+                position.offset = {x: 0, y: position.height + game.baseVerticalOffset} unless position.offset?
                 @ctx.clearRect 0, 0, @canvas.width, @canvas.height
                 @ctx.drawImage(
                     @sprite, position.start.x, position.start.y, position.width, position.height,
@@ -60,7 +60,7 @@ class game.Sprite
             game.Utilities.getFrame () =>
                 if frameList[@currentFrame].minWaitTime <= time - @lastFrame
                     position = frameList[@currentFrame]
-                    position.offset = {x: 0, y: position.height + 75} unless position.offset?
+                    position.offset = {x: 0, y: position.height + game.baseVerticalOffset} unless position.offset?
                     @ctx.clearRect 0, 0, @canvas.width, @canvas.height
                     this.updateLocation time, motion if @lastFrame? and motion?
                     @ctx.drawImage(

@@ -24,34 +24,44 @@ window.game =
     frameSpeedIndex: 80
     ammoContainer: $('#ammo-container')
     reloadButton: $('#reload')
+    controlKeys:
+        shootLeft: 74
+        shootRight: 76
+        reload: 75
     images:
         noShell: '/img/noshellicon.png'
         shell: '/img/shellicon.png'
     zombieSprites: []
-    shootingSpeed: 550 # original was 600
-    reloadSpeed: 350 # original was 375
+    shootingSpeed: 500 # original was 600
+    reloadSpeed: 300 # original was 375
     generateZombies: () ->
         return if @isGoing is false
         @nextZombie = setTimeout () =>
             comeFrom = if Math.random() >= .5 then 'left' else 'right'
-            speed = Math.floor(Math.random() * 50) + 70
+            speed = game.Utilities.randomIntBetween 90, 110
             if game.zombies['left'].length + game.zombies['right'].length < @maxNumberOfZombies
                 spriteIndex = Math.floor Math.random() * @zombieSprites.length
                 game.zombies[comeFrom].push new game.Zombie comeFrom, @zombieSprites[spriteIndex], speed, -75
             @generateZombies()
-        , 2000 - Math.random() * 1450 + @intensityIndex
+        , 2000 - game.Utilities.randomIntBetween(600, 1400)
     stop: () ->
         @isGoing = false
         clearTimeout(@nextZombie)
     start: () ->
         @isGoing = true
         @generateZombies()
-    messageElement: document.getElementById('game-message')
+    messageTimeout: null
     displayMessage: (message, disappear = null, pulsating = false) ->
-        @messageElement.className = if pulsating is true then 'pulsating-fast' else ''
-        @messageElement.innerHTML = message
-        if disappear? then setTimeout (() => @messageElement.innerHTML = ''), disappear
+        clearTimeout @messageTimeout
+        $('#current-message').remove()
+        newMessageElement = document.createElement 'div'
+        newMessageElement.className = 'zooming'
+        newMessageElement.id = 'current-message'
+        newMessageElement.innerHTML = message
+        document.getElementById('info').appendChild(newMessageElement)
+        if disappear? then @messageTimeout = setTimeout (() => $('#current-message').remove()), disappear
     scorekeeper: new Worker '/js/compiled/workers/scorekeeper.js'
+    baseVerticalOffset: 5
 
 game.zombieDeathBed.right.translate game.playerCanvas.width/2, 0
 game.zombieDeathBed.right.scale -1, 1

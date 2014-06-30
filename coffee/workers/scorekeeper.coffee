@@ -1,5 +1,6 @@
 self.onmessage = (event) ->
     scoreIncrement = 5
+    scoreMessage = 'OH YEAH! +5'
     player = JSON.parse event.data.player
     zombie = JSON.parse event.data.zombie
     if player.magazine.shells < 1
