@@ -31,8 +31,15 @@
         @include prefix(transform, translate3d(0, 0, 12rem))
     100%
         @include prefix(transform, translate3d(0, 0, 0))
+@mixin pulsating($time: 1s)
+    -webkit-animation: pulsate $time infinite linear
+    -moz-animation: pulsate $time infinite linear
+    animation: pulsate $time infinite linear
     
-
+.pulsating-slow
+    @include pulsating
+.pulsating-fast
+    @include pulsating(.4s)
 *
     margin: 0
     padding: 0
@@ -98,6 +105,8 @@ a, button
         font-size: 3.5rem
         text-shadow: .1rem .1rem #343434
         color: #871a1a
+        -webkit-perspective: 50rem
+        perspective: 50rem
         #intro
             p
                 width: 70%
@@ -116,9 +125,6 @@ a, button
                     font-size: 4rem
                     background-color: inherit
                     cursor: pointer
-                    -webkit-animation: pulsate 1s infinite linear
-                    -moz-animation: pulsate 1s infinite linear
-                    animation: pulsate 1s infinite linear
             
     canvas
         position: absolute

@@ -28,13 +28,9 @@ window.game =
     images:
         noShell: '/img/noshellicon.png'
         shell: '/img/shellicon.png'
-    zombieSprites: [
-        #'suit-blue'
-        #'suit-grey'
-        'newerwalk'
-    ]
-    shootingSpeed: 550 # 600
-    reloadSpeed: 350 # 375
+    zombieSprites: []
+    shootingSpeed: 550 # original was 600
+    reloadSpeed: 350 # original was 375
     generateZombies: () ->
         return if @isGoing is false
         @nextZombie = setTimeout () =>
@@ -52,10 +48,11 @@ window.game =
         @isGoing = true
         @generateZombies()
     messageElement: document.getElementById('game-message')
-    displayMessage: (message, disappear = null) ->
+    displayMessage: (message, disappear = null, pulsating = false) ->
+        #@messageElement.className = if pulsating is true then 'pulsating-fast' else ''
         @messageElement.innerHTML = message
         if disappear? then setTimeout (() => @messageElement.innerHTML = ''), disappear
-        
+
 game.zombieDeathBed.right.translate game.playerCanvas.width/2, 0
 game.zombieDeathBed.right.scale -1, 1
 
