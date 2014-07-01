@@ -72,5 +72,5 @@ game.topCanvas.right.scale -1, 1
 game.scorekeeper.onmessage = (event) ->
     game.updateScore event.data.scoreIncrement
     game.updateScoreDisplay()
-    game.displayMessage(event.data.scoreMessage, 2000, true) if event.data.scoreMessage?
+    game.displayMessage(event.data.scoreMessages.join('<br>'), 2000, true) if event.data.scoreMessages?
     game.player.bonusStats = event.data.bonusStats

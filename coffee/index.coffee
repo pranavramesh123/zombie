@@ -15,7 +15,7 @@ reactToInput = ($canvas, x, y) ->
 
 tryToReload = () ->
     return if game.player.isShooting or game.player.isReloading
-    if game.player.magazine.shells is game.player.magazine.capacity then game.displayMessage 'Already full', 1000 else game.player.reload()
+    game.player.reload() if game.player.magazine.shells < game.player.magazine.capacity
         
 background = document.getElementById('background')
 bgctx = background.getContext '2d'
@@ -42,5 +42,4 @@ $('#start').click () ->
     game.start()
 
 document.onkeydown = (e) ->
-    console.log e.keyCode
     $('#start').click() if e.keyCode is 13

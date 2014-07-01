@@ -12,6 +12,7 @@ class game.Player extends game.Sprite
         @isReloading = false
         @bonusStats =
             killsOnOneShell: 0
+            killLog: []
         @shootingFrames = [
             {
                 minWaitTime: 0

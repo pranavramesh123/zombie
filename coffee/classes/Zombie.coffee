@@ -54,6 +54,7 @@ class game.Zombie extends game.Sprite
                 side: @side
                 speed: @speed
             })
+            killTime: new Date().getTime()
         )
         if @currentLocation >= @lungingPoint
             game.topCanvas.left.clearRect 0, 0, game.playerCanvas.width/2, game.playerCanvas.height
