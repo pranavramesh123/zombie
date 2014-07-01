@@ -42,6 +42,7 @@ class game.Zombie extends game.Sprite
             this.getShot()
         
     getShot: (doomedZombieIndex) ->
+        game.addToKillCount()
         game.scorekeeper.postMessage(
             player: JSON.stringify({
                 bonusStats: game.player.bonusStats

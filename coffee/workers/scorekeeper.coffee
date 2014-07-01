@@ -10,11 +10,11 @@ self.onmessage = (event) ->
         direction: player.currentDirection
         zombieLocation: zombie.currentLocation
     )
-    if player.magazine.shells < 1
-        player.bonusStats.killsOnOneShell++ 
-        if player.bonusStats.killsOnOneShell > 1
-            scoreIncrement += player.bonusStats.killsOnOneShell - 1
-            scoreMessages.push player.bonusStats.killsOnOneShell + ' kills on one shell! +' + scoreIncrement
+    #if player.magazine.shells < 1
+    #    player.bonusStats.killsOnOneShell++ 
+    #    if player.bonusStats.killsOnOneShell > 1
+    #        scoreIncrement += player.bonusStats.killsOnOneShell - 1
+    #        scoreMessages.push player.bonusStats.killsOnOneShell + ' kills on one shell! +' + scoreIncrement
     #else
     #    player.bonusStats.killsOnOneShell = 0
     #
@@ -24,10 +24,10 @@ self.onmessage = (event) ->
     
     if zombie.currentLocation >= zombie.lungingPoint - 50
         scoreIncrement += 5
-        scoreMessages.push 'Close call! +10'
+        scoreMessages.push 'Close call! +5'
     if zombie.currentLocation < 0
         scoreIncrement += 2
-        scoreMessages.push 'Long range! +7'
+        scoreMessages.push 'Long range! +2'
     
     postMessage(
         scoreIncrement: scoreIncrement

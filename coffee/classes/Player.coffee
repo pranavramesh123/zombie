@@ -10,6 +10,7 @@ class game.Player extends game.Sprite
             @ctx.drawImage sprite, 129, 0, 75, 126, canvas.width/2 - 51, canvas.height - (126 + game.baseVerticalOffset), 75, 126
         @isShooting = false
         @isReloading = false
+        @killCount = 0
         @bonusStats =
             killsOnOneShell: 0
             killLog: []

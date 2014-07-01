@@ -13,6 +13,11 @@ window.game =
     score: 0
     intensityIndex: 0
     scoreDisplay: $('#score')
+    killCountDisplay: $('#killcount')
+    killCount: 0
+    addToKillCount: () ->
+        @killCount++
+        @killCountDisplay.html(@killCount)
     jqElements:
         bonusContainer: $('#bonus-container')
         bonusMessage: $('#bonus-message')
