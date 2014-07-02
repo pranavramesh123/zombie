@@ -1,5 +1,8 @@
 game.zombieSprites.push(
-    src: "/img/spritesheets/zombies/greytee.png"
+    src: [
+        "/img/spritesheets/zombies/tee-grey.png",
+        "/img/spritesheets/zombies/tee-none.png"
+    ]
     walkingFrames: [
         {
             start:

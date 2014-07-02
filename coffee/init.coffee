@@ -37,8 +37,8 @@ window.game =
         noShell: '/img/noshellicon.png'
         shell: '/img/shellicon.png'
     zombieSprites: []
-    shootingSpeed: 500 # original was 600
-    reloadSpeed: 250 # original was 375
+    shootingSpeed: 450 # original was 600
+    reloadSpeed: 275 # original was 375
     generateZombies: () ->
         return if @isGoing is false
         @nextZombie = setTimeout () =>

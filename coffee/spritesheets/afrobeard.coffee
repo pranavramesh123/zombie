@@ -1,5 +1,8 @@
 game.zombieSprites.push(
-    src: "/img/spritesheets/zombies/afrobeard.png"
+    src: [
+        "/img/spritesheets/zombies/afrobeard-black.png",
+        "/img/spritesheets/zombies/afrobeard-grey.png"
+    ]
     walkingFrames: [
         {
             start:

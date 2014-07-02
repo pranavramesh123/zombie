@@ -7,7 +7,8 @@ class game.Zombie extends game.Sprite
         game.canvasContainer.insertBefore canvas, game.playerCanvas
         super canvas, startingSide
         sprite = new Image()
-        sprite.src = spritesheet.src
+        randomIndex = Math.floor Math.random() * spritesheet.src.length
+        sprite.src = spritesheet.src[randomIndex]
         @speed = speed
         @currentLocation = startingLocation
         @side = startingSide
