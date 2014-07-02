@@ -18,8 +18,9 @@ class game.Zombie extends game.Sprite
         @dyingFrames = spritesheet.dyingFrames
         @bitingFrames = spritesheet.bitingFrames
         @animationLooping = true
-        @animationLoopCallback = () => this.bite() if @currentLocation >= @lungingPoint
+        @animationLoopCallback = () => this.bite() if @currentLocation >= @lungingPoint and @isBiting is false
         @index = null
+        @isBiting = false
         sprite.onload = () =>
             @sprite = sprite
             @currentFrameList = @walkingFrames
@@ -94,6 +95,7 @@ class game.Zombie extends game.Sprite
             @currentLocation - position.offset.x, @canvas.height - position.offset.y, position.width, position.height
         )
     bite: () ->
+        @isBiting = true
         @speed = 0
         @animationLooping = false
         @currentFrame = 0

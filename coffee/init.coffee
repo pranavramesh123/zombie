@@ -91,7 +91,7 @@ window.game =
             for zombie in @zombies.right
                 zombie.redraw() if zombie?
             
-            if game.player.isShooting or game.player.isReloading
+            if game.player.isShooting or game.player.isReloading or game.player.isGettingBitten
                 @playerCanvasContext.clearRect 0, 0, @playerCanvas.width, @playerCanvas.height
                 game.player.updatePosition time
                 game.player.redraw()
@@ -121,9 +121,6 @@ game.zombieDeathBed.right.scale -1, 1
 
 game.topCanvas.right.translate game.playerCanvas.width/2, 0
 game.topCanvas.right.scale -1, 1
-
-game.zombieCanvas.left.fillStyle = '#F5F5F5'
-game.zombieCanvas.right.fillStyle = '#F5F5F5'
 
 game.scorekeeper.onmessage = (event) ->
     game.updateScore event.data.scoreIncrement

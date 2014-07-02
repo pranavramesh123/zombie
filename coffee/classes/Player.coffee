@@ -14,6 +14,7 @@ class game.Player extends game.Sprite
         @bonusStats =
             killsOnOneShell: 0
             killLog: []
+        @isGettingBitten = false
         @shootingFrames = [
             {
                 minWaitTime: 0
@@ -180,6 +181,7 @@ class game.Player extends game.Sprite
         game.stop()
         game.displayMessage 'You have been bitten.'
     getBitten: () ->
+        @isGettingBitten = true
         @currentFrame = 0
         @currentFrameList = @bittenFrames
         @speed = 0
