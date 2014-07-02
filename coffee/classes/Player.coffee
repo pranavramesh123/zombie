@@ -164,16 +164,24 @@ class game.Player extends game.Sprite
             @ctx.restore()
             @currentDirection = 'left'
         @isShooting = true
-        this.cycleThroughFiniteFrames @shootingFrames, () => @isShooting = false
+        @currentFrame = 0
+        @currentFrameList = @shootingFrames
+        @speed = 0
+        @animationLooping = false
+        @animationEndCallback = () => @isShooting = false
     reload: () ->
         @isReloading = true
-        this.cycleThroughFiniteFrames @reloadingFrames, () => @isReloading = false
+        @currentFrame = 0
+        @currentFrameList = @reloadingFrames
+        @speed = 0
+        @animationLooping = false
+        @animationEndCallback = () => @isReloading = false
     @bittenCallback: () ->
         game.stop()
         game.displayMessage 'You have been bitten.'
     getBitten: () ->
-        if @animationTimer.isRunning()
-            @nextAnimation = () =>
-                this.cycleThroughFiniteFrames @bittenFrames, game.Player.bittenCallback
-        else
-            this.cycleThroughFiniteFrames @bittenFrames, game.Player.bittenCallback
+        @currentFrame = 0
+        @currentFrameList = @bittenFrames
+        @speed = 0
+        @animationLooping = false
+        @animationEndCallback = game.Player.bittenCallback

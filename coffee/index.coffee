@@ -15,6 +15,7 @@ reactToInput = ($canvas, x, y) ->
 
 tryToReload = () ->
     return if game.player.isShooting or game.player.isReloading
+    console.log 'gonna reload'
     game.player.reload() if game.player.magazine.shells < game.player.magazine.capacity
         
 background = document.getElementById('background')

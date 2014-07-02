@@ -18,6 +18,7 @@ class game.Zombie extends game.Sprite
         @dyingFrames = spritesheet.dyingFrames
         @bitingFrames = spritesheet.bitingFrames
         @animationLooping = true
+        @animationLoopCallback = () => this.bite() if @currentLocation >= @lungingPoint
         @index = null
         sprite.onload = () =>
             @sprite = sprite
@@ -71,6 +72,7 @@ class game.Zombie extends game.Sprite
         @animationLooping = false
         @currentFrame = 0
         @currentFrameList = @dyingFrames
+        @animationEndCallback = () => this.die()
         #@nextAnimation = () =>
         #    this.cycleThroughFiniteFrames(
         #        @dyingFrames,
@@ -84,9 +86,7 @@ class game.Zombie extends game.Sprite
         #            game.canvasContainer.removeChild(@canvas)
         #        ),
         #    )
-    animationEndCallback: () ->
-        console.log @index
-        console.log 'starting end callback'
+    die: () ->
         game.zombies[@side].splice(@index, 1)
         position = @dyingFrames[@dyingFrames.length - 1]
         game.zombieDeathBed[@side].drawImage(
@@ -94,10 +94,8 @@ class game.Zombie extends game.Sprite
             @currentLocation - position.offset.x, @canvas.height - position.offset.y, position.width, position.height
         )
     bite: () ->
-        @nextAnimation = () =>
-            this.cycleThroughFiniteFrames(
-                @bitingFrames,
-                (() =>
-                    game.player.getBitten()
-                )
-            )
+        @speed = 0
+        @animationLooping = false
+        @currentFrame = 0
+        @currentFrameList = @bitingFrames
+        @animationEndCallback = () -> game.player.getBitten()

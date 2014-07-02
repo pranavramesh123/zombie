@@ -1,6 +1,7 @@
 window.game = 
     canvasContainer: document.getElementById 'canvas-container'
     playerCanvas: document.getElementById 'player-canvas'
+    playerCanvasContext: document.getElementById('player-canvas').getContext '2d'
     topCanvas:
         left: document.getElementById('top-canvas-left').getContext '2d'
         right: document.getElementById('top-canvas-right').getContext '2d'
@@ -42,41 +43,62 @@ window.game =
     zombieSprites: []
     shootingSpeed: 450 # original was 600
     reloadSpeed: 275 # original was 375
+    nextZombieTimeoutLength: null
+    nextZombieTimeoutStart: null
     generateZombies: () ->
         return if @isGoing is false
+        @nextZombieTimeoutLength = 2000 - game.Utilities.randomIntBetween(600, 1400) if @nextZombieTimeoutLength is null
+        @nextZombieTimeoutStart = new Date()
         @nextZombie = setTimeout () =>
+            @nextZombieTimeoutLength = null
             comeFrom = if Math.random() >= .5 then 'left' else 'right'
             speed = game.Utilities.randomIntBetween 90, 110
             if game.zombies['left'].length + game.zombies['right'].length < @maxNumberOfZombies
                 spriteIndex = Math.floor Math.random() * @zombieSprites.length
                 game.zombies[comeFrom].push new game.Zombie comeFrom, @zombieSprites[spriteIndex], speed, -75
             @generateZombies()
-        , 2000 - game.Utilities.randomIntBetween(600, 1400)
+        , @nextZombieTimeoutLength
     stop: () ->
         @isGoing = false
-        clearTimeout(@nextZombie)
+        @isPaused = true
+        clearTimeout @nextZombie
+        @nextZombieTimeoutLength -= new Date() - @nextZombieTimeoutStart
     start: () ->
         @isGoing = true
+        @isPaused = false
         @generateZombies()
         @executeGameLoop()
     currentGameFrame: null
     togglePause: () ->
-        @isPaused = if @isPaused is true then false else true
-    isPaused: false
+        if @isPaused is true
+            game.start()
+        else
+            game.stop()
+    isPaused: true
     lastFrame: null
     executeGameLoop: () ->
         if @isPaused is false
-            @currentGameFrame = game.Utilities.getFrame () =>
-                @zombieCanvas.left.fillRect 0, 0, 400, 415
-                @zombieCanvas.right.fillRect 0, 0, 400, 415
-                time = new Date().getTime()
-                zombie.redraw time for zombie in @zombies.left
-                zombie.redraw time for zombie in @zombies.right
-                @lastFrame = time
-                setTimeout (() => @executeGameLoop()), 60
+            time = new Date().getTime()
+            for zombie in @zombies.left
+                zombie.updatePosition(time) if zombie?
+            for zombie in @zombies.right
+                zombie.updatePosition(time) if zombie?
+            @zombieCanvas.left.clearRect 0, 0, 400, 415
+            @zombieCanvas.right.clearRect 0, 0, 400, 415
+            
+            for zombie in @zombies.left
+                zombie.redraw() if zombie?
+            for zombie in @zombies.right
+                zombie.redraw() if zombie?
+            
+            if game.player.isShooting or game.player.isReloading
+                @playerCanvasContext.clearRect 0, 0, @playerCanvas.width, @playerCanvas.height
+                game.player.updatePosition time
+                game.player.redraw()
         else
-            @lastFrame = new Date().getTime()
-            setTimeout (() => @executeGameLoop()), 100
+            (zombie.lastFrame = new Date().getTime()) for zombie in @zombies.left
+            (zombie.lastFrame = new Date().getTime()) for zombie in @zombies.right
+        game.Utilities.getFrame () => @executeGameLoop()
         
     messageTimeout: null
     displayMessage: (message, disappear = null, pulsating = false) ->
