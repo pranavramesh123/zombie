@@ -1,10 +1,11 @@
 class game.Zombie extends game.Sprite
     constructor: (startingSide, spritesheet, speed, startingLocation = 0) ->
-        canvas = document.createElement 'canvas'
-        canvas.className = 'zombie-canvas half-canvas ' + startingSide
-        canvas.width = 400
-        canvas.height = 415
-        game.canvasContainer.insertBefore canvas, game.playerCanvas
+        #canvas = document.createElement 'canvas'
+        #canvas.className = 'zombie-canvas half-canvas ' + startingSide
+        #canvas.width = 400
+        #canvas.height = 415
+        #game.canvasContainer.insertBefore canvas, game.playerCanvas
+        canvas = document.getElementById('zombie-canvas-' + startingSide)
         super canvas, startingSide
         sprite = new Image()
         randomIndex = Math.floor Math.random() * spritesheet.src.length
@@ -13,19 +14,22 @@ class game.Zombie extends game.Sprite
         @currentLocation = startingLocation
         @side = startingSide
         @lungingPoint = 346
-        sprite.onload = () =>
-            @sprite = sprite
-            this.cycleThroughInfiniteFrames(
-                @walkingFrames,
-                (() =>
-                    this.bite() if @currentLocation >= @lungingPoint
-                ),
-                {speed: @speed, stop: @lungingPoint}
-                
-            )
         @walkingFrames = spritesheet.walkingFrames
         @dyingFrames = spritesheet.dyingFrames
         @bitingFrames = spritesheet.bitingFrames
+        @animationLooping = true
+        @index = null
+        sprite.onload = () =>
+            @sprite = sprite
+            @currentFrameList = @walkingFrames
+            #this.cycleThroughInfiniteFrames(
+            #    @walkingFrames,
+            #    (() =>
+            #        this.bite() if @currentLocation >= @lungingPoint
+            #    ),
+            #    {speed: @speed, stop: @lungingPoint}
+            #    
+            #)
     @seeWhoGetsShot: (shotDirection) ->
         return false unless game.zombies[shotDirection].length > 0
         farthestLocation = 0
@@ -34,7 +38,9 @@ class game.Zombie extends game.Sprite
             if thisZombieLocation > farthestLocation
                 farthestLocation = thisZombieLocation
                 doomedZombieIndex = index
-        game.zombies[shotDirection][doomedZombieIndex].getShot(doomedZombieIndex) if doomedZombieIndex?
+        if doomedZombieIndex?
+            game.zombies[shotDirection][doomedZombieIndex].index = doomedZombieIndex
+            game.zombies[shotDirection][doomedZombieIndex].getShot()
         
     checkIfBeenShot: (shotDirection) ->
         if shotDirection is 'right' and @currentLocation > @canvas.width/2
@@ -61,19 +67,32 @@ class game.Zombie extends game.Sprite
         if @currentLocation >= @lungingPoint
             game.topCanvas.left.clearRect 0, 0, game.playerCanvas.width/2, game.playerCanvas.height
             game.topCanvas.right.clearRect 0, 0, game.playerCanvas.width/2, game.playerCanvas.height
-        @nextAnimation = () =>
-            this.cycleThroughFiniteFrames(
-                @dyingFrames,
-                (() =>
-                    game.zombies[@side].splice(doomedZombieIndex, 1)
-                    position = @dyingFrames[@dyingFrames.length - 1]
-                    game.zombieDeathBed[@side].drawImage(
-                        @sprite, position.start.x, position.start.y, position.width, position.height,
-                        @currentLocation - position.offset.x, @canvas.height - position.offset.y, position.width, position.height
-                    )
-                    game.canvasContainer.removeChild(@canvas)
-                ),
-            )
+        @speed = 0
+        @animationLooping = false
+        @currentFrame = 0
+        @currentFrameList = @dyingFrames
+        #@nextAnimation = () =>
+        #    this.cycleThroughFiniteFrames(
+        #        @dyingFrames,
+        #        (() =>
+        #            game.zombies[@side].splice(doomedZombieIndex, 1)
+        #            position = @dyingFrames[@dyingFrames.length - 1]
+        #            game.zombieDeathBed[@side].drawImage(
+        #                @sprite, position.start.x, position.start.y, position.width, position.height,
+        #                @currentLocation - position.offset.x, @canvas.height - position.offset.y, position.width, position.height
+        #            )
+        #            game.canvasContainer.removeChild(@canvas)
+        #        ),
+        #    )
+    animationEndCallback: () ->
+        console.log @index
+        console.log 'starting end callback'
+        game.zombies[@side].splice(@index, 1)
+        position = @dyingFrames[@dyingFrames.length - 1]
+        game.zombieDeathBed[@side].drawImage(
+            @sprite, position.start.x, position.start.y, position.width, position.height,
+            @currentLocation - position.offset.x, @canvas.height - position.offset.y, position.width, position.height
+        )
     bite: () ->
         @nextAnimation = () =>
             this.cycleThroughFiniteFrames(

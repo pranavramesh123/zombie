@@ -35,6 +35,7 @@ $('#start').click () ->
             when game.controlKeys.shootLeft then reactToInput $('#top-canvas-left')
             when game.controlKeys.shootRight  then reactToInput $('#top-canvas-right')
             when game.controlKeys.reload  then tryToReload()
+            when 32 then game.togglePause()
     topCanvas.on('touchstart', (e) ->
         evt = e.originalEvent
         reactToInput $(this), evt.touches[0].clientX, evt.touches[0].clientY

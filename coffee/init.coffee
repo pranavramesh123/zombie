@@ -4,6 +4,9 @@ window.game =
     topCanvas:
         left: document.getElementById('top-canvas-left').getContext '2d'
         right: document.getElementById('top-canvas-right').getContext '2d'
+    zombieCanvas:
+        left: document.getElementById('zombie-canvas-left').getContext '2d'
+        right: document.getElementById('zombie-canvas-right').getContext '2d'
     zombieDeathBed:
         left: document.getElementById('zombie-deathbed-left').getContext '2d'
         right: document.getElementById('zombie-deathbed-right').getContext '2d'
@@ -55,6 +58,26 @@ window.game =
     start: () ->
         @isGoing = true
         @generateZombies()
+        @executeGameLoop()
+    currentGameFrame: null
+    togglePause: () ->
+        @isPaused = if @isPaused is true then false else true
+    isPaused: false
+    lastFrame: null
+    executeGameLoop: () ->
+        if @isPaused is false
+            @currentGameFrame = game.Utilities.getFrame () =>
+                @zombieCanvas.left.fillRect 0, 0, 400, 415
+                @zombieCanvas.right.fillRect 0, 0, 400, 415
+                time = new Date().getTime()
+                zombie.redraw time for zombie in @zombies.left
+                zombie.redraw time for zombie in @zombies.right
+                @lastFrame = time
+                setTimeout (() => @executeGameLoop()), 60
+        else
+            @lastFrame = new Date().getTime()
+            setTimeout (() => @executeGameLoop()), 100
+        
     messageTimeout: null
     displayMessage: (message, disappear = null, pulsating = false) ->
         clearTimeout @messageTimeout
@@ -68,11 +91,17 @@ window.game =
     scorekeeper: new Worker '/js/compiled/workers/scorekeeper.js'
     baseVerticalOffset: 5
 
+game.zombieCanvas.right.translate game.playerCanvas.width/2, 0
+game.zombieCanvas.right.scale -1, 1
+
 game.zombieDeathBed.right.translate game.playerCanvas.width/2, 0
 game.zombieDeathBed.right.scale -1, 1
 
 game.topCanvas.right.translate game.playerCanvas.width/2, 0
 game.topCanvas.right.scale -1, 1
+
+game.zombieCanvas.left.fillStyle = '#F5F5F5'
+game.zombieCanvas.right.fillStyle = '#F5F5F5'
 
 game.scorekeeper.onmessage = (event) ->
     game.updateScore event.data.scoreIncrement
