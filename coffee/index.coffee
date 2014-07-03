@@ -3,8 +3,7 @@ reactToInput = ($canvas, x, y) ->
     if game.currentGame.player.magazine.shells <= 0
         return tryToReload()
     inputCoords = game.Utilities.getCanvasCoords($canvas.get(0), x, y)
-    reloadRange = 60
-    return tryToReload() if ($canvas.hasClass('left') and inputCoords.x > 400 - (reloadRange/2)) or ($canvas.hasClass('right') and inputCoords.x < reloadRange/2)
+    return tryToReload() if ($canvas.hasClass('left') and inputCoords.x > 400 - (game.reloadRange/2)) or ($canvas.hasClass('right') and inputCoords.x < game.reloadRange/2)
     if $canvas.hasClass 'left' then game.currentGame.player.shoot 'left' else game.currentGame.player.shoot 'right'
 
 tryToReload = () ->
@@ -30,11 +29,13 @@ $(document).on 'keydown', (e) ->
         when game.controlKeys.shootRight then reactToInput $('#top-canvas-right')
         when game.controlKeys.reload then tryToReload()
         when game.controlKeys.pause then game.currentGame.togglePause()
-$('canvas.top').on('touchstart', (e) ->
+$('canvas.top').on 'touchstart', (e) ->
     return if game.gameInProgress is false
     evt = e.originalEvent
     reactToInput $(this), evt.touches[0].clientX, evt.touches[0].clientY
-)
+$('#hud').on 'touchstart', () ->
+    if game.gameInProgress is false then return else game.currentGame.togglePause()
+    
 
 $(document).on 'keydown', (e) ->
     $('#start').click() if e.originalEvent.keyCode is 13 and game.gameInProgress is false

@@ -57,14 +57,35 @@ class game.Game
         @isActive = false
         game.gameInProgress = false
         @displayMessage(message)
-        thingsToShow =
-            'Survival Time: ' + (new Date() - @startTime)/1000 + ' seconds<br>' +
-            'Zombies Killed: ' + @killCount + '<br>' +
-            'Score: ' + @score + '<br>'
+        survivalTime = (new Date() - @startTime)/1000
+        thingsToShow = [
+            'Survival Time: ' + survivalTime + ' seconds',
+            'Zombies Killed: ' + @killCount,
+            'Score: ' + @score
+        ]
+        if window.localStorage.getItem('records')?
+            records = JSON.parse window.localStorage.getItem('records')
+            console.log records
+            if survivalTime > parseInt records.survivalTime
+                records.survivalTime = survivalTime
+                thingsToShow[0] += game.newRecordSpan
+            if @killCount > parseInt records.killCount
+                records.killCount = @killCount
+                thingsToShow[1] += game.newRecordSpan
+            if @score > parseInt records.score
+                records.score = @score
+                thingsToShow[2] += game.newRecordSpan
+            window.localStorage.setItem 'records', JSON.stringify records
+        else
+            window.localStorage.setItem 'records', JSON.stringify
+                survivalTime: survivalTime
+                killCount: @killCount
+                score: @score
+            thingsToShow = thing += game.newRecordSpan for thing in thingsToShow
         setTimeout(
             () =>
                 $('#current-message').remove()
-                $('#stats').html(thingsToShow).parent().removeClass('hidden')
+                $('#stats').html(thingsToShow.join('<br>')).parent().removeClass('hidden')
             , 1000
         )
         @player.ctx.restore()

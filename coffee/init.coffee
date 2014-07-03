@@ -25,6 +25,8 @@ window.game =
         shootRight: 76
         reload: 75
         pause: 32
+    reloadRange: 60
+    newRecordSpan: '<span class="new-record">New Record!</span>'
     images:
         noShell: '/img/noshellicon.png'
         shell: '/img/shellicon.png'

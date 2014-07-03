@@ -1,3 +1,6 @@
+$main-text-color: #871a1a
+$text-flash-color: gold
+
 @font-face
     font-family: 'dpcomic'
     src: url('../fonts/dpcomic.ttf')
@@ -42,6 +45,27 @@
         @include prefix(transform, translate3d(0, 0, 30rem))
     100%
         @include prefix(transform, translate3d(0, 0, 0))
+        
+@-webkit-keyframes flashing
+    0%
+        color: $main-text-color
+    50%
+        color: $text-flash-color
+    100%
+        color: $main-text-color
+
+@keyframes flashing
+    0%
+        color: $main-text-color
+    50%
+        color: $text-flash-color
+    100%
+        color: $main-text-color
+        
+@mixin flashing
+    -webkit-animation: flashing .75s infinite ease-out
+    -moz-animation: flashing .75s infinite  ease-out
+    animation: flashing .75s infinite  ease-out
 
 @mixin pulsating($time: 1s)
     -webkit-animation: pulsate $time infinite linear
@@ -115,7 +139,7 @@ a, button
         text-align: center
         font-size: 3.5rem
         text-shadow: .1rem .1rem #343434
-        color: #871a1a
+        color: $main-text-color
         -webkit-perspective: 50rem
         perspective: 50rem
         overflow: visible
@@ -135,6 +159,9 @@ a, button
                 margin: 0 auto
                 font-size: 1.6rem
                 text-shadow: none
+            .new-record
+                margin-left: 1.5rem
+                @include flashing
             
     canvas
         position: absolute
