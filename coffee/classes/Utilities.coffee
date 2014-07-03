@@ -1,4 +1,4 @@
-class game.Utilities
+class cac.Utilities
 
     @getFrame: (callback) ->
         return requestAnimationFrame(callback) || webkitRequestAnimationFrame(callback) || mozRequestAnimationFrame(callback) || msRequestAnimationFrame(callback)

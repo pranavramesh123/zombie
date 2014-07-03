@@ -1,4 +1,4 @@
-class game.Timer
+class cac.Timer
     constructor: ->
         @startTime = 0
         @running = false

@@ -1,9 +1,9 @@
-class game.Sprite
+class cac.Sprite
 
     constructor: (canvas, side) ->
         @canvas = canvas
         @ctx = @canvas.getContext('2d')
-        @animationTimer = new game.Timer()
+        @animationTimer = new cac.Timer()
         @currentFrame = 0
         @nextAnimation = null
         @position = null
@@ -20,12 +20,12 @@ class game.Sprite
         return if @currentFrameList? is false
         minimumFrameTime = switch
             when @currentFrameList[@currentFrame].minWaitTime? then @currentFrameList[@currentFrame].minWaitTime
-            when @speed? then Math.abs(game.frameSpeedIndex - @speed + game.frameSpeedIndex)
+            when @speed? then Math.abs(cac.frameSpeedIndex - @speed + cac.frameSpeedIndex)
             else 100
         if time - @lastFrame >= minimumFrameTime or @lastFrame is null
             this.updateLocation time if @lastFrame? and @speed?
             @position = @currentFrameList[@currentFrame]
-            @position.offset = {x: 0, y: @position.height + game.baseVerticalOffset} unless @position.offset?
+            @position.offset = {x: 0, y: @position.height + cac.baseVerticalOffset} unless @position.offset?
             this[action]() for action in @position.actions if @position.actions?
             @animationLoopCallback() if @animationLoopCallback?
             @lastFrame = time
@@ -41,7 +41,7 @@ class game.Sprite
             @currentLocation - @position.offset.x, @canvas.height - @position.offset.y, @position.width, @position.height
         )
         if @position.frontFrame?
-            game.topCanvas[@side].drawImage(
+            cac.topCanvas[@side].drawImage(
                 @sprite, @position.frontFrame.start.x, @position.frontFrame.start.y, @position.frontFrame.width, @position.frontFrame.height,
                 @currentLocation - @position.frontFrame.offset.x, @canvas.height - @position.frontFrame.offset.y, @position.frontFrame.width, @position.frontFrame.height
             )

@@ -1,4 +1,4 @@
-class game.Player extends game.Sprite
+class cac.Player extends cac.Sprite
     constructor: (canvas, startingSide) ->
         super canvas, startingSide
         sprite = new Image()
@@ -7,7 +7,7 @@ class game.Player extends game.Sprite
         @currentLocation = @canvas.width/2
         sprite.onload = () =>
             @sprite = sprite
-            @ctx.drawImage sprite, 129, 0, 75, 126, canvas.width/2 - 51, canvas.height - (126 + game.baseVerticalOffset), 75, 126
+            @ctx.drawImage sprite, 129, 0, 75, 126, canvas.width/2 - 51, canvas.height - (126 + cac.baseVerticalOffset), 75, 126
         @isShooting = false
         @isReloading = false
         @killCount = 0
@@ -27,7 +27,7 @@ class game.Player extends game.Sprite
                 height: 126
                 offset:
                     x: 69
-                    y: 126 + game.baseVerticalOffset
+                    y: 126 + cac.baseVerticalOffset
             },
             {
                 minWaitTime: @shootingSpeed/5
@@ -39,7 +39,7 @@ class game.Player extends game.Sprite
                 height: 126
                 offset:
                     x: 93
-                    y: 126 + game.baseVerticalOffset
+                    y: 126 + cac.baseVerticalOffset
             },
             {
                 minWaitTime: @shootingSpeed/5
@@ -50,7 +50,7 @@ class game.Player extends game.Sprite
                 height: 126
                 offset:
                     x: 69
-                    y: 126 + game.baseVerticalOffset
+                    y: 126 + cac.baseVerticalOffset
             },
             {
                 minWaitTime: @shootingSpeed/5
@@ -61,7 +61,7 @@ class game.Player extends game.Sprite
                 height: 126
                 offset:
                     x: 51
-                    y: 126 + game.baseVerticalOffset
+                    y: 126 + cac.baseVerticalOffset
             },
             {
                 minWaitTime: @shootingSpeed/5
@@ -72,7 +72,7 @@ class game.Player extends game.Sprite
                 height: 126
                 offset:
                     x: 51
-                    y: 126 + game.baseVerticalOffset
+                    y: 126 + cac.baseVerticalOffset
             },
             {
                 minWaitTime: @shootingSpeed/5
@@ -83,7 +83,7 @@ class game.Player extends game.Sprite
                 height: 126
                 offset:
                     x: 51
-                    y: 126 + game.baseVerticalOffset
+                    y: 126 + cac.baseVerticalOffset
             }
         ]
         @reloadingFrames = [
@@ -96,7 +96,7 @@ class game.Player extends game.Sprite
                 height: 126
                 offset:
                     x: 27
-                    y: 126 + game.baseVerticalOffset
+                    y: 126 + cac.baseVerticalOffset
             },
             {
                 minWaitTime: @reloadSpeed/3
@@ -107,7 +107,7 @@ class game.Player extends game.Sprite
                 height: 126
                 offset:
                     x: 24
-                    y: 126 + game.baseVerticalOffset
+                    y: 126 + cac.baseVerticalOffset
             },
             {
                 minWaitTime: @reloadSpeed/3
@@ -119,7 +119,7 @@ class game.Player extends game.Sprite
                 height: 126
                 offset:
                     x: 18
-                    y: 126 + game.baseVerticalOffset
+                    y: 126 + cac.baseVerticalOffset
             },
             {
                 minWaitTime: @reloadSpeed/3
@@ -130,7 +130,7 @@ class game.Player extends game.Sprite
                 height: 126
                 offset:
                     x: 51
-                    y: 126 + game.baseVerticalOffset
+                    y: 126 + cac.baseVerticalOffset
             }
         ]
         @bittenFrames = [
@@ -143,7 +143,7 @@ class game.Player extends game.Sprite
                 height: 126
                 offset:
                     x: 39
-                    y: 126 + game.baseVerticalOffset
+                    y: 126 + cac.baseVerticalOffset
             }    
         ]
         @currentFrame = 0
@@ -152,11 +152,11 @@ class game.Player extends game.Sprite
             capacity: 6
     fire: () ->
         @magazine.shells--
-        game.ammoContainer.find('img:not(.used)').first().addClass('used').get(0).src = game.images.noShell
-        game.Zombie.seeWhoGetsShot(@currentDirection)
+        cac.ammoContainer.find('img:not(.used)').first().addClass('used').get(0).src = cac.images.noShell
+        cac.Zombie.seeWhoGetsShot(@currentDirection)
     loadShell: () ->
         @magazine.shells++
-        game.ammoContainer.find('img.used').last().removeClass('used').get(0).src = game.images.shell
+        cac.ammoContainer.find('img.used').last().removeClass('used').get(0).src = cac.images.shell
     shoot: (direction) ->
         if direction is 'right' and @currentDirection is 'left'
             @ctx.save()
@@ -180,11 +180,11 @@ class game.Player extends game.Sprite
         @animationLooping = false
         @animationEndCallback = () => @isReloading = false
     @bittenCallback: () ->
-        game.currentGame.end 'You have been bitten.'
+        cac.currentGame.end 'You have been bitten.'
     getBitten: () ->
         @isGettingBitten = true
         @currentFrame = 0
         @currentFrameList = @bittenFrames
         @speed = 0
         @animationLooping = false
-        @animationEndCallback = game.Player.bittenCallback
+        @animationEndCallback = cac.Player.bittenCallback

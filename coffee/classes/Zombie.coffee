@@ -1,4 +1,4 @@
-class game.Zombie extends game.Sprite
+class cac.Zombie extends cac.Sprite
     constructor: (startingSide, spritesheet, speed, startingLocation = 0) ->
         canvas = document.getElementById('zombie-canvas-' + startingSide)
         super canvas, startingSide
@@ -20,16 +20,16 @@ class game.Zombie extends game.Sprite
             @sprite = sprite
             @currentFrameList = @walkingFrames
     @seeWhoGetsShot: (shotDirection) ->
-        return false unless game.currentGame.zombies[shotDirection].length > 0
+        return false unless cac.currentGame.zombies[shotDirection].length > 0
         farthestLocation = 0
-        for zombie, index in game.currentGame.zombies[shotDirection]
+        for zombie, index in cac.currentGame.zombies[shotDirection]
             thisZombieLocation = zombie.currentLocation + zombie.walkingFrames[zombie.currentFrame].width
             if thisZombieLocation > farthestLocation
                 farthestLocation = thisZombieLocation
                 doomedZombieIndex = index
         if doomedZombieIndex?
-            game.currentGame.zombies[shotDirection][doomedZombieIndex].index = doomedZombieIndex
-            game.currentGame.zombies[shotDirection][doomedZombieIndex].getShot()
+            cac.currentGame.zombies[shotDirection][doomedZombieIndex].index = doomedZombieIndex
+            cac.currentGame.zombies[shotDirection][doomedZombieIndex].getShot()
         
     checkIfBeenShot: (shotDirection) ->
         if shotDirection is 'right' and @currentLocation > @canvas.width/2
@@ -38,12 +38,12 @@ class game.Zombie extends game.Sprite
             this.getShot()
         
     getShot: (doomedZombieIndex) ->
-        game.currentGame.addToKillCount()
-        game.scorekeeper.postMessage(
+        cac.currentGame.addToKillCount()
+        cac.scorekeeper.postMessage(
             player: JSON.stringify({
-                bonusStats: game.currentGame.player.bonusStats
-                currentDirection: game.currentGame.player.currentDirection
-                magazine: game.currentGame.player.magazine
+                bonusStats: cac.currentGame.player.bonusStats
+                currentDirection: cac.currentGame.player.currentDirection
+                magazine: cac.currentGame.player.magazine
             })
             zombie: JSON.stringify({
                 currentLocation: @currentLocation
@@ -54,17 +54,17 @@ class game.Zombie extends game.Sprite
             killTime: new Date().getTime()
         )
         if @currentLocation >= @lungingPoint
-            game.topCanvas.left.clearRect 0, 0, game.playerCanvas.width/2, game.playerCanvas.height
-            game.topCanvas.right.clearRect 0, 0, game.playerCanvas.width/2, game.playerCanvas.height
+            cac.topCanvas.left.clearRect 0, 0, cac.playerCanvas.width/2, cac.playerCanvas.height
+            cac.topCanvas.right.clearRect 0, 0, cac.playerCanvas.width/2, cac.playerCanvas.height
         @speed = 0
         @animationLooping = false
         @currentFrame = 0
         @currentFrameList = @dyingFrames
         @animationEndCallback = () => this.die()
     die: () ->
-        game.currentGame.zombies[@side].splice(@index, 1)
+        cac.currentGame.zombies[@side].splice(@index, 1)
         position = @dyingFrames[@dyingFrames.length - 1]
-        game.zombieDeathBed[@side].drawImage(
+        cac.zombieDeathBed[@side].drawImage(
             @sprite, position.start.x, position.start.y, position.width, position.height,
             @currentLocation - position.offset.x, @canvas.height - position.offset.y, position.width, position.height
         )
@@ -74,4 +74,4 @@ class game.Zombie extends game.Sprite
         @animationLooping = false
         @currentFrame = 0
         @currentFrameList = @bitingFrames
-        @animationEndCallback = () -> game.currentGame.player.getBitten()
+        @animationEndCallback = () -> cac.currentGame.player.getBitten()

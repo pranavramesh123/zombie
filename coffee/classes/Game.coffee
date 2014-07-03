@@ -1,4 +1,4 @@
-class game.Game
+class cac.Game
 
     constructor: () ->
         @nextZombie = null
@@ -18,21 +18,21 @@ class game.Game
             right: []
     addToKillCount: () ->
         @killCount++
-        game.killCountDisplay.html(@killCount)
+        cac.killCountDisplay.html(@killCount)
     updateScore: (addition) ->
         @score += addition
     updateScoreDisplay: () ->
-        game.scoreDisplay.html @score
+        cac.scoreDisplay.html @score
     generateZombies: () ->
-        @nextZombieTimeoutLength = 2000 - game.Utilities.randomIntBetween(600, 1400) if @nextZombieTimeoutLength is null
+        @nextZombieTimeoutLength = 2000 - cac.Utilities.randomIntBetween(600, 1400) if @nextZombieTimeoutLength is null
         @nextZombieTimeoutStart = new Date()
         @nextZombie = setTimeout () =>
             @nextZombieTimeoutLength = null
             comeFrom = if Math.random() >= .5 then 'left' else 'right'
-            speed = game.Utilities.randomIntBetween 90, 110
+            speed = cac.Utilities.randomIntBetween 90, 110
             if @zombies['left'].length + @zombies['right'].length < @maxNumberOfZombies
-                spriteIndex = Math.floor Math.random() * game.zombieSprites.length
-                @zombies[comeFrom].push new game.Zombie comeFrom, game.zombieSprites[spriteIndex], speed, -75
+                spriteIndex = Math.floor Math.random() * cac.zombieSprites.length
+                @zombies[comeFrom].push new cac.Zombie comeFrom, cac.zombieSprites[spriteIndex], speed, -75
             @generateZombies()
         , @nextZombieTimeoutLength
     pause: () ->
@@ -46,16 +46,16 @@ class game.Game
         @generateZombies()
         @executeGameLoop()
     start: () ->
-        game.prepareToStartOver()
-        @player = new game.Player game.playerCanvas, 'left'
+        cac.prepareToStartOver()
+        @player = new cac.Player cac.playerCanvas, 'left'
         @startTime = new Date()
-        game.gameInProgress = true
+        cac.gameInProgress = true
         @isActive = true
         @resume()
     end: (message) ->
         @pause()
         @isActive = false
-        game.gameInProgress = false
+        cac.gameInProgress = false
         @displayMessage(message)
         survivalTime = (new Date() - @startTime)/1000
         thingsToShow = [
@@ -68,20 +68,20 @@ class game.Game
             console.log records
             if survivalTime > parseInt records.survivalTime
                 records.survivalTime = survivalTime
-                thingsToShow[0] += game.newRecordSpan
+                thingsToShow[0] += cac.newRecordSpan
             if @killCount > parseInt records.killCount
                 records.killCount = @killCount
-                thingsToShow[1] += game.newRecordSpan
+                thingsToShow[1] += cac.newRecordSpan
             if @score > parseInt records.score
                 records.score = @score
-                thingsToShow[2] += game.newRecordSpan
+                thingsToShow[2] += cac.newRecordSpan
             window.localStorage.setItem 'records', JSON.stringify records
         else
             window.localStorage.setItem 'records', JSON.stringify
                 survivalTime: survivalTime
                 killCount: @killCount
                 score: @score
-            thingsToShow = thing += game.newRecordSpan for thing in thingsToShow
+            thingsToShow = thing += cac.newRecordSpan for thing in thingsToShow
         setTimeout(
             () =>
                 $('#current-message').remove()
@@ -103,8 +103,8 @@ class game.Game
                 zombie.updatePosition(time) if zombie?
             for zombie in @zombies.right
                 zombie.updatePosition(time) if zombie?
-            game.zombieCanvas.left.clearRect 0, 0, 400, 415
-            game.zombieCanvas.right.clearRect 0, 0, 400, 415
+            cac.zombieCanvas.left.clearRect 0, 0, 400, 415
+            cac.zombieCanvas.right.clearRect 0, 0, 400, 415
             
             for zombie in @zombies.left
                 zombie.redraw() if zombie?
@@ -112,13 +112,13 @@ class game.Game
                 zombie.redraw() if zombie?
             
             if @player.isShooting or @player.isReloading or @player.isGettingBitten
-                game.playerCanvasContext.clearRect 0, 0, game.playerCanvas.width, game.playerCanvas.height
+                cac.playerCanvasContext.clearRect 0, 0, cac.playerCanvas.width, cac.playerCanvas.height
                 @player.updatePosition time
                 @player.redraw()
         else
             (zombie.lastFrame = new Date().getTime()) for zombie in @zombies.left
             (zombie.lastFrame = new Date().getTime()) for zombie in @zombies.right
-        game.Utilities.getFrame () => @executeGameLoop()
+        cac.Utilities.getFrame () => @executeGameLoop()
     displayMessage: (message, disappear = null, removeLast = true, size = 'large') ->
         clearTimeout @messageTimeout
         $('#current-message').remove() if removeLast is true

@@ -1,4 +1,4 @@
-window.game = 
+window.cac = 
     canvasContainer: document.getElementById 'canvas-container'
     playerCanvas: document.getElementById 'player-canvas'
     playerCanvasContext: document.getElementById('player-canvas').getContext '2d'
@@ -37,7 +37,7 @@ window.game =
         @scoreDisplay.html 0
         @killCountDisplay.html 0
         @ammoContainer.find('img').each () ->
-            $(this).removeClass('used').get(0).src = game.images.shell
+            $(this).removeClass('used').get(0).src = cac.images.shell
         @zombieDeathBed.right.clearRect(0, 0, 400, 415)
         @zombieDeathBed.left.clearRect(0, 0, 400, 415)
         @zombieCanvas.right.clearRect(0, 0, 400, 415)
@@ -46,17 +46,17 @@ window.game =
         @topCanvas.left.clearRect(0, 0, 400, 415)
         @playerCanvasContext.clearRect(0, 0, 800, 415)
 
-game.zombieCanvas.right.translate game.playerCanvas.width/2, 0
-game.zombieCanvas.right.scale -1, 1
+cac.zombieCanvas.right.translate cac.playerCanvas.width/2, 0
+cac.zombieCanvas.right.scale -1, 1
 
-game.zombieDeathBed.right.translate game.playerCanvas.width/2, 0
-game.zombieDeathBed.right.scale -1, 1
+cac.zombieDeathBed.right.translate cac.playerCanvas.width/2, 0
+cac.zombieDeathBed.right.scale -1, 1
 
-game.topCanvas.right.translate game.playerCanvas.width/2, 0
-game.topCanvas.right.scale -1, 1
+cac.topCanvas.right.translate cac.playerCanvas.width/2, 0
+cac.topCanvas.right.scale -1, 1
 
-game.scorekeeper.onmessage = (event) ->
-    game.currentGame.updateScore event.data.scoreIncrement
-    game.currentGame.updateScoreDisplay()
-    game.currentGame.displayMessage(event.data.scoreMessages.join('<br>'), 2000) if event.data.scoreMessages?
-    game.currentGame.player.bonusStats = event.data.bonusStats
+cac.scorekeeper.onmessage = (event) ->
+    cac.currentGame.updateScore event.data.scoreIncrement
+    cac.currentGame.updateScoreDisplay()
+    cac.currentGame.displayMessage(event.data.scoreMessages.join('<br>'), 2000) if event.data.scoreMessages?
+    cac.currentGame.player.bonusStats = event.data.bonusStats

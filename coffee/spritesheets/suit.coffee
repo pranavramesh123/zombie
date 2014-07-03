@@ -1,4 +1,4 @@
-game.zombieSprites.push(
+cac.zombieSprites.push(
     src: [
         "/img/spritesheets/zombies/suit-blue.png",
         "/img/spritesheets/zombies/suit-brown.png"
@@ -78,7 +78,7 @@ game.zombieSprites.push(
             height: 144
             offset:
                 x: 50
-                y: 144 + game.baseVerticalOffset
+                y: 144 + cac.baseVerticalOffset
         },
         {
             minWaitTime: 60
@@ -89,7 +89,7 @@ game.zombieSprites.push(
             height: 144
             offset:
                 x: 100
-                y: 144 + game.baseVerticalOffset
+                y: 144 + cac.baseVerticalOffset
         },
         {
             minWaitTime: 60
@@ -100,7 +100,7 @@ game.zombieSprites.push(
             height: 144
             offset:
                 x: 150
-                y: 144 + game.baseVerticalOffset
+                y: 144 + cac.baseVerticalOffset
         },
         {
             minWaitTime: 60
@@ -111,7 +111,7 @@ game.zombieSprites.push(
             height: 144
             offset:
                 x: 200
-                y: 144 + game.baseVerticalOffset
+                y: 144 + cac.baseVerticalOffset
         },
         {
             minWaitTime: 60
@@ -122,7 +122,7 @@ game.zombieSprites.push(
             height: 144
             offset:
                 x: 200
-                y: 144 + game.baseVerticalOffset
+                y: 144 + cac.baseVerticalOffset
         }
     ]
     bitingFrames: [
@@ -141,7 +141,7 @@ game.zombieSprites.push(
                 height: 27
                 offset:
                     x: -10
-                    y: 78 + game.baseVerticalOffset
+                    y: 78 + cac.baseVerticalOffset
         },
         {
             minWaitTime: 75
@@ -158,7 +158,7 @@ game.zombieSprites.push(
                 height: 27
                 offset:
                     x: -10
-                    y: 78 + game.baseVerticalOffset
+                    y: 78 + cac.baseVerticalOffset
         },
         {
             minWaitTime: 75
@@ -175,7 +175,7 @@ game.zombieSprites.push(
                 height: 45
                 offset:
                     x: -10
-                    y: 102 + game.baseVerticalOffset
+                    y: 102 + cac.baseVerticalOffset
         }
     ]
 )
