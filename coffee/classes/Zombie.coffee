@@ -1,10 +1,5 @@
 class game.Zombie extends game.Sprite
     constructor: (startingSide, spritesheet, speed, startingLocation = 0) ->
-        #canvas = document.createElement 'canvas'
-        #canvas.className = 'zombie-canvas half-canvas ' + startingSide
-        #canvas.width = 400
-        #canvas.height = 415
-        #game.canvasContainer.insertBefore canvas, game.playerCanvas
         canvas = document.getElementById('zombie-canvas-' + startingSide)
         super canvas, startingSide
         sprite = new Image()
@@ -24,25 +19,17 @@ class game.Zombie extends game.Sprite
         sprite.onload = () =>
             @sprite = sprite
             @currentFrameList = @walkingFrames
-            #this.cycleThroughInfiniteFrames(
-            #    @walkingFrames,
-            #    (() =>
-            #        this.bite() if @currentLocation >= @lungingPoint
-            #    ),
-            #    {speed: @speed, stop: @lungingPoint}
-            #    
-            #)
     @seeWhoGetsShot: (shotDirection) ->
-        return false unless game.zombies[shotDirection].length > 0
+        return false unless game.currentGame.zombies[shotDirection].length > 0
         farthestLocation = 0
-        for zombie, index in game.zombies[shotDirection]
+        for zombie, index in game.currentGame.zombies[shotDirection]
             thisZombieLocation = zombie.currentLocation + zombie.walkingFrames[zombie.currentFrame].width
             if thisZombieLocation > farthestLocation
                 farthestLocation = thisZombieLocation
                 doomedZombieIndex = index
         if doomedZombieIndex?
-            game.zombies[shotDirection][doomedZombieIndex].index = doomedZombieIndex
-            game.zombies[shotDirection][doomedZombieIndex].getShot()
+            game.currentGame.zombies[shotDirection][doomedZombieIndex].index = doomedZombieIndex
+            game.currentGame.zombies[shotDirection][doomedZombieIndex].getShot()
         
     checkIfBeenShot: (shotDirection) ->
         if shotDirection is 'right' and @currentLocation > @canvas.width/2
@@ -51,12 +38,12 @@ class game.Zombie extends game.Sprite
             this.getShot()
         
     getShot: (doomedZombieIndex) ->
-        game.addToKillCount()
+        game.currentGame.addToKillCount()
         game.scorekeeper.postMessage(
             player: JSON.stringify({
-                bonusStats: game.player.bonusStats
-                currentDirection: game.player.currentDirection
-                magazine: game.player.magazine
+                bonusStats: game.currentGame.player.bonusStats
+                currentDirection: game.currentGame.player.currentDirection
+                magazine: game.currentGame.player.magazine
             })
             zombie: JSON.stringify({
                 currentLocation: @currentLocation
@@ -74,21 +61,8 @@ class game.Zombie extends game.Sprite
         @currentFrame = 0
         @currentFrameList = @dyingFrames
         @animationEndCallback = () => this.die()
-        #@nextAnimation = () =>
-        #    this.cycleThroughFiniteFrames(
-        #        @dyingFrames,
-        #        (() =>
-        #            game.zombies[@side].splice(doomedZombieIndex, 1)
-        #            position = @dyingFrames[@dyingFrames.length - 1]
-        #            game.zombieDeathBed[@side].drawImage(
-        #                @sprite, position.start.x, position.start.y, position.width, position.height,
-        #                @currentLocation - position.offset.x, @canvas.height - position.offset.y, position.width, position.height
-        #            )
-        #            game.canvasContainer.removeChild(@canvas)
-        #        ),
-        #    )
     die: () ->
-        game.zombies[@side].splice(@index, 1)
+        game.currentGame.zombies[@side].splice(@index, 1)
         position = @dyingFrames[@dyingFrames.length - 1]
         game.zombieDeathBed[@side].drawImage(
             @sprite, position.start.x, position.start.y, position.width, position.height,
@@ -100,4 +74,4 @@ class game.Zombie extends game.Sprite
         @animationLooping = false
         @currentFrame = 0
         @currentFrameList = @bitingFrames
-        @animationEndCallback = () -> game.player.getBitten()
+        @animationEndCallback = () -> game.currentGame.player.getBitten()

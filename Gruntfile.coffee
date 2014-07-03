@@ -42,6 +42,7 @@ module.exports = (grunt) ->
             dist:
                 src:[
                     './compiled-js/coffee/init.js',
+                    './compiled-js/coffee/classes/Game.js',
                     './compiled-js/coffee/spritesheets/*.js',
                     './compiled-js/coffee/classes/Utilities.js',
                     './compiled-js/coffee/classes/Timer.js',

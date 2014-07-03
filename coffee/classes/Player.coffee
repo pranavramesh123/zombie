@@ -15,6 +15,8 @@ class game.Player extends game.Sprite
             killsOnOneShell: 0
             killLog: []
         @isGettingBitten = false
+        @shootingSpeed = 450 # original was 600
+        @reloadSpeed = 275 # original was 375
         @shootingFrames = [
             {
                 minWaitTime: 0
@@ -28,7 +30,7 @@ class game.Player extends game.Sprite
                     y: 126 + game.baseVerticalOffset
             },
             {
-                minWaitTime: game.shootingSpeed/5
+                minWaitTime: @shootingSpeed/5
                 actions: ['fire']
                 start:
                     x: 411
@@ -40,7 +42,7 @@ class game.Player extends game.Sprite
                     y: 126 + game.baseVerticalOffset
             },
             {
-                minWaitTime: game.shootingSpeed/5
+                minWaitTime: @shootingSpeed/5
                 start:
                     x: 42
                     y: 0
@@ -51,7 +53,7 @@ class game.Player extends game.Sprite
                     y: 126 + game.baseVerticalOffset
             },
             {
-                minWaitTime: game.shootingSpeed/5
+                minWaitTime: @shootingSpeed/5
                 start:
                     x: 129
                     y: 0
@@ -62,7 +64,7 @@ class game.Player extends game.Sprite
                     y: 126 + game.baseVerticalOffset
             },
             {
-                minWaitTime: game.shootingSpeed/5
+                minWaitTime: @shootingSpeed/5
                 start:
                     x: 204
                     y: 0
@@ -73,7 +75,7 @@ class game.Player extends game.Sprite
                     y: 126 + game.baseVerticalOffset
             },
             {
-                minWaitTime: game.shootingSpeed/5
+                minWaitTime: @shootingSpeed/5
                 start:
                     x: 129
                     y: 0
@@ -97,7 +99,7 @@ class game.Player extends game.Sprite
                     y: 126 + game.baseVerticalOffset
             },
             {
-                minWaitTime: game.reloadSpeed/3
+                minWaitTime: @reloadSpeed/3
                 start:
                     x: 327
                     y: 0
@@ -108,7 +110,7 @@ class game.Player extends game.Sprite
                     y: 126 + game.baseVerticalOffset
             },
             {
-                minWaitTime: game.reloadSpeed/3
+                minWaitTime: @reloadSpeed/3
                 actions: ['loadShell']
                 start:
                     x: 372
@@ -120,7 +122,7 @@ class game.Player extends game.Sprite
                     y: 126 + game.baseVerticalOffset
             },
             {
-                minWaitTime: game.reloadSpeed/3
+                minWaitTime: @reloadSpeed/3
                 start:
                     x: 129
                     y: 0
@@ -178,8 +180,7 @@ class game.Player extends game.Sprite
         @animationLooping = false
         @animationEndCallback = () => @isReloading = false
     @bittenCallback: () ->
-        game.stop()
-        game.displayMessage 'You have been bitten.'
+        game.currentGame.end 'You have been bitten.'
     getBitten: () ->
         @isGettingBitten = true
         @currentFrame = 0

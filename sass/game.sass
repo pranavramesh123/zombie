@@ -82,10 +82,9 @@ a, button
     width: 800px
     height: 415px
     margin: 0 auto
-    background-color: #F5F5F5
     #hud
         position: absolute
-        background-color: rgba(29, 29, 29, .8)
+        background-color: rgba(29, 29, 29, .6)
         color: #EAEAEA
         font-size: .8rem
         @include flexbox(row, center)
@@ -122,23 +121,20 @@ a, button
         overflow: visible
         #current-message
             overflow: visible
-        #intro
+            &.small
+                font-size: 2rem
+                text-shadow: none
+        .action-button-parent
+            -webkit-perspective: 50rem
+            perspective: 50rem
+            .action-button
+                cursor: pointer
+        #intro, #recap
             p
                 width: 70%
                 margin: 0 auto
-                font-size: 2rem
-                color: #000
+                font-size: 1.6rem
                 text-shadow: none
-            #start-container
-                -webkit-perspective: 50rem
-                perspective: 50rem
-                #start
-                    display: block
-                    width: 25%
-                    margin: 15px auto
-                    font-size: 4rem
-                    background-color: inherit
-                    cursor: pointer
             
     canvas
         position: absolute

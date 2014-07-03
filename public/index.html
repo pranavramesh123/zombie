@@ -39,11 +39,23 @@
             <div id="info">
                 <div id="intro">
                     <p>
-                        Welcome to this game. When you're ready to start, hit start.
+                        Tap to the left or hit "J" to shoot left.<br>
+                        Tap to the right or hit "L" to shoot right.<br>
+                        Tap on your character or hit "K" to reload.<br>
+                        Hit Spacebar to pause/unpause.<br>
+                        When you're ready to start, tap "Start" below or hit Enter.
                     </p>
-                    <div id="start-container">
-                        <div id="start" class="pulsating-slow">
+                    <div id="start-container" class="action-button-parent">
+                        <div id="start" class="pulsating-slow action-button">
                             Start
+                        </div>
+                    </div>
+                </div>
+                <div id="recap" class="hidden">
+                    <p id="stats"></p>
+                    <div class="action-button-parent">
+                        <div id="restart" class="pulsating-slow action-button">
+                            Play Again
                         </div>
                     </div>
                 </div>
