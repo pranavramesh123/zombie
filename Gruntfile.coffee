@@ -4,6 +4,7 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks('grunt-contrib-sass')
     grunt.loadNpmTasks('grunt-contrib-concat')
     grunt.loadNpmTasks('grunt-contrib-copy')
+    grunt.loadNpmTasks('grunt-contrib-uglify')
     grunt.initConfig
         pkg: grunt.file.readJSON('package.json')
         watch:
@@ -53,3 +54,11 @@ module.exports = (grunt) ->
                 ]
                 dest:
                     './public/js/compiled/game.js'
+        uglify:
+            dist:
+                files: [{
+                    expand: true
+                    cwd: './public/js/compiled/'
+                    src: '**/*.js'
+                    dest: './public/js/compiled/'
+                }]
