@@ -59,12 +59,15 @@ window.cac =
         "/img/spritesheets/zombies/tee-grey.png",
         "/img/spritesheets/zombies/tee-none.png"
     ]
+    playerSprite: null
     spritesLoaded: 0
     loadSprite: (url) ->
         img = new Image()
         img.src = url
         img.onload = () ->
             cac.spritesLoaded++
+        if url is "/img/spritesheets/player.png"
+            cac.playerSprite = img 
     loadSprites: () ->
         if cac.spritesLoaded < cac.allSprites.length
             cac.loadSprite cac.allSprites[cac.spritesLoaded]

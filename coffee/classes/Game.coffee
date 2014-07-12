@@ -72,24 +72,27 @@ class cac.Game
             'Zombies Killed: ' + @killCount,
             'Score: ' + @score
         ]
-        if window.localStorage.getItem('records')?
-            records = JSON.parse window.localStorage.getItem('records')
-            if survivalTime > parseInt records.survivalTime
-                records.survivalTime = survivalTime
-                thingsToShow[0] += cac.newRecordSpan
-            if @killCount > parseInt records.killCount
-                records.killCount = @killCount
-                thingsToShow[1] += cac.newRecordSpan
-            if @score > parseInt records.score
-                records.score = @score
-                thingsToShow[2] += cac.newRecordSpan
-            window.localStorage.setItem 'records', JSON.stringify records
-        else
-            window.localStorage.setItem 'records', JSON.stringify
-                survivalTime: survivalTime
-                killCount: @killCount
-                score: @score
-            thingsToShow = (thing += cac.newRecordSpan for thing in thingsToShow)
+        try
+            if window.localStorage.getItem('records')?
+                records = JSON.parse window.localStorage.getItem('records')
+                if survivalTime > parseInt records.survivalTime
+                    records.survivalTime = survivalTime
+                    thingsToShow[0] += cac.newRecordSpan
+                if @killCount > parseInt records.killCount
+                    records.killCount = @killCount
+                    thingsToShow[1] += cac.newRecordSpan
+                if @score > parseInt records.score
+                    records.score = @score
+                    thingsToShow[2] += cac.newRecordSpan
+                window.localStorage.setItem 'records', JSON.stringify records
+            else
+                window.localStorage.setItem 'records', JSON.stringify
+                    survivalTime: survivalTime
+                    killCount: @killCount
+                    score: @score
+                thingsToShow = (thing += cac.newRecordSpan for thing in thingsToShow)
+        catch
+            
         ga 'send', 'event', 'game', 'finish', 'survival-time', thingsToShow[0]
         ga 'send', 'event', 'game', 'finish', 'zombies-killed', thingsToShow[1]
         ga 'send', 'event', 'game', 'finish', 'score', thingsToShow[2]
