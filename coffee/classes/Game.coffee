@@ -90,6 +90,9 @@ class cac.Game
                 killCount: @killCount
                 score: @score
             thingsToShow = (thing += cac.newRecordSpan for thing in thingsToShow)
+        ga 'send', 'event', 'game', 'finish', 'survival-time', thingsToShow[0]
+        ga 'send', 'event', 'game', 'finish', 'zombies-killed', thingsToShow[1]
+        ga 'send', 'event', 'game', 'finish', 'score', thingsToShow[2]
         setTimeout(
             () =>
                 $('#current-message').remove()
