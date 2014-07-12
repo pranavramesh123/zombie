@@ -58,14 +58,22 @@ class cac.Game
         cac.gameInProgress = false
         @displayMessage(message)
         survivalTime = (new Date() - @startTime)/1000
+        roundedSurvivalTime = Math.floor survivalTime 
+        if survivalTime < 60
+            displaySurvivalTime = if roundedSurvivalTime is 1 then roundedSurvivalTime + ' second' else roundedSurvivalTime + ' seconds'
+        else
+            minutes = Math.floor(roundedSurvivalTime/60)
+            seconds = roundedSurvivalTime%60
+            formattedMinutes = if minutes is 1 then minutes + ' minute' else minutes + ' minutes'
+            formattedSeconds = if seconds is 1 then seconds + ' second' else seconds + ' seconds'
+            displaySurvivalTime = formattedMinutes + ' and ' + formattedSeconds
         thingsToShow = [
-            'Survival Time: ' + survivalTime + ' seconds',
+            'Survival Time: ' + displaySurvivalTime,
             'Zombies Killed: ' + @killCount,
             'Score: ' + @score
         ]
         if window.localStorage.getItem('records')?
             records = JSON.parse window.localStorage.getItem('records')
-            console.log records
             if survivalTime > parseInt records.survivalTime
                 records.survivalTime = survivalTime
                 thingsToShow[0] += cac.newRecordSpan
@@ -81,11 +89,11 @@ class cac.Game
                 survivalTime: survivalTime
                 killCount: @killCount
                 score: @score
-            thingsToShow = thing += cac.newRecordSpan for thing in thingsToShow
+            thingsToShow = (thing += cac.newRecordSpan for thing in thingsToShow)
         setTimeout(
             () =>
                 $('#current-message').remove()
-                $('#stats').html(thingsToShow.join('<br>')).parent().removeClass('hidden')
+                $('#stats').html(thingsToShow.join('<br>')).parent().add('#created-by').removeClass('hidden')
             , 1000
         )
         @player.ctx.restore()

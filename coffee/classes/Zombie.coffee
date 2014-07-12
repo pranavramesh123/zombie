@@ -16,9 +16,8 @@ class cac.Zombie extends cac.Sprite
         @animationLoopCallback = () => this.bite() if @currentLocation >= @lungingPoint and @isBiting is false
         @index = null
         @isBiting = false
-        sprite.onload = () =>
-            @sprite = sprite
-            @currentFrameList = @walkingFrames
+        @sprite = sprite
+        @currentFrameList = @walkingFrames
     @seeWhoGetsShot: (shotDirection) ->
         return false unless cac.currentGame.zombies[shotDirection].length > 0
         farthestLocation = 0

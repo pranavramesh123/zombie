@@ -12,7 +12,7 @@
     </head>
     <body>
         <div id="canvas-container">
-            <canvas id="background" width="800" height="415"></canvas>
+            <canvas id="background" width="800" height="415">Sorry, Cap a Corpse only works in modern browsers.</canvas>
             <canvas id="zombie-deathbed-left" class="half-canvas zombie-canvas left" width="400" height="415"></canvas>
             <canvas id="zombie-deathbed-right" class="half-canvas zombie-canvas right" width="400" height="415"></canvas>
             <canvas id="zombie-canvas-left" class="half-canvas zombie-canvas left" width="400" height="415"></canvas>
@@ -39,14 +39,19 @@
             <div id="info">
                 <div id="intro">
                     <h1>Cap a Corpse!</h1>
-                    <p>
+                    <div id="instructions">
                         Tap to the left or hit "J" to shoot left.<br>
                         Tap to the right or hit "L" to shoot right.<br>
                         Tap on your character or hit "K" to reload.<br>
                         Tap on the top bar or hit Space to pause/unpause.<br>
-                        <span class="show-when-ready hidden">When you're ready to start, tap "Start" below or hit Enter.</span>
-                    </p>
-                    <div class="show-when-ready hidden" id="start-container" class="action-button-parent">
+                        <div class="hide-when-ready">
+                            <div id="loading">
+                                <div id="loading-progress"></div>
+                                <span>Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="show-when-ready action-button-parent hidden" id="start-container">
                         <div id="start" class="pulsating-slow action-button">
                             Start
                         </div>
@@ -60,6 +65,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div id="created-by">
+                <a href="http://greg.codes">Created by Greg Weston</a>
             </div>
         </div>
         <script type="text/javascript" src="/js/jquery-2.1.0.min.js"></script>

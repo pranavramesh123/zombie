@@ -2,19 +2,18 @@ class cac.Player extends cac.Sprite
     constructor: (canvas, startingSide) ->
         super canvas, startingSide
         sprite = new Image()
-        sprite.src = '../img/player.png'
+        sprite.src = '/img/spritesheets/player.png'
         @currentDirection = 'left'
         @currentLocation = @canvas.width/2
-        sprite.onload = () =>
-            @sprite = sprite
-            @ctx.drawImage sprite, 129, 0, 75, 126, canvas.width/2 - 51, canvas.height - (126 + cac.baseVerticalOffset), 75, 126
+        @sprite = sprite
+        @ctx.drawImage sprite, 129, 0, 75, 126, canvas.width/2 - 51, canvas.height - (126 + cac.baseVerticalOffset), 75, 126
         @isShooting = false
         @isReloading = false
+        @isGettingBitten = false
         @killCount = 0
         @bonusStats =
             killsOnOneShell: 0
             killLog: []
-        @isGettingBitten = false
         @shootingSpeed = 450 # original was 600
         @reloadSpeed = 275 # original was 375
         @shootingFrames = [

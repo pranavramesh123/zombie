@@ -45,6 +45,42 @@ window.cac =
         @topCanvas.right.clearRect(0, 0, 400, 415)
         @topCanvas.left.clearRect(0, 0, 400, 415)
         @playerCanvasContext.clearRect(0, 0, 800, 415)
+    readyToStart: false
+    allSprites: [
+        "/img/spritesheets/player.png",
+        "/img/spritesheets/zombies/afrobeard-black.png",
+        "/img/spritesheets/zombies/afrobeard-grey.png",
+        "/img/spritesheets/zombies/beater-white.png",
+        "/img/spritesheets/zombies/beater-black.png",
+        "/img/spritesheets/zombies/dress-yellow.png",
+        "/img/spritesheets/zombies/dress-blue.png",
+        "/img/spritesheets/zombies/suit-blue.png",
+        "/img/spritesheets/zombies/suit-brown.png",
+        "/img/spritesheets/zombies/tee-grey.png",
+        "/img/spritesheets/zombies/tee-none.png"
+    ]
+    spritesLoaded: 0
+    loadSprite: (url) ->
+        img = new Image()
+        img.src = url
+        img.onload = () ->
+            cac.spritesLoaded++
+    loadSprites: () ->
+        if cac.spritesLoaded < cac.allSprites.length
+            cac.loadSprite cac.allSprites[cac.spritesLoaded]
+        return (cac.spritesLoaded/cac.allSprites.length) * 100
+    spriteLoadingInterval: null
+    loadingProgressBar: $('#loading-progress')
+    
+cac.spriteLoadingInterval = setInterval () ->
+    progress = cac.loadSprites()
+    if progress >= 100
+        $('.show-when-ready').removeClass('hidden')
+        $('.hide-when-ready').addClass('hidden')
+        cac.readyToStart = true
+        return clearInterval cac.spriteLoadingInterval
+    cac.loadingProgressBar.css 'width', progress + '%'
+, 16
 
 cac.zombieCanvas.right.translate cac.playerCanvas.width/2, 0
 cac.zombieCanvas.right.scale -1, 1
@@ -60,3 +96,4 @@ cac.scorekeeper.onmessage = (event) ->
     cac.currentGame.updateScoreDisplay()
     cac.currentGame.displayMessage(event.data.scoreMessages.join('<br>'), 2000) if event.data.scoreMessages?
     cac.currentGame.player.bonusStats = event.data.bonusStats
+    

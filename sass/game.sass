@@ -94,6 +94,7 @@ ul
     list-style-type: none
 a
     text-decoration: none
+    color: inherit
 a, button
     cursor: pointer
 .hidden
@@ -103,15 +104,24 @@ body
     background-color: #343434
 
 #canvas-container
+    #created-by
+        position: absolute
+        left: 0
+        bottom: 0
+        color: #FFF
+        font-size: 1.6rem
+        text-shadow: .1rem .1rem #343434
+        padding: .5rem
+        background-color: rgba(34, 34, 34, .8)
     font-family: 'dpcomic', monospace
     position: relative
     overflow: hidden
     width: 800px
     height: 415px
-    margin: 0 auto
+    margin: 40px auto 0 auto
     #hud
         position: absolute
-        background-color: rgba(29, 29, 29, .6)
+        background-color: rgba(34, 34, 34, .8)
         color: #EAEAEA
         font-size: .8rem
         @include flexbox(row, center)
@@ -161,10 +171,36 @@ body
                 font-size: 4rem
                 text-shadow: .1rem .1rem #343434
             p
-                width: 70%
+                width: 85%
                 margin: 0 auto
                 font-size: 1.6rem
                 text-shadow: none
+            #instructions
+                position: relative
+                width: 85%
+                margin: 0 auto
+                font-size: 1.6rem
+                text-shadow: none
+                #loading
+                    width: 100%
+                    background-color: #343434
+                    height: 1.7rem
+                    position: relative
+                    margin-top: 1rem
+                    span
+                        position: absolute
+                        width: 100%
+                        left: 0
+                        top: .2rem
+                        text-align: center
+                        color: #FFF
+                        font-size: 1.3rem
+                    #loading-progress
+                        background-color: $main-text-color
+                        height: 1.7rem
+                        position: absolute
+                        width: 0%
+                        
             .new-record
                 margin-left: 1.5rem
                 @include flashing

@@ -18,7 +18,8 @@ backgroundScene.onload = () ->
     bgctx.drawImage(backgroundScene, 0, 0)
     
 $('#start').click () ->
-    $('#intro, #recap').addClass 'hidden'
+    return if cac.readyToStart is false
+    $('#intro, #recap, #created-by').addClass 'hidden'
     cac.currentGame = new cac.Game()
     cac.currentGame.start()
 
