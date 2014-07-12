@@ -4,7 +4,7 @@ class cac.Player extends cac.Sprite
         @currentDirection = 'left'
         @currentLocation = @canvas.width/2
         @sprite = cac.playerSprite
-        @ctx.drawImage @sprite, 129, 0, 75, 126, canvas.width/2 - 51, canvas.height - (126 + cac.baseVerticalOffset), 75, 126
+        @ctx.drawImage @sprite, 525, 0, 75, 126, canvas.width/2 - 51, canvas.height - (126 + cac.baseVerticalOffset), 75, 126
         @isShooting = false
         @isReloading = false
         @isGettingBitten = false

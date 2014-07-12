@@ -55,7 +55,6 @@ class cac.Game
     end: (message) ->
         @pause()
         @isActive = false
-        cac.gameInProgress = false
         @displayMessage(message)
         survivalTime = (new Date() - @startTime)/1000
         roundedSurvivalTime = Math.floor survivalTime 
@@ -100,6 +99,7 @@ class cac.Game
             () =>
                 $('#current-message').remove()
                 $('#stats').html(thingsToShow.join('<br>')).parent().add('#created-by').removeClass('hidden')
+                cac.gameInProgress = false
             , 1000
         )
         @player.ctx.restore()

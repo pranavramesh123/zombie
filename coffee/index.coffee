@@ -18,7 +18,7 @@ backgroundScene.onload = () ->
     bgctx.drawImage(backgroundScene, 0, 0)
     
 $('#start').click () ->
-    return if cac.readyToStart is false
+    return if cac.readyToStart is false or cac.gameInProgress is true
     $('#intro, #recap, #created-by').addClass 'hidden'
     cac.currentGame = new cac.Game()
     cac.currentGame.start()
@@ -39,6 +39,10 @@ $('#hud').on 'touchstart', () ->
     
 
 $(document).on 'keydown', (e) ->
-    $('#start').click() if e.originalEvent.keyCode is 13 and cac.gameInProgress is false
+    $('#start').click() if e.originalEvent.keyCode is 13
     
 $('#restart').click () -> $('#start').click()
+
+window.onblur = () ->
+    if cac.currentGame? and cac.currentGame.isPaused is false
+        cac.currentGame.togglePause()
