@@ -21,9 +21,9 @@ window.cac =
     frameSpeedIndex: 80
     ammoContainer: $('#ammo-container')
     controlKeys:
-        shootLeft: 74
-        shootRight: 76
-        reload: 75
+        shootLeft: 37
+        shootRight: 39
+        reload: 40
         pause: 32
     reloadRange: 60
     newRecordSpan: '<span class="new-record">New Record!</span>'
