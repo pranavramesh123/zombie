@@ -2,7 +2,7 @@ $main-text-color: #871a1a
 $text-flash-color: gold
 
 @font-face
-    font-family: 'dpcomic'
+    font-family: 'DPComic Regular'
     src: url('../fonts/dpcomic.ttf')
 
 @mixin prefix($property, $value)
@@ -113,7 +113,7 @@ body
         text-shadow: .1rem .1rem #343434
         padding: .5rem
         background-color: rgba(34, 34, 34, .8)
-    font-family: 'dpcomic', monospace
+    font-family: 'DPComic Regular', monospace
     position: relative
     overflow: hidden
     width: 800px
@@ -158,7 +158,7 @@ body
         overflow: visible
         #current-message
             overflow: visible
-            &.small
+            &.small, .sub-message
                 font-size: 2rem
                 text-shadow: none
         .action-button-parent

@@ -138,10 +138,10 @@ cac.zombieSprites.push(
                     x: 1557
                     y: 102
                 width: 39
-                height: 39
+                height: 42
                 offset:
                     x: -5
-                    y: 108 + cac.baseVerticalOffset
+                    y: 105 + cac.baseVerticalOffset
         },
         {
             minWaitTime: 75
@@ -155,10 +155,10 @@ cac.zombieSprites.push(
                     x: 1557
                     y: 102
                 width: 39
-                height: 39
+                height: 42
                 offset:
                     x: -10
-                    y: 106 + cac.baseVerticalOffset
+                    y: 103 + cac.baseVerticalOffset
         },
         {
             minWaitTime: 75
@@ -172,10 +172,10 @@ cac.zombieSprites.push(
                     x: 1557
                     y: 102
                 width: 39
-                height: 39
+                height: 42
                 offset:
                     x: -15
-                    y: 103 + cac.baseVerticalOffset
+                    y: 100 + cac.baseVerticalOffset
         }
     ]
 )

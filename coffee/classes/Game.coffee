@@ -36,7 +36,7 @@ class cac.Game
             @generateZombies()
         , @nextZombieTimeoutLength
     pause: () ->
-        @displayMessage 'Paused'
+        @displayMessage ['Paused', '<span class="sub-message">Hit Space or tap the top bar to unpause</span>']
         @isPaused = true
         clearTimeout @nextZombie
         @nextZombieTimeoutLength -= new Date() - @nextZombieTimeoutStart
@@ -104,7 +104,6 @@ class cac.Game
         )
         @player.ctx.restore()
     togglePause: () ->
-        console.log @isActive
         return if @isActive is false
         if @isPaused is true
             @resume()
@@ -119,6 +118,9 @@ class cac.Game
                 zombie.updatePosition(time) if zombie?
             cac.zombieCanvas.left.clearRect 0, 0, 400, 415
             cac.zombieCanvas.right.clearRect 0, 0, 400, 415
+            
+            cac.topCanvas.left.clearRect 0, 0, 400, 415
+            cac.topCanvas.right.clearRect 0, 0, 400, 415
             
             for zombie in @zombies.left
                 zombie.redraw() if zombie?
