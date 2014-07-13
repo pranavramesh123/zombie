@@ -92,9 +92,9 @@ class cac.Game
                 thingsToShow = (thing += cac.newRecordSpan for thing in thingsToShow)
         catch
             
-        ga 'send', 'event', 'game', 'finish', 'survival-time', thingsToShow[0]
-        ga 'send', 'event', 'game', 'finish', 'zombies-killed', thingsToShow[1]
-        ga 'send', 'event', 'game', 'finish', 'score', thingsToShow[2]
+        ga 'send', 'event', 'game', 'finish', 'survival-time', survivalTime
+        ga 'send', 'event', 'game', 'finish', 'zombies-killed', @killCount
+        ga 'send', 'event', 'game', 'finish', 'score', @score
         setTimeout(
             () =>
                 $('#current-message').remove()
