@@ -108,11 +108,15 @@ body
         position: absolute
         left: 0
         bottom: 0
-        color: #FFF
         font-size: 1.6rem
         text-shadow: .1rem .1rem #343434
         padding: .5rem
         background-color: rgba(34, 34, 34, .8)
+        a
+            color: #FFF
+            @include prefix(transition, color .2s)
+            &:hover
+                color: lighten(#A2EB44, 10)
     font-family: 'DPComic Regular', monospace
     position: relative
     overflow: hidden

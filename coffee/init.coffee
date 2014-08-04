@@ -68,7 +68,7 @@ window.cac =
             cac.spritesLoaded++
             if this.src.indexOf("/img/spritesheets/player.png") isnt -1
                 cac.playerSprite = this
-                cac.playerCanvasContext.drawImage this, 525, 0, 75, 126, cac.playerCanvas.width/2 - 51, cac.playerCanvas.height - (126 + cac.baseVerticalOffset), 75, 126
+                cac.playerCanvasContext.drawImage this, 129, 0, 75, 126, cac.playerCanvas.width/2 - 51, cac.playerCanvas.height - (126 + cac.baseVerticalOffset), 75, 126
     loadSprites: () ->
         if cac.spritesLoaded < cac.allSprites.length
             cac.loadSprite cac.allSprites[cac.spritesLoaded]

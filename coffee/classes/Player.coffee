@@ -72,6 +72,7 @@ class cac.Player extends cac.Sprite
                     y: 126 + cac.baseVerticalOffset
             },
             {
+                last: true
                 minWaitTime: @shootingSpeed/5
                 start:
                     x: 129
@@ -119,6 +120,7 @@ class cac.Player extends cac.Sprite
                     y: 126 + cac.baseVerticalOffset
             },
             {
+                last: true
                 minWaitTime: @reloadSpeed/3
                 start:
                     x: 129
@@ -132,6 +134,7 @@ class cac.Player extends cac.Sprite
         ]
         @bittenFrames = [
             {
+                last: true
                 minWaitTime: 0
                 start:
                     x: 600
@@ -143,7 +146,9 @@ class cac.Player extends cac.Sprite
                     y: 126 + cac.baseVerticalOffset
             }    
         ]
-        @currentFrame = 0
+        @currentFrame = 5
+        @currentFrameList = @shootingFrames
+        @position = @currentFrameList[@currentFrame]
         @magazine =
             shells: 6
             capacity: 6

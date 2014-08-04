@@ -48,12 +48,15 @@ class cac.Game
     start: () ->
         cac.prepareToStartOver()
         @player = new cac.Player cac.playerCanvas, 'left'
+        @player.redraw()
         @startTime = new Date()
         cac.gameInProgress = true
         @isActive = true
         @resume()
+        @logicInterval = setInterval (() => @executeLogicLoop()), 16
     end: (message) ->
         @pause()
+        clearInterval @logicInterval
         @isActive = false
         @displayMessage(message)
         survivalTime = (new Date() - @startTime)/1000
@@ -109,32 +112,36 @@ class cac.Game
             @resume()
         else
             @pause()
-    executeGameLoop: () ->
+    logicInterval: null
+    executeLogicLoop: () ->
         if @isPaused is false
             time = new Date().getTime()
             for zombie in @zombies.left
                 zombie.updatePosition(time) if zombie?
             for zombie in @zombies.right
                 zombie.updatePosition(time) if zombie?
-            cac.zombieCanvas.left.clearRect 0, 0, 400, 415
-            cac.zombieCanvas.right.clearRect 0, 0, 400, 415
-            
-            cac.topCanvas.left.clearRect 0, 0, 400, 415
-            cac.topCanvas.right.clearRect 0, 0, 400, 415
-            
-            for zombie in @zombies.left
-                zombie.redraw() if zombie?
-            for zombie in @zombies.right
-                zombie.redraw() if zombie?
-            
-            if @player.isShooting or @player.isReloading or @player.isGettingBitten
-                cac.playerCanvasContext.clearRect 0, 0, cac.playerCanvas.width, cac.playerCanvas.height
-                @player.updatePosition time
-                @player.redraw()
+            @player.updatePosition time if @player.isShooting or @player.isReloading or @player.isGettingBitten
         else
             (zombie.lastFrame = new Date().getTime()) for zombie in @zombies.left
             (zombie.lastFrame = new Date().getTime()) for zombie in @zombies.right
-        cac.Utilities.getFrame () => @executeGameLoop()
+            
+    executeGameLoop: () ->
+        cac.zombieCanvas.left.clearRect 0, 0, 400, 415
+        cac.zombieCanvas.right.clearRect 0, 0, 400, 415
+        
+        cac.topCanvas.left.clearRect 0, 0, 400, 415
+        cac.topCanvas.right.clearRect 0, 0, 400, 415
+        
+        for zombie in @zombies.left
+            zombie.redraw() if zombie?
+        for zombie in @zombies.right
+            zombie.redraw() if zombie?
+        
+        cac.playerCanvasContext.clearRect 0, 0, cac.playerCanvas.width, cac.playerCanvas.height
+        @player.redraw()
+        if @isPaused is false
+            cac.Utilities.getFrame () => @executeGameLoop()
+        
     displayMessage: (message, disappear = null, removeLast = true, size = 'large') ->
         clearTimeout @messageTimeout
         $('#current-message').remove() if removeLast is true
