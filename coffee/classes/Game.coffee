@@ -2,7 +2,7 @@ class cac.Game
 
     constructor: () ->
         @nextZombie = null
-        @maxNumberOfZombies = 9
+        @maxNumberOfZombies = 12
         @score = 0
         @killCount = 0
         @nextZombieTimeoutLength = null
@@ -16,6 +16,7 @@ class cac.Game
         @zombies =
             left: []
             right: []
+        @intensityIndex = 1
     addToKillCount: () ->
         @killCount++
         cac.killCountDisplay.html(@killCount)
@@ -24,15 +25,16 @@ class cac.Game
     updateScoreDisplay: () ->
         cac.scoreDisplay.html @score
     generateZombies: () ->
-        @nextZombieTimeoutLength = 2000 - cac.Utilities.randomIntBetween(600, 1400) if @nextZombieTimeoutLength is null
+        @nextZombieTimeoutLength = 2000 - (cac.Utilities.randomIntBetween(600, 1400 * @intensityIndex)) if @nextZombieTimeoutLength is null
         @nextZombieTimeoutStart = new Date()
         @nextZombie = setTimeout () =>
             @nextZombieTimeoutLength = null
             comeFrom = if Math.random() >= .5 then 'left' else 'right'
-            speed = cac.Utilities.randomIntBetween 90, 110
+            speed = cac.Utilities.randomIntBetween(90, 110 * @intensityIndex)
             if @zombies['left'].length + @zombies['right'].length < @maxNumberOfZombies
                 spriteIndex = Math.floor Math.random() * cac.zombieSprites.length
                 @zombies[comeFrom].push new cac.Zombie comeFrom, cac.zombieSprites[spriteIndex], speed, -75
+            @intensityIndex += .0075
             @generateZombies()
         , @nextZombieTimeoutLength
     pause: () ->
