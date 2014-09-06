@@ -75,6 +75,7 @@ window.cac =
         return (cac.spritesLoaded/cac.allSprites.length) * 100
     spriteLoadingInterval: null
     loadingProgressBar: $('#loading-progress')
+    gofast: false
     
 cac.spriteLoadingInterval = setInterval () ->
     progress = cac.loadSprites()

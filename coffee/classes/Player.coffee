@@ -1,6 +1,7 @@
 class cac.Player extends cac.Sprite
-    constructor: (canvas, startingSide) ->
+    constructor: (canvas, startingSide, gofast) ->
         super canvas, startingSide
+        @gofast = gofast
         @currentDirection = 'left'
         @currentLocation = @canvas.width/2
         @sprite = cac.playerSprite
@@ -12,8 +13,8 @@ class cac.Player extends cac.Sprite
         @bonusStats =
             killsOnOneShell: 0
             killLog: []
-        @shootingSpeed = 450 # original was 600
-        @reloadSpeed = 275 # original was 375
+        @shootingSpeed = if @gofast is false then 450 else 215
+        @reloadSpeed = if @gofast is false then 275 else 120
         @shootingFrames = [
             {
                 minWaitTime: 0

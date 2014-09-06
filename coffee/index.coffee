@@ -1,3 +1,6 @@
+codeCharacters = []
+codeTimeout = null
+
 reactToInput = ($canvas, x, y) ->
     return if cac.currentGame.player.isShooting or cac.currentGame.player.isReloading or cac.currentGame.isPaused
     if cac.currentGame.player.magazine.shells <= 0
@@ -20,7 +23,7 @@ backgroundScene.onload = () ->
 $('#start').click () ->
     return if cac.readyToStart is false or cac.gameInProgress is true
     $('#intro, #recap, #created-by').addClass 'hidden'
-    cac.currentGame = new cac.Game()
+    cac.currentGame = new cac.Game cac.gofast
     cac.currentGame.start()
 
 $(document).on 'keydown', (e) ->
@@ -37,11 +40,21 @@ $('canvas.top').on 'touchstart', (e) ->
 $('#hud').on 'touchstart', () ->
     if cac.gameInProgress is false then return else cac.currentGame.togglePause()
     
-
 $(document).on 'keydown', (e) ->
-    $('#start').click() if e.originalEvent.keyCode is 13
+    return $('#start').click() if e.originalEvent.keyCode is 13
+    if cac.readyToStart is true and cac.gameInProgress is false
+        codeCharacters.push e.originalEvent.keyCode
+        clearTimeout(codeTimeout) if codeTimeout isnt null
+        codeTimeout = setTimeout ->
+            codeCharacters = []
+        , 2000
+        for keycode, index in [71, 79, 70, 65, 83, 84]
+            if codeCharacters[index] isnt keycode
+                return
+        cac.gofast = true
+        $('#start').html 'GO FAST'
     
-$('#restart').click () -> $('#start').click()
+$('#restart').click -> $('#start').click()
 
 window.onblur = () ->
     if cac.currentGame? and cac.currentGame.isPaused is false

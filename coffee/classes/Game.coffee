@@ -1,6 +1,7 @@
 class cac.Game
 
-    constructor: () ->
+    constructor: (gofast) ->
+        @gofast = gofast
         @nextZombie = null
         @maxNumberOfZombies = 12
         @score = 0
@@ -17,6 +18,22 @@ class cac.Game
             left: []
             right: []
         @intensityIndex = 1
+        if cac.gofast is false
+            @speedRange =
+                bottom: 90
+                top: 110
+            @zombieTimeoutBase = 2000
+            @zombieTimeoutRange =
+                bottom: 600
+                top: 1400
+        else
+            @speedRange =
+                bottom: 160
+                top: 230
+            @zombieTimeoutBase = 1000
+            @zombieTimeoutRange =
+                bottom: 300
+                top: 500
     addToKillCount: () ->
         @killCount++
         cac.killCountDisplay.html(@killCount)
@@ -25,16 +42,16 @@ class cac.Game
     updateScoreDisplay: () ->
         cac.scoreDisplay.html @score
     generateZombies: () ->
-        @nextZombieTimeoutLength = 2000 - (cac.Utilities.randomIntBetween(600, 1400 * @intensityIndex)) if @nextZombieTimeoutLength is null
+        @nextZombieTimeoutLength = @zombieTimeoutBase - (cac.Utilities.randomIntBetween(@zombieTimeoutRange.bottom, @zombieTimeoutRange.top * @intensityIndex)) if @nextZombieTimeoutLength is null
         @nextZombieTimeoutStart = new Date()
         @nextZombie = setTimeout () =>
             @nextZombieTimeoutLength = null
             comeFrom = if Math.random() >= .5 then 'left' else 'right'
-            speed = cac.Utilities.randomIntBetween(90, 110 * @intensityIndex)
+            speed = cac.Utilities.randomIntBetween(@speedRange.bottom, @speedRange.top * @intensityIndex)
             if @zombies['left'].length + @zombies['right'].length < @maxNumberOfZombies
                 spriteIndex = Math.floor Math.random() * cac.zombieSprites.length
                 @zombies[comeFrom].push new cac.Zombie comeFrom, cac.zombieSprites[spriteIndex], speed, -75
-            @intensityIndex += .0075
+            @intensityIndex += .005
             @generateZombies()
         , @nextZombieTimeoutLength
     pause: () ->
@@ -49,7 +66,7 @@ class cac.Game
         @executeGameLoop()
     start: () ->
         cac.prepareToStartOver()
-        @player = new cac.Player cac.playerCanvas, 'left'
+        @player = new cac.Player cac.playerCanvas, 'left', @gofast
         @player.redraw()
         @startTime = new Date()
         cac.gameInProgress = true
