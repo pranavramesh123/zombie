@@ -21,26 +21,26 @@ $text-flash-color: gold
 
 @-webkit-keyframes pulsate
     0%
-        @include prefix(transform, translate3d(0, 0, 0))
+        @include prefix(transform, translateZ(0))
     50%
-        @include prefix(transform, translate3d(0, 0, 12rem))
+        @include prefix(transform, translateZ(200px))
     100%
-        @include prefix(transform, translate3d(0, 0, 0))
+        @include prefix(transform, translateZ(0))
 
 @keyframes pulsate
     0%
-        @include prefix(transform, translate3d(0, 0, 0))
+        @include prefix(transform, translateZ(0))
     50%
-        @include prefix(transform, translate3d(0, 0, 12rem))
+        @include prefix(transform, translateZ(200px))
     100%
-        @include prefix(transform, translate3d(0, 0, 0))
+        @include prefix(transform, translateZ(0))
         
-@keyframes zoom
+@-webkit-keyframes zoom
     0%
         @include prefix(transform, translate3d(0, 0, 30rem))
     100%
         @include prefix(transform, translate3d(0, 0, 0))
-@-webkit-keyframes zoom
+@keyframes zoom
     0%
         @include prefix(transform, translate3d(0, 0, 30rem))
     100%
@@ -64,13 +64,11 @@ $text-flash-color: gold
         
 @mixin flashing
     -webkit-animation: flashing .75s infinite ease-out
-    -moz-animation: flashing .75s infinite  ease-out
     animation: flashing .75s infinite  ease-out
 
 @mixin pulsating($time: 1s)
-    -webkit-animation: pulsate $time infinite ease
-    -moz-animation: pulsate $time infinite ease
-    animation: pulsate $time infinite ease
+    -webkit-animation: pulsate $time infinite ease-out
+    animation: pulsate $time infinite ease-out
     
 .pulsating-slow
     @include pulsating
@@ -79,7 +77,6 @@ $text-flash-color: gold
     
 .zooming
     -webkit-animation: zoom .4s 0s 1 ease-out
-    -moz-animation: zoom .4s 0s 1 ease-out
     animation: zoom .4s 0s 1 ease-out
 
 *
@@ -117,7 +114,7 @@ body
             @include prefix(transition, color .2s)
             &:hover
                 color: lighten(#A2EB44, 10)
-    font-family: 'DPComic Regular', monospace
+    font-family: 'DPComic Regular', 'VT323', monospace
     position: relative
     overflow: hidden
     width: 800px
@@ -156,8 +153,10 @@ body
         font-size: 3rem
         text-shadow: .1rem .1rem #343434
         color: $main-text-color
-        -webkit-perspective: 50rem
-        perspective: 50rem
+        -webkit-transform-style: preserve-3d
+        transform-style: preserve-3d
+        -webkit-perspective: 1000px
+        perspective: 1000px
         overflow: visible
         #current-message
             overflow: visible

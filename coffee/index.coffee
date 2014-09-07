@@ -52,7 +52,7 @@ $(document).on 'keydown', (e) ->
             if codeCharacters[index] isnt keycode
                 return
         cac.gofast = true
-        $('#start').html 'GO FAST'
+        $('#start').html 'GO FAST!'
     
 $('#restart').click -> $('#start').click()
 
