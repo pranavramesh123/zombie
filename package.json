@@ -1,7 +1,7 @@
 {
-  "name": "greg",
-  "version": "0.0.1",
-  "private": true,
+  "name": "capacorpse",
+  "version": "1.0.0",
+  "private": false,
   "devDependencies": {
     "grunt": "~0.4.4",
     "grunt-contrib-watch": "~0.6.1",

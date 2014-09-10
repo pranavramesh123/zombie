@@ -55,8 +55,6 @@ module.exports = (grunt) ->
                 dest:
                     './public/js/compiled/game.js'
         uglify:
-            options:
-                banner: "/* Copyright 2014 Greg Weston */\n"
             dist:
                 files: [{
                     expand: true
@@ -64,3 +62,4 @@ module.exports = (grunt) ->
                     src: '**/*.js'
                     dest: './public/js/compiled/'
                 }]
+    grunt.registerTask 'default', ['sass', 'coffee', 'concat', 'copy', 'uglify']
