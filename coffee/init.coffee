@@ -42,6 +42,7 @@ window.cac =
         reload: 40 # Down arrow
         pause: 32 # Spacebar
     newRecordSpan: '<span class="new-record">New Record!</span>'
+    reloadRange: 60
     images:
         noShell: '/img/noshellicon.png'
         shell: '/img/shellicon.png'
