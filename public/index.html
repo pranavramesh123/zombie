@@ -9,14 +9,15 @@
         <title>
             Cap a Corpse - Zombie Survival Game
         </title>
+        <!-- The TTF for "DPComic Regular" doesn't appear to work in IE, so this web font is the backup. -->
         <link href='http://fonts.googleapis.com/css?family=VT323' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="/css/compiled/style.css">
     </head>
     <body>
         <div id="canvas-container">
             <canvas id="background" width="800" height="415">Sorry, Cap a Corpse only works in modern browsers.</canvas>
-            <canvas id="zombie-deathbed-left" class="half-canvas zombie-canvas left" width="400" height="415"></canvas>
-            <canvas id="zombie-deathbed-right" class="half-canvas zombie-canvas right" width="400" height="415"></canvas>
+            <canvas id="zombie-graveyard-left" class="half-canvas zombie-canvas left" width="400" height="415"></canvas>
+            <canvas id="zombie-graveyard-right" class="half-canvas zombie-canvas right" width="400" height="415"></canvas>
             <canvas id="zombie-canvas-left" class="half-canvas zombie-canvas left" width="400" height="415"></canvas>
             <canvas id="zombie-canvas-right" class="half-canvas zombie-canvas right" width="400" height="415"></canvas>
             <canvas id="player-canvas" width="800" height="415"></canvas>
@@ -68,18 +69,7 @@
                     </div>
                 </div>
             </div>
-            <div id="created-by">
-                <a href="http://greg.codes">&copy; 2014 Greg Weston</a>
-            </div>
         </div>
-        <script>
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-            ga('create', 'UA-52731521-1', 'auto');
-            ga('send', 'pageview');
-        </script>
         <script type="text/javascript" src="/js/jquery-2.1.0.min.js"></script>
         <script type="text/javascript" src="/js/compiled/game.js"></script>
     </body>

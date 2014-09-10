@@ -153,13 +153,13 @@ class cac.Player extends cac.Sprite
         @magazine =
             shells: 6
             capacity: 6
-    fire: () ->
+    fire: ->
         @magazine.shells--
-        cac.ammoContainer.find('img:not(.used)').first().addClass('used').get(0).src = cac.images.noShell
-        cac.Zombie.seeWhoGetsShot(@currentDirection)
-    loadShell: () ->
+        cac.jqElements.ammoContainer.find('img:not(.used)').first().addClass('used').get(0).src = cac.images.noShell
+        cac.Zombie.seeWhoGetsShot @currentDirection
+    loadShell: ->
         @magazine.shells++
-        cac.ammoContainer.find('img.used').last().removeClass('used').get(0).src = cac.images.shell
+        cac.jqElements.ammoContainer.find('img.used').last().removeClass('used').get(0).src = cac.images.shell
     shoot: (direction) ->
         if direction is 'right' and @currentDirection is 'left'
             @ctx.save()
@@ -169,25 +169,23 @@ class cac.Player extends cac.Sprite
         else if direction is 'left' and @currentDirection is 'right'
             @ctx.restore()
             @currentDirection = 'left'
+            
         @isShooting = true
         @currentFrame = 0
         @currentFrameList = @shootingFrames
-        @speed = 0
         @animationLooping = false
         @animationEndCallback = () => @isShooting = false
-    reload: () ->
+    reload: ->
         @isReloading = true
         @currentFrame = 0
         @currentFrameList = @reloadingFrames
-        @speed = 0
         @animationLooping = false
-        @animationEndCallback = () => @isReloading = false
-    @bittenCallback: () ->
+        @animationEndCallback = => @isReloading = false
+    @bittenCallback: ->
         cac.currentGame.end 'You have been bitten.'
-    getBitten: () ->
+    getBitten: ->
         @isGettingBitten = true
         @currentFrame = 0
         @currentFrameList = @bittenFrames
-        @speed = 0
         @animationLooping = false
         @animationEndCallback = cac.Player.bittenCallback

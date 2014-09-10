@@ -14,6 +14,7 @@ class cac.Game
         @isPaused = true
         @lastFrame = null
         @currentGameFrame = null
+        @logicInterval = null
         @zombies =
             left: []
             right: []
@@ -34,13 +35,17 @@ class cac.Game
             @zombieTimeoutRange =
                 bottom: 300
                 top: 500
+                
     addToKillCount: () ->
         @killCount++
-        cac.killCountDisplay.html(@killCount)
+        cac.jqElements.killCountDisplay.html @killCount
+        
     updateScore: (addition) ->
         @score += addition
+        
     updateScoreDisplay: () ->
-        cac.scoreDisplay.html @score
+        cac.jqElements.scoreDisplay.html @score
+        
     generateZombies: () ->
         @nextZombieTimeoutLength = @zombieTimeoutBase - (cac.Utilities.randomIntBetween(@zombieTimeoutRange.bottom, @zombieTimeoutRange.top * @intensityIndex)) if @nextZombieTimeoutLength is null
         @nextZombieTimeoutStart = new Date()
@@ -54,16 +59,19 @@ class cac.Game
             @intensityIndex += .005
             @generateZombies()
         , @nextZombieTimeoutLength
+        
     pause: () ->
         @displayMessage ['Paused', '<span class="sub-message">Hit Space or tap the top bar to unpause</span>']
         @isPaused = true
         clearTimeout @nextZombie
         @nextZombieTimeoutLength -= new Date() - @nextZombieTimeoutStart
+        
     resume: () ->
         $('#current-message').remove()
         @isPaused = false
         @generateZombies()
         @executeGameLoop()
+        
     start: () ->
         cac.prepareToStartOver()
         @player = new cac.Player cac.playerCanvas, 'left', @gofast
@@ -73,6 +81,7 @@ class cac.Game
         @isActive = true
         @resume()
         @logicInterval = setInterval (() => @executeLogicLoop()), 16
+        
     end: (message) ->
         @pause()
         clearInterval @logicInterval
@@ -95,7 +104,7 @@ class cac.Game
         ]
         try
             if window.localStorage.getItem('records')?
-                records = JSON.parse window.localStorage.getItem('records')
+                records = JSON.parse window.localStorage.getItem 'records'
                 if survivalTime > parseInt records.survivalTime
                     records.survivalTime = survivalTime
                     thingsToShow[0] += cac.newRecordSpan
@@ -113,10 +122,6 @@ class cac.Game
                     score: @score
                 thingsToShow = (thing += cac.newRecordSpan for thing in thingsToShow)
         catch
-            
-        ga 'send', 'event', 'game', 'finish', 'survival-time', survivalTime
-        ga 'send', 'event', 'game', 'finish', 'zombies-killed', @killCount
-        ga 'send', 'event', 'game', 'finish', 'score', @score
         setTimeout(
             () =>
                 $('#current-message').remove()
@@ -125,14 +130,15 @@ class cac.Game
             , 1000
         )
         @player.ctx.restore()
-    togglePause: () ->
+        
+    togglePause: ->
         return if @isActive is false
         if @isPaused is true
             @resume()
         else
             @pause()
-    logicInterval: null
-    executeLogicLoop: () ->
+    
+    executeLogicLoop: ->
         if @isPaused is false
             time = new Date().getTime()
             for zombie in @zombies.left
@@ -144,12 +150,12 @@ class cac.Game
             (zombie.lastFrame = new Date().getTime()) for zombie in @zombies.left
             (zombie.lastFrame = new Date().getTime()) for zombie in @zombies.right
             
-    executeGameLoop: () ->
-        cac.zombieCanvas.left.clearRect 0, 0, 400, 415
-        cac.zombieCanvas.right.clearRect 0, 0, 400, 415
+    executeGameLoop: ->
+        cac.zombieCanvasContexts.left.clearRect 0, 0, cac.playerCanvas.width/2, cac.playerCanvas.height
+        cac.zombieCanvasContexts.right.clearRect 0, 0, cac.playerCanvas.width/2, cac.playerCanvas.height
         
-        cac.topCanvas.left.clearRect 0, 0, 400, 415
-        cac.topCanvas.right.clearRect 0, 0, 400, 415
+        cac.topCanvasContexts.left.clearRect 0, 0, cac.playerCanvas.width/2, cac.playerCanvas.height
+        cac.topCanvasContexts.right.clearRect 0, 0, cac.playerCanvas.width/2, cac.playerCanvas.height
         
         for zombie in @zombies.left
             zombie.redraw() if zombie?
@@ -159,17 +165,15 @@ class cac.Game
         cac.playerCanvasContext.clearRect 0, 0, cac.playerCanvas.width, cac.playerCanvas.height
         @player.redraw()
         if @isPaused is false
-            cac.Utilities.getFrame () => @executeGameLoop()
+            cac.Utilities.getFrame => @executeGameLoop()
         
     displayMessage: (message, disappear = null, removeLast = true, size = 'large') ->
         clearTimeout @messageTimeout
         $('#current-message').remove() if removeLast is true
-        newMessageElement = document.createElement 'div'
-        newMessageElement.className = 'zooming ' + size
-        newMessageElement.id = 'current-message'
         if typeof message is 'object'
-            newMessageElement.innerHTML = message.join '<br>'
+            newMessageContent = message.join '<br>'
         else
-            newMessageElement.innerHTML = message
-        document.getElementById('info').appendChild(newMessageElement)
+            newMessageContent = message
+        newMessage = '<div id="current-message" class="zooming ' + size + '">' + newMessageContent + '</div>'
+        $('#info').append newMessage
         if disappear? then @messageTimeout = setTimeout (() => $('#current-message').remove()), disappear

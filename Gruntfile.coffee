@@ -50,7 +50,7 @@ module.exports = (grunt) ->
                     './compiled-js/coffee/classes/Sprite.js',
                     './compiled-js/coffee/classes/Zombie.js',
                     './compiled-js/coffee/classes/Player.js',
-                    './compiled-js/coffee/index.js'
+                    './compiled-js/coffee/interact.js'
                 ]
                 dest:
                     './public/js/compiled/game.js'
