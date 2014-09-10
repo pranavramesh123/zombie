@@ -19,6 +19,7 @@ class cac.Game
             left: []
             right: []
         @intensityIndex = 1
+        @intensityIncrement = .005
         if cac.gofast is false
             @speedRange =
                 bottom: 90
@@ -56,7 +57,7 @@ class cac.Game
             if @zombies['left'].length + @zombies['right'].length < @maxNumberOfZombies
                 spriteIndex = Math.floor Math.random() * cac.zombieSprites.length
                 @zombies[comeFrom].push new cac.Zombie comeFrom, cac.zombieSprites[spriteIndex], speed, -75
-            @intensityIndex += .005
+            @intensityIndex += @intensityIncrement
             @generateZombies()
         , @nextZombieTimeoutLength
         
