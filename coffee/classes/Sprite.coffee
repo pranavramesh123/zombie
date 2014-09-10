@@ -41,7 +41,7 @@ class cac.Sprite
             @currentLocation - @position.offset.x, @canvas.height - @position.offset.y, @position.width, @position.height
         )
         if @position.frontFrame?
-            cac.topCanvas[@side].drawImage(
+            cac.topCanvasContexts[@side].drawImage(
                 @sprite, @position.frontFrame.start.x, @position.frontFrame.start.y, @position.frontFrame.width, @position.frontFrame.height,
                 @currentLocation - @position.frontFrame.offset.x, @canvas.height - @position.frontFrame.offset.y, @position.frontFrame.width, @position.frontFrame.height
             )

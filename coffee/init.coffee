@@ -1,50 +1,52 @@
+# Global object with constants, settings, etc.
+
 window.cac = 
     canvasContainer: document.getElementById 'canvas-container'
     playerCanvas: document.getElementById 'player-canvas'
     playerCanvasContext: document.getElementById('player-canvas').getContext '2d'
-    topCanvas:
+    topCanvasContexts:
         left: document.getElementById('top-canvas-left').getContext '2d'
         right: document.getElementById('top-canvas-right').getContext '2d'
-    zombieCanvas:
+    zombieCanvasContexts:
         left: document.getElementById('zombie-canvas-left').getContext '2d'
         right: document.getElementById('zombie-canvas-right').getContext '2d'
-    zombieDeathBed:
-        left: document.getElementById('zombie-deathbed-left').getContext '2d'
-        right: document.getElementById('zombie-deathbed-right').getContext '2d'
-    scoreDisplay: $('#score')
-    killCountDisplay: $('#killcount')
+    zombieGraveyardContexts:
+        left: document.getElementById('zombie-graveyard-left').getContext '2d'
+        right: document.getElementById('zombie-graveyard-right').getContext '2d'
     zombieSprites: []
     jqElements:
         bonusContainer: $('#bonus-container')
         bonusMessage: $('#bonus-message')
         bonus: $('#bonus')
-    frameSpeedIndex: 80
-    ammoContainer: $('#ammo-container')
+        killCountDisplay: $('#killcount')
+        scoreDisplay: $('#score')
+        ammoContainer: $('#ammo-container')
+        loadingProgressBar: $('#loading-progress')
+    frameSpeedIndex: 80 # Used to calculate time between sprite frames, based on speed
     controlKeys:
-        shootLeft: 37
-        shootRight: 39
-        reload: 40
-        pause: 32
-    reloadRange: 60
+        shootLeft: 37 # Left arrow
+        shootRight: 39 # Right arrow
+        reload: 40 # Down arrow
+        pause: 32 # Spacebar
     newRecordSpan: '<span class="new-record">New Record!</span>'
     images:
         noShell: '/img/noshellicon.png'
         shell: '/img/shellicon.png'
     scorekeeper: new Worker '/js/compiled/workers/scorekeeper.js'
-    baseVerticalOffset: 5
+    baseVerticalOffset: 5 # For spritesheet coordinates
     gameInProgress: false
     prepareToStartOver: () ->
-        @scoreDisplay.html 0
-        @killCountDisplay.html 0
-        @ammoContainer.find('img').each () ->
+        @jqElements.scoreDisplay.html 0
+        @jqElements.killCountDisplay.html 0
+        @jqElements.ammoContainer.find('img').each () ->
             $(this).removeClass('used').get(0).src = cac.images.shell
-        @zombieDeathBed.right.clearRect(0, 0, 400, 415)
-        @zombieDeathBed.left.clearRect(0, 0, 400, 415)
-        @zombieCanvas.right.clearRect(0, 0, 400, 415)
-        @zombieCanvas.left.clearRect(0, 0, 400, 415)
-        @topCanvas.right.clearRect(0, 0, 400, 415)
-        @topCanvas.left.clearRect(0, 0, 400, 415)
-        @playerCanvasContext.clearRect(0, 0, 800, 415)
+        @zombieGraveyardContexts.right.clearRect(0, 0, @playerCanvas.width/2, @playerCanvas.height)
+        @zombieGraveyardContexts.left.clearRect(0, 0, @playerCanvas.width/2, @playerCanvas.height)
+        @zombieCanvasContexts.right.clearRect(0, 0, @playerCanvas.width/2, @playerCanvas.height)
+        @zombieCanvasContexts.left.clearRect(0, 0, @playerCanvas.width/2, @playerCanvas.height)
+        @topCanvasContexts.right.clearRect(0, 0, @playerCanvas.width/2, @playerCanvas.height)
+        @topCanvasContexts.left.clearRect(0, 0, @playerCanvas.width/2, @playerCanvas.height)
+        @playerCanvasContext.clearRect(0, 0, @playerCanvas.width, @playerCanvas.height)
     readyToStart: false
     allSprites: [
         "/img/spritesheets/player.png",
@@ -74,30 +76,40 @@ window.cac =
             cac.loadSprite cac.allSprites[cac.spritesLoaded]
         return (cac.spritesLoaded/cac.allSprites.length) * 100
     spriteLoadingInterval: null
-    loadingProgressBar: $('#loading-progress')
-    
+    gofast: false
+
+# Load all sprites, and display progress in loading bar.
 cac.spriteLoadingInterval = setInterval () ->
     progress = cac.loadSprites()
     if progress >= 100
-        $('.show-when-ready').removeClass('hidden')
-        $('.hide-when-ready').addClass('hidden')
+        $('.show-when-ready').removeClass 'hidden'
+        $('.hide-when-ready').addClass 'hidden'
         cac.readyToStart = true
         return clearInterval cac.spriteLoadingInterval
-    cac.loadingProgressBar.css 'width', progress + '%'
+    cac.jqElements.loadingProgressBar.css 'width', progress + '%'
 , 16
 
-cac.zombieCanvas.right.translate cac.playerCanvas.width/2, 0
-cac.zombieCanvas.right.scale -1, 1
+# Horizontally mirroring the "right" side canvases. This is done so that the same code and sprites can be used
+# for zombies approaching from either side.
+cac.zombieCanvasContexts.right.translate cac.playerCanvas.width/2, 0
+cac.zombieCanvasContexts.right.scale -1, 1
+cac.zombieGraveyardContexts.right.translate cac.playerCanvas.width/2, 0
+cac.zombieGraveyardContexts.right.scale -1, 1
+cac.topCanvasContexts.right.translate cac.playerCanvas.width/2, 0
+cac.topCanvasContexts.right.scale -1, 1
 
-cac.zombieDeathBed.right.translate cac.playerCanvas.width/2, 0
-cac.zombieDeathBed.right.scale -1, 1
-
-cac.topCanvas.right.translate cac.playerCanvas.width/2, 0
-cac.topCanvas.right.scale -1, 1
-
+# React after the "scorekeeper" worker calculates a score change.
 cac.scorekeeper.onmessage = (event) ->
     cac.currentGame.updateScore event.data.scoreIncrement
     cac.currentGame.updateScoreDisplay()
-    cac.currentGame.displayMessage(event.data.scoreMessages.join('<br>'), 2000) if event.data.scoreMessages?
+    cac.currentGame.displayMessage(event.data.scoreMessages.join('<br>'), 2000) if event.data.scoreMessages? and event.data.scoreMessages.length > 0
     cac.currentGame.player.bonusStats = event.data.bonusStats
+
+# Draw the background
+background = document.getElementById 'background'
+bgctx = background.getContext '2d'
+backgroundScene = new Image()
+backgroundScene.src = '/img/background.png'
+backgroundScene.onload = ->
+    bgctx.drawImage(backgroundScene, 0, 0)
     

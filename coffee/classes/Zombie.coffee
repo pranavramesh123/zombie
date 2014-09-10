@@ -53,24 +53,24 @@ class cac.Zombie extends cac.Sprite
             killTime: new Date().getTime()
         )
         if @currentLocation >= @lungingPoint
-            cac.topCanvas.left.clearRect 0, 0, cac.playerCanvas.width/2, cac.playerCanvas.height
-            cac.topCanvas.right.clearRect 0, 0, cac.playerCanvas.width/2, cac.playerCanvas.height
+            cac.topCanvasContexts.left.clearRect 0, 0, cac.playerCanvas.width/2, cac.playerCanvas.height
+            cac.topCanvasContexts.right.clearRect 0, 0, cac.playerCanvas.width/2, cac.playerCanvas.height
         @speed = 0
         @animationLooping = false
         @currentFrame = 0
         @currentFrameList = @dyingFrames
         @animationEndCallback = () => this.die()
-    die: () ->
+    die: ->
         cac.currentGame.zombies[@side].splice(@index, 1)
         position = @dyingFrames[@dyingFrames.length - 1]
-        cac.zombieDeathBed[@side].drawImage(
+        cac.zombieGraveyardContexts[@side].drawImage(
             @sprite, position.start.x, position.start.y, position.width, position.height,
             @currentLocation - position.offset.x, @canvas.height - position.offset.y, position.width, position.height
         )
-    bite: () ->
+    bite: ->
         @isBiting = true
         @speed = 0
         @animationLooping = false
         @currentFrame = 0
         @currentFrameList = @bitingFrames
-        @animationEndCallback = () -> cac.currentGame.player.getBitten()
+        @animationEndCallback = -> cac.currentGame.player.getBitten()
