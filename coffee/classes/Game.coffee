@@ -34,7 +34,7 @@ class cac.Game
             left: []
             right: []
         @intensityIndex = 1
-        @intensityIncrement = .005
+        @intensityIncrement = .0025
         if cac.gofast is false
             @speedRange =
                 bottom: 90
