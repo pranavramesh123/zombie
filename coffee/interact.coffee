@@ -38,14 +38,6 @@ $('#start').click () ->
     $('#intro, #recap, #created-by').addClass 'hidden'
     cac.currentGame = new cac.Game cac.gofast
     cac.currentGame.start()
-
-$(document).on 'keydown', (e) ->
-    return if cac.gameInProgress is false
-    switch e.originalEvent.keyCode
-        when cac.controlKeys.shootLeft then reactToInput $('#top-canvas-left')
-        when cac.controlKeys.shootRight then reactToInput $('#top-canvas-right')
-        when cac.controlKeys.reload then tryToReload()
-        when cac.controlKeys.pause then cac.currentGame.togglePause()
             
 $('canvas.top').on 'touchstart', (e) ->
     return if cac.gameInProgress is false
@@ -69,6 +61,12 @@ $(document).on 'keydown', (e) ->
                 return
         cac.gofast = true
         $('#start').html 'GO FAST!'
+    else if cac.gameInProgress is true
+        switch e.originalEvent.keyCode
+            when cac.controlKeys.shootLeft then reactToInput $('#top-canvas-left')
+            when cac.controlKeys.shootRight then reactToInput $('#top-canvas-right')
+            when cac.controlKeys.reload then tryToReload()
+            when cac.controlKeys.pause then cac.currentGame.togglePause()
     
 $('#restart').click -> $('#start').click()
 
