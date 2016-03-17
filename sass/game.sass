@@ -124,11 +124,13 @@ body
         text-shadow: .1rem .1rem #343434
         padding: .5rem
         background-color: rgba(34, 34, 34, .8)
+        color: #FFF
         a
-            color: #FFF
+            color: inherit
+            border-bottom: 1px solid #A2EB44
             @include prefix(transition, color .2s)
             &:hover
-                color: lighten(#A2EB44, 10)
+                color: #A2EB44
     font-family: 'DPComic Regular', 'VT323', monospace
     position: relative
     overflow: hidden
